@@ -163,6 +163,16 @@
         }
       }
     },
+    "File is too large to preview.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件过大，暂不支持预览。"
+          }
+        }
+      }
+    },
     "Files": {
       "localizations": {
         "zh-Hans": {
@@ -239,6 +249,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "收件箱为空"
+          }
+        }
+      }
+    },
+    "Loading…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加载中…"
           }
         }
       }
@@ -323,6 +343,16 @@
         }
       }
     },
+    "Preview Not Supported": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不支持预览"
+          }
+        }
+      }
+    },
     "Recent": {
       "localizations": {
         "zh-Hans": {
@@ -403,12 +433,32 @@
         }
       }
     },
+    "Text encoding is not supported.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文本编码不受支持。"
+          }
+        }
+      }
+    },
     "This cannot be undone.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "此操作无法撤销。"
+          }
+        }
+      }
+    },
+    "This file type cannot be previewed yet.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此文件类型暂不支持预览。"
           }
         }
       }
@@ -420,6 +470,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "回收站"
+          }
+        }
+      }
+    },
+    "Unable to Read File": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法读取文件"
+          }
+        }
+      }
+    },
+    "Unable to read file.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法读取文件。"
           }
         }
       }

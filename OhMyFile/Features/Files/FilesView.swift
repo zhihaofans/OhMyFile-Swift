@@ -167,14 +167,19 @@ private struct InboxView: View {
                         spacing: 12
                     ) {
                         ForEach(sortedFiles) { file in
-                            FileGridCell(file: file)
-                                .contextMenu {
-                                    Button(role: .destructive) {
-                                        pendingDeletion = .file(file)
-                                    } label: {
-                                        Label("Delete", systemImage: "trash")
-                                    }
+                            NavigationLink {
+                                FilePreviewView(file: file)
+                            } label: {
+                                FileGridCell(file: file)
+                            }
+                            .buttonStyle(.plain)
+                            .contextMenu {
+                                Button(role: .destructive) {
+                                    pendingDeletion = .file(file)
+                                } label: {
+                                    Label("Delete", systemImage: "trash")
                                 }
+                            }
                         }
                     }
                     .padding()
@@ -182,14 +187,18 @@ private struct InboxView: View {
             } else {
                 List {
                     ForEach(sortedFiles) { file in
-                        FileListRow(file: file)
-                            .swipeActions(edge: .trailing) {
-                                Button(role: .destructive) {
-                                    pendingDeletion = .file(file)
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
+                        NavigationLink {
+                            FilePreviewView(file: file)
+                        } label: {
+                            FileListRow(file: file)
+                        }
+                        .swipeActions(edge: .trailing) {
+                            Button(role: .destructive) {
+                                pendingDeletion = .file(file)
+                            } label: {
+                                Label("Delete", systemImage: "trash")
                             }
+                        }
                     }
                 }
                 .listStyle(.insetGrouped)
