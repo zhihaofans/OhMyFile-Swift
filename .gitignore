@@ -1,0 +1,21 @@
+# macOS
+.DS_Store
+
+# Xcode 构建产物
+/build/
+/DerivedData/
+/.build/
+*.xcuserstate
+xcuserdata/
+*.xcresult
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+/.swiftpm/
+# Package.resolved 需要提交，不要忽略
+
+# 分发产物
+*.ipa
+*.dSYM
+*.dSYM.zip
