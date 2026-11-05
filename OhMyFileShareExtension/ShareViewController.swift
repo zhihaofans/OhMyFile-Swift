@@ -59,6 +59,7 @@ final class ShareViewController: UIViewController {
 
             await MainActor.run {
                 if importedCount > 0 {
+                    UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")?.set(importedCount, forKey: "pendingImportCount")
                     self.extensionContext?.completeRequest(returningItems: nil)
                 } else {
                     self.extensionContext?.cancelRequest(withError: firstError ?? ImportError.invalidItem)
@@ -71,30 +72,42 @@ final class ShareViewController: UIViewController {
         let inbox = try inboxURL()
 
         if provider.hasItemConformingToTypeIdentifier(UTType.fileURL.identifier) {
-            try await importFileURL(from: provider, into: inbox)
-        } else if provider.hasItemConformingToTypeIdentifier(UTType.image.identifier) {
-            try await importFileRepresentation(
-                from: provider,
-                typeIdentifier: UTType.image.identifier,
-                into: inbox
-            )
-        } else if provider.hasItemConformingToTypeIdentifier(UTType.movie.identifier) {
-            try await importFileRepresentation(
-                from: provider,
-                typeIdentifier: UTType.movie.identifier,
-                into: inbox
-            )
-        } else {
-            throw ImportError.unsupportedType
+            do {
+                let url = try await loadObjectFileURL(from: provider)
+                try copy(url, into: inbox, preferredName: provider.suggestedName)
+                return
+            } catch {
+                // 回退到文件表示。
+            }
         }
+
+        for typeIdentifier in [
+            UTType.fileURL.identifier,
+            UTType.image.identifier,
+            UTType.movie.identifier,
+            UTType.data.identifier
+        ] {
+            guard provider.hasItemConformingToTypeIdentifier(typeIdentifier) else {
+                continue
+            }
+
+            do {
+                try await importFileRepresentation(
+                    from: provider,
+                    typeIdentifier: typeIdentifier,
+                    into: inbox
+                )
+                return
+            } catch {
+                continue
+            }
+        }
+
+        throw ImportError.unsupportedType
     }
 
-    /// 文件分享：拿原始 URL，保留真实文件名，而不是临时副本的 "file URL"。
-    private nonisolated static func importFileURL(
-        from provider: NSItemProvider,
-        into inbox: URL
-    ) async throws {
-        let sourceURL: URL = try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<URL, Error>) in
+    private nonisolated static func loadObjectFileURL(from provider: NSItemProvider) async throws -> URL {
+        try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<URL, Error>) in
             provider.loadObject(ofClass: NSURL.self) { object, error in
                 if let error {
                     continuation.resume(throwing: error)
@@ -109,15 +122,6 @@ final class ShareViewController: UIViewController {
                 continuation.resume(returning: nsURL as URL)
             }
         }
-
-        let accessing = sourceURL.startAccessingSecurityScopedResource()
-        defer {
-            if accessing {
-                sourceURL.stopAccessingSecurityScopedResource()
-            }
-        }
-
-        try copy(sourceURL, into: inbox, preferredName: provider.suggestedName)
     }
 
     private nonisolated static func importFileRepresentation(
@@ -154,6 +158,13 @@ final class ShareViewController: UIViewController {
         into inbox: URL,
         preferredName: String?
     ) throws {
+        let accessing = source.startAccessingSecurityScopedResource()
+        defer {
+            if accessing {
+                source.stopAccessingSecurityScopedResource()
+            }
+        }
+
         let sourceName = source.lastPathComponent
         let sourceExtension = (sourceName as NSString).pathExtension
 
@@ -171,6 +182,13 @@ final class ShareViewController: UIViewController {
 
         let destination = uniqueURL(in: inbox, fileName: fileName)
         try FileManager.default.copyItem(at: source, to: destination)
+
+        // 列表展示导入时间，而不是原文件的创建 / 修改时间。
+        let importedAt = Date()
+        try FileManager.default.setAttributes(
+            [.modificationDate: importedAt, .creationDate: importedAt],
+            ofItemAtPath: destination.path
+        )
     }
 
     private nonisolated static func inboxURL() throws -> URL {

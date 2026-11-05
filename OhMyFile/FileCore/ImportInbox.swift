@@ -26,6 +26,7 @@ struct InboxFile: Identifiable, Hashable, Sendable {
 enum ImportInbox {
     /// 与 OhMyFileShareExtension 中的 App Group 常量保持一致。
     nonisolated static let appGroupIdentifier = "group.me.zzhhoo.OhMyFile"
+    nonisolated private static let pendingImportKey = "pendingImportCount"
 
     nonisolated static var containerURL: URL? {
         FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroupIdentifier)
@@ -47,5 +48,34 @@ enum ImportInbox {
         return urls
             .map(InboxFile.init(url:))
             .sorted { ($0.modifiedAt ?? .distantPast) > ($1.modifiedAt ?? .distantPast) }
+    }
+
+    nonisolated static func delete(_ file: InboxFile) throws {
+        try FileManager.default.removeItem(at: file.url)
+    }
+
+    nonisolated static func deleteAll() throws {
+        guard let inbox = inboxURL else { return }
+
+        let urls = try FileManager.default.contentsOfDirectory(
+            at: inbox,
+            includingPropertiesForKeys: nil,
+            options: .skipsHiddenFiles
+        )
+
+        for url in urls {
+            try FileManager.default.removeItem(at: url)
+        }
+    }
+
+    /// 读取并清空 Share Extension 留下的导入计数，用于回到 App 时提示。
+    nonisolated static func consumePendingImportCount() -> Int {
+        guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else { return 0 }
+
+        let count = defaults.integer(forKey: pendingImportKey)
+        if count > 0 {
+            defaults.removeObject(forKey: pendingImportKey)
+        }
+        return count
     }
 }
