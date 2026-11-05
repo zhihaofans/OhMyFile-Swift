@@ -11,6 +11,8 @@ struct FilesView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @State private var inboxFiles: [InboxFile] = []
+    @AppStorage("files.inboxSortField") private var inboxSortFieldRaw = InboxSortField.date.rawValue
+    @AppStorage("files.inboxSortAscending") private var inboxSortAscending = false
 
     private var directories: [SystemDirectory] {
         [
@@ -20,6 +22,31 @@ struct FilesView: View {
         ]
     }
 
+    private var sortedInboxFiles: [InboxFile] {
+        let files = inboxFiles
+        let ascending = inboxSortAscending
+
+        switch InboxSortField(rawValue: inboxSortFieldRaw) ?? .date {
+        case .name:
+            return files.sorted {
+                let result = $0.name.localizedStandardCompare($1.name)
+                return ascending ? result == .orderedAscending : result == .orderedDescending
+            }
+        case .date:
+            return files.sorted {
+                let lhs = $0.modifiedAt ?? .distantPast
+                let rhs = $1.modifiedAt ?? .distantPast
+                return ascending ? lhs < rhs : lhs > rhs
+            }
+        case .size:
+            return files.sorted {
+                let lhs = $0.size ?? 0
+                let rhs = $1.size ?? 0
+                return ascending ? lhs < rhs : lhs > rhs
+            }
+        }
+    }
+
     var body: some View {
         NavigationStack {
             List {
@@ -27,7 +54,7 @@ struct FilesView: View {
                     ForEach(directories) { directory in
                         if directory.title == "Inbox" {
                             NavigationLink {
-                                InboxView(files: inboxFiles)
+                                InboxView(files: sortedInboxFiles)
                             } label: {
                                 DirectoryRow(directory: directory)
                             }
@@ -55,6 +82,21 @@ struct FilesView: View {
                 }
             }
             .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Menu {
+                        Picker("Sort By", selection: $inboxSortFieldRaw) {
+                            Text("Name").tag(InboxSortField.name.rawValue)
+                            Text("Date").tag(InboxSortField.date.rawValue)
+                            Text("Size").tag(InboxSortField.size.rawValue)
+                        }
+                        Picker("Order", selection: $inboxSortAscending) {
+                            Text("Ascending").tag(true)
+                            Text("Descending").tag(false)
+                        }
+                    } label: {
+                        Image(systemName: "arrow.up.arrow.down")
+                    }
+                }
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
                         Button("Import from Files", systemImage: "folder") {}
@@ -198,4 +240,10 @@ struct DirectoryRow: View {
             }
         }
     }
+}
+
+private enum InboxSortField: String {
+    case name
+    case date
+    case size
 }

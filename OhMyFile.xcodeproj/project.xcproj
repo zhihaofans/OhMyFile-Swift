@@ -169,9 +169,9 @@
         "DEVELOPMENT_TEAM": "9DU6DRLH3R",
         "GENERATE_INFOPLIST_FILE": "YES",
         "INFOPLIST_FILE": "OhMyFileShareExtension/Info.plist",
-        "IPHONEOS_DEPLOYMENT_TARGET": "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)",
         "INFOPLIST_KEY_CFBundleDisplayName": "OhMyFileShareExtension",
         "INFOPLIST_KEY_NSHumanReadableCopyright": "",
+        "IPHONEOS_DEPLOYMENT_TARGET": "$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)",
         "LD_RUNPATH_SEARCH_PATHS": [
           "$(inherited)",
           "@executable_path/Frameworks",
