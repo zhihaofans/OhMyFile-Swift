@@ -96,7 +96,7 @@ OhMyFile 是一款以 iOS 为首发平台的原生文件预览与编辑应用。
 - Xcode 27.2（27B52），iOS SDK 27.2，可用模拟器为 iOS 27.2。
 - 工程：`OhMyFile.xcodeproj`；scheme 只有一个：`OhMyFile`。
 - Targets：`OhMyFile`（app）、`OhMyFileTests`（单元测试）、`OhMyFileUITests`（UI 测试）。
-- 业务功能尚未实现，当前只有模板视图与测试代码（`OhMyFileApp.swift`、`ContentView.swift`）。
+- 已有界面骨架：文件 / 最近 / 设置三页；业务功能尚未实现。
 
 ### 命令
 
@@ -116,7 +116,11 @@ xcodebuild -project OhMyFile.xcodeproj -scheme OhMyFile \
 ### 目录
 
 ```text
-OhMyFile/            App 源码（OhMyFileApp.swift、ContentView.swift、Assets.xcassets）
+OhMyFile/            App 源码
+  App/               应用入口与主导航（RootTabView）
+  Features/          功能页面（Files / Recent / Settings）
+  Resources/         本地化资源（Localizable.xcstrings）
+  Assets.xcassets    资源目录
 OhMyFileTests/       Swift Testing 单元测试
 OhMyFileUITests/     XCTest UI 测试
 OhMyFile.xcodeproj/  工程文件（project.xcproj 为 JSON 风格文本，含尾逗号）
@@ -427,6 +431,7 @@ Share Extension 必须保持轻量。
 | App Groups / Share Extension / Entitlements | 均未创建 |
 | Info.plist | 无独立文件（`GENERATE_INFOPLIST_FILE = YES`，键写在 build settings） |
 | 第三方依赖 | 无；规划接入 SwiftUtils（优先复用）与 CrashKit（崩溃收集） |
+| 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
 | 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-59） |
 
 ### 修改规则
@@ -448,7 +453,7 @@ Share Extension 必须保持轻量。
 3. **没有 Share Extension / App Groups**：分享能力和相关规则（§6）尚未落地，不要假设 target、entitlements 或 `Info.plist` 里的分享声明存在。
 4. **没有 macOS target**：`SDKROOT = iphoneos`、`TARGETED_DEVICE_FAMILY = 1,2`；macOS 支撑是规划，不是现状。不要写 `#if os(macOS)` 分支却无法验证。
 5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。注意 `xcuserdata/xcschememanagement.plist`（`OhMyFile.xcodeproj/xcuserdata/zzh.xcuserdatad/xcschemes/`）在加规则前就已被 Git 跟踪，`.gitignore` 不会取消跟踪；要移出需 `git rm --cached`（git 写操作，先问用户，见 TODO.md 的「工程卫生」条目）。
-6. **命令行构建被沙盒拒绝**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），导致 `#Preview` 宏报 `PreviewsMacros.SwiftUIView could not be found`。这是 agent 沙盒限制，不是代码错误；在 Xcode GUI 里构建，或对构建命令放开文件访问权限后重试。
+6. **命令行构建需要放宽 agent 沙盒**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），`@State` / `@AppStorage` 等 SwiftUI 宏会报错。这是 agent 沙盒限制，不是代码错误；需要临时放宽文件沙盒权限（或直接在 Xcode 里构建）。已验证放宽后可构建成功。
 7. **Swift 5 语言模式**：`SWIFT_VERSION = 5.0`，但已启用 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`、`SWIFT_APPROACHABLE_CONCURRENCY`、`SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY`。迁移到 Swift 6 语言模式会改变全局并发检查，属跨文件改动，先出方案。
 8. **版本号两处**：app target 的 `MARKETING_VERSION` 是真实版本（0.0.1）；测试 target 的 `1.0` 无实际含义。改版本只改 app target，且先问用户（§2）。
 9. **没有 File Provider Extension target**：系统「文件」App 里出现 OhMyFile 需要新增 File Provider Extension 与对应 entitlements；新增 Target 属跨 Target 改动，先出方案并征得同意。

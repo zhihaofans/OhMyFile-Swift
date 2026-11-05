@@ -2,7 +2,7 @@
 //  OhMyFileApp.swift
 //  OhMyFile
 //
-//  Created by zzh on 2026/11/5.
+//  应用入口。
 //
 
 import SwiftUI
@@ -11,7 +11,7 @@ import SwiftUI
 struct OhMyFileApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootTabView()
         }
     }
 }
