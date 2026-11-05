@@ -159,6 +159,16 @@ AGENTS.md / TODO.md / CHANGELOG.md   三件套
 - 避免过度抽象；避免无意义的 Manager、Service、Factory 层级。
 - 不要将所有业务逻辑放进 View 或 ViewModel。
 
+### 可抽离的内核代码
+
+非界面代码（文件模型、类型识别、能力模型、文件读写、编码、解析等）要为将来抽离到 SwiftUtils 做准备：
+
+- 只依赖 Foundation / UniformTypeIdentifiers 等系统框架；不 import SwiftUI / UIKit，不访问 App 全局状态或单例。
+- 通过值类型和显式参数传递数据；需要副作用时用协议注入，便于独立编译与测试。
+- 放在 `FileCore` / `Shared`；依赖方向保持「界面 → 内核」单向，内核不得反向依赖 Features / App。
+- 新增内核代码前先问：它能否脱离 App target 单独编译？不能就先拆分。
+- 抽离时机：内核稳定且被至少两个功能复用后，再评估迁到 SwiftUtils。
+
 ### 跨平台代码
 
 只有在多个平台具有相同业务语义时才共享实现。
