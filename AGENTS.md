@@ -408,7 +408,7 @@ Share Extension 必须保持轻量。
 - Share Extension 必须进行真实设备和模拟器验证；不能只凭主 App 编译成功，就认定分享功能正常。
 - 每类 bug 写「它回来就会红」的用例，而不是「验证代码写对了」。
 - 自动化测试跑什么、哪些必须手工验证，写清楚；没跑的验证在交付说明里写明。
-- 示例文件：构建后验证 bundle 内 `SampleFiles/README.md`、`SampleFiles/CHANGELOG.md` 存在且与仓库根内容一致（T-60 接入后启用）。
+- 示例文件：构建后验证 bundle 内 `SampleFiles/README.md`、`SampleFiles/CHANGELOG.md` 存在且与仓库根内容一致（T-61 接入后启用）。
 
 ## 17. 工程配置
 
@@ -422,7 +422,7 @@ Share Extension 必须保持轻量。
 | 单元测试 Bundle ID | `me.zzhhoo.OhMyFileTests` |
 | UI 测试 Bundle ID | `me.zzhhoo.OhMyFileUITests` |
 | Team | `9DU6DRLH3R`（Automatic signing） |
-| App / Share Extension Deployment Target | `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0，两者已统一）；测试 target 为 27.2（不一致，T-59 处理） |
+| App / Share Extension Deployment Target | `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0，两者已统一）；测试 target 为 27.2（不一致，T-60 处理） |
 | 测试 Deployment Target | 硬编码 `27.2` |
 | Swift Language Version | `5.0`（Swift 5 语言模式） |
 | 并发默认隔离 | `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`，`SWIFT_APPROACHABLE_CONCURRENCY = YES` |
@@ -433,7 +433,7 @@ Share Extension 必须保持轻量。
 | Info.plist | 无独立文件（`GENERATE_INFOPLIST_FILE = YES`，键写在 build settings） |
 | 第三方依赖 | 无；规划接入 SwiftUtils（优先复用）与 CrashKit（崩溃收集） |
 | 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
-| 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-60） |
+| 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-61） |
 
 ### 修改规则
 
