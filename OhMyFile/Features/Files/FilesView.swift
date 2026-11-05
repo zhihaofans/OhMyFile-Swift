@@ -2,29 +2,41 @@
 //  FilesView.swift
 //  OhMyFile
 //
-//  文件页：收件箱 / 下载 / 回收站目录 + 文件列表空状态。
+//  文件页：收件箱（真实文件）/ 下载 / 回收站。
 //
 
 import SwiftUI
 
 struct FilesView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
+    @State private var inboxFiles: [InboxFile] = []
 
-    private let directories: [SystemDirectory] = [
-        SystemDirectory(title: "Inbox", systemImage: "tray.fill", color: .blue, itemCount: 0),
-        SystemDirectory(title: "Downloads", systemImage: "arrow.down.circle.fill", color: .purple, itemCount: 0),
-        SystemDirectory(title: "Trash", systemImage: "trash.fill", color: .green, itemCount: 0)
-    ]
+    private var directories: [SystemDirectory] {
+        [
+            SystemDirectory(title: "Inbox", systemImage: "tray.fill", color: .blue, itemCount: inboxFiles.count),
+            SystemDirectory(title: "Downloads", systemImage: "arrow.down.circle.fill", color: .purple, itemCount: 0),
+            SystemDirectory(title: "Trash", systemImage: "trash.fill", color: .green, itemCount: 0)
+        ]
+    }
 
     var body: some View {
         NavigationStack {
             List {
                 Section {
                     ForEach(directories) { directory in
-                        NavigationLink {
-                            DirectoryView(directory: directory)
-                        } label: {
-                            DirectoryRow(directory: directory)
+                        if directory.title == "Inbox" {
+                            NavigationLink {
+                                InboxView(files: inboxFiles)
+                            } label: {
+                                DirectoryRow(directory: directory)
+                            }
+                        } else {
+                            NavigationLink {
+                                DirectoryView(directory: directory)
+                            } label: {
+                                DirectoryRow(directory: directory)
+                            }
                         }
                     }
                 }
@@ -36,6 +48,12 @@ struct FilesView: View {
             .listStyle(.insetGrouped)
             .navigationTitle("My Files")
             .searchable(text: $searchText, prompt: "Search")
+            .task { await loadInbox() }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    Task { await loadInbox() }
+                }
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
@@ -49,6 +67,10 @@ struct FilesView: View {
                 }
             }
         }
+    }
+
+    private func loadInbox() async {
+        inboxFiles = await Task.detached { ImportInbox.files() }.value
     }
 }
 
@@ -70,6 +92,67 @@ private struct EmptyFilesRow: View {
         .frame(maxWidth: .infinity)
         .padding(.vertical, 24)
         .listRowBackground(Color.clear)
+    }
+}
+
+private struct InboxView: View {
+    let files: [InboxFile]
+
+    var body: some View {
+        Group {
+            if files.isEmpty {
+                ContentUnavailableView(
+                    "Inbox is Empty",
+                    systemImage: "tray",
+                    description: Text("Files shared to OhMyFile will appear here.")
+                )
+            } else {
+                List(files) { file in
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(file.name)
+
+                        Text(detail(for: file))
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                    }
+                    .padding(.vertical, 2)
+                }
+                .listStyle(.insetGrouped)
+            }
+        }
+        .navigationTitle("Inbox")
+        .navigationBarTitleDisplayMode(.inline)
+    }
+
+    private func detail(for file: InboxFile) -> String {
+        var parts: [String] = []
+
+        if let size = file.size {
+            parts.append(formattedSize(size))
+        }
+        if let date = file.modifiedAt {
+            parts.append(date.formatted(date: .abbreviated, time: .shortened))
+        }
+
+        return parts.joined(separator: " · ")
+    }
+
+    /// 固定英文单位（B / KB / MB / GB），避免跟随系统语言显示「字节」。
+    private func formattedSize(_ bytes: Int64) -> String {
+        let units = ["B", "KB", "MB", "GB", "TB"]
+        var value = Double(bytes)
+        var unitIndex = 0
+
+        while value >= 1000, unitIndex < units.count - 1 {
+            value /= 1000
+            unitIndex += 1
+        }
+
+        if unitIndex == 0 {
+            return "\(bytes) B"
+        }
+
+        return String(format: "%.1f %@", value, units[unitIndex])
     }
 }
 

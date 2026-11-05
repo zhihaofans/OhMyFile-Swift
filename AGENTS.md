@@ -95,7 +95,8 @@ OhMyFile 是一款以 iOS 为首发平台的原生文件预览与编辑应用。
 
 - Xcode 27.2（27B52），iOS SDK 27.2，可用模拟器为 iOS 27.2。
 - 工程：`OhMyFile.xcodeproj`；scheme 只有一个：`OhMyFile`。
-- Targets：`OhMyFile`（app）、`OhMyFileTests`（单元测试）、`OhMyFileUITests`（UI 测试）。
+- Targets：`OhMyFile`（app）、`OhMyFileTests`（单元测试）、`OhMyFileUITests`（UI 测试）、`OhMyFileShareExtension`（分享扩展，已嵌入主 App）。
+- App Group：`group.me.zzhhoo.OhMyFile`（主 App 与 Share Extension 共用）。
 - 已有界面骨架：文件 / 最近 / 设置三页；业务功能尚未实现。
 
 ### 命令
@@ -129,7 +130,7 @@ README.md            项目说明（规划作为示例文件随 App 打包）
 AGENTS.md / TODO.md / CHANGELOG.md   三件套
 ```
 
-当前没有 `Package.swift`、没有 SPM 依赖、没有独立 `Info.plist`、没有 Entitlements 文件。
+当前没有 `Package.swift`、没有 SPM 依赖；Share Extension 有独立 `Info.plist`，主 App 与 Extension 各有一份 entitlements。
 
 ## 4. 目录与架构
 
@@ -224,9 +225,9 @@ AGENTS.md / TODO.md / CHANGELOG.md   三件套
 
 不同平台的功能或系统 API 差异较大时，使用独立的平台实现，而不是强行共用。
 
-## 6. 文件导入与分享（尚未实现）
+## 6. 文件导入与分享（进行中）
 
-> 本节规则在创建 Share Extension 和导入功能时执行；当前工程没有 Share Extension target、没有 App Groups。
+> Share Extension target 与 App Groups 已创建：接收代码在 `OhMyFileShareExtension/ShareViewController.swift`，主 App 通过 `OhMyFile/FileCore/ImportInbox.swift` 读取收件箱。
 
 iOS 首期通过 Share Extension 接收其他应用分享的文件。
 
@@ -407,7 +408,7 @@ Share Extension 必须保持轻量。
 - Share Extension 必须进行真实设备和模拟器验证；不能只凭主 App 编译成功，就认定分享功能正常。
 - 每类 bug 写「它回来就会红」的用例，而不是「验证代码写对了」。
 - 自动化测试跑什么、哪些必须手工验证，写清楚；没跑的验证在交付说明里写明。
-- 示例文件：构建后验证 bundle 内 `SampleFiles/README.md`、`SampleFiles/CHANGELOG.md` 存在且与仓库根内容一致（T-59 接入后启用）。
+- 示例文件：构建后验证 bundle 内 `SampleFiles/README.md`、`SampleFiles/CHANGELOG.md` 存在且与仓库根内容一致（T-60 接入后启用）。
 
 ## 17. 工程配置
 
@@ -421,18 +422,18 @@ Share Extension 必须保持轻量。
 | 单元测试 Bundle ID | `me.zzhhoo.OhMyFileTests` |
 | UI 测试 Bundle ID | `me.zzhhoo.OhMyFileUITests` |
 | Team | `9DU6DRLH3R`（Automatic signing） |
-| App Deployment Target | `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0；与测试 target 的 27.2 不一致） |
+| App / Share Extension Deployment Target | `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0，两者已统一）；测试 target 为 27.2（不一致，T-59 处理） |
 | 测试 Deployment Target | 硬编码 `27.2` |
 | Swift Language Version | `5.0`（Swift 5 语言模式） |
 | 并发默认隔离 | `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`，`SWIFT_APPROACHABLE_CONCURRENCY = YES` |
 | Supported Destinations | iPhone + iPad（`TARGETED_DEVICE_FAMILY = 1,2`，`SDKROOT = iphoneos`） |
 | 支持方向 | iPhone：竖 + 横；iPad：四个方向 |
 | App 版本 | `MARKETING_VERSION = 0.0.1`，`CURRENT_PROJECT_VERSION = 1` |
-| App Groups / Share Extension / Entitlements | 均未创建 |
+| App Groups / Share Extension / Entitlements | App Group：`group.me.zzhhoo.OhMyFile`；Share Extension：`OhMyFileShareExtension`；主 App 与 Extension 各有一份 entitlements |
 | Info.plist | 无独立文件（`GENERATE_INFOPLIST_FILE = YES`，键写在 build settings） |
 | 第三方依赖 | 无；规划接入 SwiftUtils（优先复用）与 CrashKit（崩溃收集） |
 | 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
-| 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-59） |
+| 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-60） |
 
 ### 修改规则
 
@@ -448,14 +449,14 @@ Share Extension 必须保持轻量。
 
 ## 18. 已知限制与坑
 
-1. **最低系统版本随 Xcode 浮动**：app target 用 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0）；项目级和测试 target 硬编码 `27.2`，两者不一致。升级 Xcode 后 app 的最低版本会静默改变，测试 target 不会跟着变。改 Deployment Target 先问用户。
+1. **最低系统版本随 Xcode 浮动**：app 与 Share Extension 都用 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0）；项目级和测试 target 硬编码 `27.2`，与产品 target 不一致。升级 Xcode 后产品最低版本会静默改变，测试 target 不会跟着变。改 Deployment Target 先问用户。
 2. **主线程默认隔离**：app target 默认开启 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`（项目级与测试 target 没有）。回调式 API（`URLSession` 回调、文件协调、`AVFoundation` 通知等）在后台线程回调时，闭包隐式继承的 MainActor 隔离会触发运行时 trap（编译通过）。新代码用 `async` API；写回调参数标 `@Sendable`，或调用点标 `nonisolated`。
-3. **没有 Share Extension / App Groups**：分享能力和相关规则（§6）尚未落地，不要假设 target、entitlements 或 `Info.plist` 里的分享声明存在。
+3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `ImportInbox` 读取。真机分享链路尚未验证。
 4. **没有 macOS target**：`SDKROOT = iphoneos`、`TARGETED_DEVICE_FAMILY = 1,2`；macOS 支撑是规划，不是现状。不要写 `#if os(macOS)` 分支却无法验证。
 5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。注意 `xcuserdata/xcschememanagement.plist`（`OhMyFile.xcodeproj/xcuserdata/zzh.xcuserdatad/xcschemes/`）在加规则前就已被 Git 跟踪，`.gitignore` 不会取消跟踪；要移出需 `git rm --cached`（git 写操作，先问用户，见 TODO.md 的「工程卫生」条目）。
 6. **命令行构建需要放宽 agent 沙盒**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），`@State` / `@AppStorage` 等 SwiftUI 宏会报错。这是 agent 沙盒限制，不是代码错误；需要临时放宽文件沙盒权限（或直接在 Xcode 里构建）。已验证放宽后可构建成功。
 7. **Swift 5 语言模式**：`SWIFT_VERSION = 5.0`，但已启用 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`、`SWIFT_APPROACHABLE_CONCURRENCY`、`SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY`。迁移到 Swift 6 语言模式会改变全局并发检查，属跨文件改动，先出方案。
-8. **版本号两处**：app target 的 `MARKETING_VERSION` 是真实版本（0.0.1）；测试 target 的 `1.0` 无实际含义。改版本只改 app target，且先问用户（§2）。
+8. **版本号多处**：app target 的 `MARKETING_VERSION` 是真实版本（0.0.1），Share Extension 已对齐为 0.0.1；测试 target 的 `1.0` 无实际含义。改版本时 app 与 Extension 必须一致，且先问用户（§2）。
 9. **没有 File Provider Extension target**：系统「文件」App 里出现 OhMyFile 需要新增 File Provider Extension 与对应 entitlements；新增 Target 属跨 Target 改动，先出方案并征得同意。
 10. **示例文件尚未接入构建**：README.md、CHANGELOG.md 目前只存在于仓库；接入后要保证 bundle 内 `SampleFiles/` 副本与仓库根一致，改文档后重新构建，不在源码目录留副本。
 11. **CrashKit / SwiftUtils 尚未接入**：当前工程没有 SPM 依赖；接入需新增 Package 依赖与对应配置，属依赖变更，先出方案并征得同意。
