@@ -3,14 +3,22 @@
 //  OhMyFileShareExtension
 //
 //  接收分享的文件，写入 App Group 共享收件箱，然后结束。
+//  失败或部分失败时在扩展内显示提示。
 //
 
+import OSLog
 import UIKit
 import UniformTypeIdentifiers
 
 final class ShareViewController: UIViewController {
 
+    private nonisolated static let logger = Logger(
+        subsystem: "me.zzhhoo.OhMyFile.ShareExtension",
+        category: "import"
+    )
+
     private let spinner = UIActivityIndicatorView(style: .large)
+    private let shareTaskID = UUID().uuidString
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,38 +42,118 @@ final class ShareViewController: UIViewController {
     private func importAttachments() {
         guard let context = extensionContext,
               let items = context.inputItems as? [NSExtensionItem] else {
-            extensionContext?.cancelRequest(withError: ImportError.noContent)
+            showFailure(imported: 0, failed: 1, error: ImportError.noContent)
             return
         }
 
         let providers = items.flatMap { $0.attachments ?? [] }
         guard !providers.isEmpty else {
-            context.cancelRequest(withError: ImportError.noContent)
+            showFailure(imported: 0, failed: 1, error: ImportError.noContent)
             return
         }
 
         Task {
             var importedCount = 0
-            var firstError: Error?
+            var failures: [Error] = []
 
             for provider in providers {
                 do {
                     try await Self.importItem(from: provider)
                     importedCount += 1
                 } catch {
-                    firstError = firstError ?? error
+                    failures.append(error)
                 }
             }
 
             await MainActor.run {
-                if importedCount > 0 {
-                    UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")?.set(importedCount, forKey: "pendingImportCount")
-                    self.extensionContext?.completeRequest(returningItems: nil)
-                } else {
-                    self.extensionContext?.cancelRequest(withError: firstError ?? ImportError.invalidItem)
-                }
+                Self.logger.error("Import finished: imported=\(importedCount), failed=\(failures.count)")
+                self.finish(imported: importedCount, failed: failures.count, firstError: failures.first)
             }
         }
+    }
+
+    private func finish(imported: Int, failed: Int, firstError: Error?) {
+        if failed == 0 {
+            UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")?.set(imported, forKey: "pendingImportCount")
+            showSuccess(imported: imported)
+            return
+        }
+
+        showFailure(imported: imported, failed: failed, error: firstError)
+    }
+
+    private func showSuccess(imported: Int) {
+        let title = String(localized: "Import Complete")
+        let message = String(format: String(localized: "Imported %ld files"), imported)
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: String(localized: "Close"), style: .default) { [weak self] _ in
+            self?.openMainAppAndFinish()
+        })
+        present(alert, animated: true)
+    }
+
+    private func openMainAppAndFinish() {
+        var components = URLComponents()
+        components.scheme = "ohmyfile"
+        components.host = "share"
+        components.queryItems = [URLQueryItem(name: "id", value: shareTaskID)]
+
+        guard let url = components.url else {
+            extensionContext?.completeRequest(returningItems: nil)
+            return
+        }
+
+        // 优先沿 responder chain 打开；失败再尝试 extensionContext.open。
+        if !openViaResponderChain(url) {
+            extensionContext?.open(url, completionHandler: nil)
+        }
+
+        // 给系统一点时间处理打开请求，再结束扩展，避免唤起被取消。
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { [weak self] in
+            self?.extensionContext?.completeRequest(returningItems: nil)
+        }
+    }
+
+    private func openViaResponderChain(_ url: URL) -> Bool {
+        var responder: UIResponder? = self
+
+        while let current = responder {
+            if let application = current as? UIApplication {
+                application.open(url, options: [:], completionHandler: nil)
+                return true
+            }
+            responder = current.next
+        }
+
+        return false
+    }
+
+    private func showFailure(imported: Int, failed: Int, error: Error?) {
+        Self.logger.error("Showing failure alert: imported=\(imported), failed=\(failed), error=\(error?.localizedDescription ?? "nil")")
+        let title: String
+        let message: String
+
+        if imported > 0 {
+            title = String(localized: "Some files were not imported")
+            message = String(
+                format: String(localized: "Imported %ld, failed %ld"),
+                imported,
+                failed
+            )
+        } else {
+            title = String(localized: "Import Failed")
+            message = error?.localizedDescription ?? String(localized: "The file could not be read.")
+        }
+
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: String(localized: "Close"), style: .default) { [weak self] _ in
+            if imported > 0 {
+                UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")?.set(imported, forKey: "pendingImportCount")
+            }
+            self?.openMainAppAndFinish()
+        })
+        present(alert, animated: true)
     }
 
     private nonisolated static func importItem(from provider: NSItemProvider) async throws {
@@ -227,13 +315,13 @@ final class ShareViewController: UIViewController {
         var errorDescription: String? {
             switch self {
             case .noContent:
-                return "没有可导入的内容"
+                return String(localized: "No content to import.")
             case .unsupportedType:
-                return "不支持的文件类型"
+                return String(localized: "Unsupported file type.")
             case .invalidItem:
-                return "文件读取失败"
+                return String(localized: "The file could not be read.")
             case .appGroupUnavailable:
-                return "无法访问共享存储"
+                return String(localized: "Shared storage is unavailable.")
             }
         }
     }

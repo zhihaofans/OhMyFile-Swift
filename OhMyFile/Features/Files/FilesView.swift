@@ -10,9 +10,13 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct FilesView: View {
+    let refreshToken: UUID
+    let openInboxToken: UUID
+
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @State private var inboxFiles: [InboxFile] = []
+    @State private var showInboxFromShare = false
     @State private var importedCount = 0
     @State private var showImportAlert = false
 
@@ -57,6 +61,20 @@ struct FilesView: View {
             .task { await loadInbox() }
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active {
+                    Task { await loadInbox() }
+                }
+            }
+            .onChange(of: refreshToken) { _, _ in
+                Task { await loadInbox() }
+            }
+            .onChange(of: openInboxToken) { _, _ in
+                Task {
+                    await loadInbox()
+                    showInboxFromShare = true
+                }
+            }
+            .navigationDestination(isPresented: $showInboxFromShare) {
+                InboxView(files: inboxFiles) {
                     Task { await loadInbox() }
                 }
             }

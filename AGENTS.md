@@ -119,6 +119,7 @@ xcodebuild -project OhMyFile.xcodeproj -scheme OhMyFile \
 ```text
 OhMyFile/            App 源码
   App/               应用入口与主导航（RootTabView）
+  Info.plist         主 App URL scheme 等声明（已从同步文件夹 resources 排除）
   Features/          功能页面（Files / Recent / Settings）
   Resources/         本地化资源（Localizable.xcstrings）
   Assets.xcassets    资源目录
@@ -440,7 +441,7 @@ Share Extension 必须保持轻量。
 | 支持方向 | iPhone：竖 + 横；iPad：四个方向 |
 | App 版本 | `MARKETING_VERSION = 0.0.1`，`CURRENT_PROJECT_VERSION = 1` |
 | App Groups / Share Extension / Entitlements | App Group：`group.me.zzhhoo.OhMyFile`；Share Extension：`OhMyFileShareExtension`；主 App 与 Extension 各有一份 entitlements |
-| Info.plist | 无独立文件（`GENERATE_INFOPLIST_FILE = YES`，键写在 build settings） |
+| Info.plist | 主 App：`OhMyFile/Info.plist`（`CFBundleURLTypes` → `ohmyfile`，已从同步文件夹 resources 排除）；Share Extension：独立 `Info.plist`。两者都保留 `GENERATE_INFOPLIST_FILE = YES` 合并生成键 |
 | 第三方依赖 | 无；规划接入 SwiftUtils（优先复用）与 CrashKit（崩溃收集） |
 | 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
 | 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-62） |
@@ -470,6 +471,7 @@ Share Extension 必须保持轻量。
 9. **没有 File Provider Extension target**：系统「文件」App 里出现 OhMyFile 需要新增 File Provider Extension 与对应 entitlements；新增 Target 属跨 Target 改动，先出方案并征得同意。
 10. **示例文件尚未接入构建**：README.md、CHANGELOG.md 目前只存在于仓库；接入后要保证 bundle 内 `SampleFiles/` 副本与仓库根一致，改文档后重新构建，不在源码目录留副本。
 11. **CrashKit / SwiftUtils 尚未接入**：当前工程没有 SPM 依赖；接入需新增 Package 依赖与对应配置，属依赖变更，先出方案并征得同意。
+12. **扩展拉起主 App 依赖兼容方案**：`extensionContext.open` 在 Share Extension 中会被系统忽略；当前沿 responder chain 调用 `UIApplication.open`（GitHub 常见兼容技巧，非稳定公开扩展 API）。系统升级后需在真机复测分享后是否仍能打开收件箱，失败就回退为「成功提示 + 主 App 启动检查」。
 
 ## 19. 开发工作流程与收尾
 

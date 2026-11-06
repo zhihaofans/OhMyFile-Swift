@@ -12,7 +12,14 @@
     ],
   },
   "files": [
-    { "kind": "folder", "path": "OhMyFile", "target-membership": [ "OhMyFile" ] },
+    {
+      "kind": "folder",
+      "path": "OhMyFile",
+      "target-membership": [ "OhMyFile" ],
+      "membership-exceptions": [
+        { "target": "OhMyFile", "exclusions": [ "Info.plist" ] },
+      ],
+    },
     { "kind": "folder", "path": "OhMyFileTests", "target-membership": [ "OhMyFileTests" ] },
     { "kind": "folder", "path": "OhMyFileUITests", "target-membership": [ "OhMyFileUITests" ] },
     {
@@ -68,6 +75,7 @@
         "DEVELOPMENT_TEAM": "9DU6DRLH3R",
         "ENABLE_PREVIEWS": "YES",
         "GENERATE_INFOPLIST_FILE": "YES",
+        "INFOPLIST_FILE": "OhMyFile/Info.plist",
         "INFOPLIST_KEY_LSApplicationCategoryType": "public.app-category.utilities",
         "INFOPLIST_KEY_UIApplicationSceneManifest_Generation": "YES",
         "INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents": "YES",
