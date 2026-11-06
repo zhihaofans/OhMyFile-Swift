@@ -60,6 +60,10 @@ struct FileLibrary: Sendable {
     }
 
     nonisolated func files(in directory: LibraryDirectory) -> [FileItem] {
+        if directory == .trash {
+            return trashFiles()
+        }
+
         guard let url = directoryURL(for: directory) else { return [] }
 
         let urls = (try? FileManager.default.contentsOfDirectory(
@@ -73,19 +77,55 @@ struct FileLibrary: Sendable {
             .sorted { ($0.modifiedAt ?? .distantPast) > ($1.modifiedAt ?? .distantPast) }
     }
 
+    nonisolated private func trashFiles() -> [FileItem] {
+        guard let trash = directoryURL(for: .trash) else { return [] }
+
+        let items = (try? FileManager.default.contentsOfDirectory(
+            at: trash,
+            includingPropertiesForKeys: [.isDirectoryKey],
+            options: .skipsHiddenFiles
+        )) ?? []
+
+        var files: [FileItem] = []
+
+        for item in items {
+            let isDirectory = (try? item.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+
+            if isDirectory {
+                let urls = (try? FileManager.default.contentsOfDirectory(
+                    at: item,
+                    includingPropertiesForKeys: [.fileSizeKey, .contentModificationDateKey],
+                    options: .skipsHiddenFiles
+                )) ?? []
+                files.append(contentsOf: urls.map(FileItem.init(url:)))
+            } else {
+                // 兼容旧版本直接放在 Trash 根目录的文件。
+                files.append(FileItem(url: item))
+            }
+        }
+
+        return files.sorted { ($0.modifiedAt ?? .distantPast) > ($1.modifiedAt ?? .distantPast) }
+    }
+
     nonisolated func moveToTrash(_ file: FileItem, from directory: LibraryDirectory) throws {
         guard directory != .trash, let trash = directoryURL(for: .trash) else { return }
 
-        try ensureDirectory(trash)
-        let destination = uniqueURL(in: trash, fileName: file.url.lastPathComponent)
+        let target = trash.appendingPathComponent(directory.folderName, isDirectory: true)
+        try ensureDirectory(target)
+        let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
         try FileManager.default.moveItem(at: file.url, to: destination)
     }
 
     nonisolated func restore(_ file: FileItem) throws {
-        guard let inbox = directoryURL(for: .inbox) else { return }
+        let sourceFolder = file.url.deletingLastPathComponent().lastPathComponent
+        let targetDirectory = LibraryDirectory.allCases.first {
+            $0 != .trash && $0.folderName == sourceFolder
+        } ?? .inbox
 
-        try ensureDirectory(inbox)
-        let destination = uniqueURL(in: inbox, fileName: file.url.lastPathComponent)
+        guard let target = directoryURL(for: targetDirectory) else { return }
+
+        try ensureDirectory(target)
+        let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
         try FileManager.default.moveItem(at: file.url, to: destination)
     }
 

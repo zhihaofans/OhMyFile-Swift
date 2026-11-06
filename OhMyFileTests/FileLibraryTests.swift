@@ -50,17 +50,29 @@ struct FileLibraryTests {
         defer { try? FileManager.default.removeItem(at: root) }
 
         let firstURL = try makeFile(in: .inbox, root: root, name: "note.txt")
-        let secondURL = try makeFile(in: .inbox, root: root, name: "note-1.txt")
         try library.moveToTrash(FileItem(url: firstURL), from: .inbox)
 
-        // 手动创建同名文件后再移动，验证自动加序号。
-        try Data("second".utf8).write(to: root.appendingPathComponent("Trash/note.txt"))
+        let secondURL = try makeFile(in: .inbox, root: root, name: "note.txt")
         try library.moveToTrash(FileItem(url: secondURL), from: .inbox)
 
         let names = Set(library.files(in: .trash).map(\.name))
         #expect(names.contains("note.txt"))
         #expect(names.contains("note-1.txt"))
         #expect(names.count == 2)
+    }
+
+    @Test func restoreReturnsToSourceDirectory() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let fileURL = try makeFile(in: .downloads, root: root, name: "download.pdf")
+        try library.moveToTrash(FileItem(url: fileURL), from: .downloads)
+
+        let trashed = try #require(library.files(in: .trash).first)
+        try library.restore(trashed)
+
+        #expect(library.files(in: .downloads).map(\.name) == ["download.pdf"])
+        #expect(library.files(in: .inbox).isEmpty)
     }
 
     @Test func emptyTrashDeletesEverything() throws {

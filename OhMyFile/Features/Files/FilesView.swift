@@ -285,6 +285,7 @@ private struct FileListView: View {
     @AppStorage("files.inboxSortField") private var sortFieldRaw = InboxSortField.date.rawValue
     @AppStorage("files.inboxSortAscending") private var sortAscending = false
     @AppStorage("files.viewMode") private var viewModeRaw = ViewMode.list.rawValue
+    @AppStorage("files.categoryFilter") private var categoryFilterRaw = FileCategory.all.rawValue
 
     @State private var files: [FileItem] = []
     @State private var pendingDeletion: Deletion?
@@ -299,6 +300,17 @@ private struct FileListView: View {
 
     private var viewMode: ViewMode {
         ViewMode(rawValue: viewModeRaw) ?? .list
+    }
+
+    private var categoryFilter: FileCategory {
+        FileCategory(rawValue: categoryFilterRaw) ?? .all
+    }
+
+    private var filteredFiles: [FileItem] {
+        guard categoryFilter != .all else { return sortedFiles }
+        return sortedFiles.filter {
+            FileCategoryResolver.category(for: $0.url) == categoryFilter
+        }
     }
 
     private var sortedFiles: [FileItem] {
@@ -330,6 +342,8 @@ private struct FileListView: View {
         Group {
             if files.isEmpty {
                 emptyState
+            } else if filteredFiles.isEmpty {
+                filterEmptyState
             } else if viewMode == .grid {
                 grid
             } else {
@@ -402,6 +416,20 @@ private struct FileListView: View {
 
                     Divider()
 
+                    Picker("Filter", selection: $categoryFilterRaw) {
+                        Text("All").tag(FileCategory.all.rawValue)
+                        Text("Images").tag(FileCategory.image.rawValue)
+                        Text("Videos").tag(FileCategory.video.rawValue)
+                        Text("Audio").tag(FileCategory.audio.rawValue)
+                        Text("PDF").tag(FileCategory.pdf.rawValue)
+                        Text("Text").tag(FileCategory.text.rawValue)
+                        Text("Documents").tag(FileCategory.document.rawValue)
+                        Text("Archives").tag(FileCategory.archive.rawValue)
+                        Text("Other").tag(FileCategory.other.rawValue)
+                    }
+
+                    Divider()
+
                     Picker("Sort By", selection: $sortFieldRaw) {
                         Text("Name").tag(InboxSortField.name.rawValue)
                         Text("Date").tag(InboxSortField.date.rawValue)
@@ -471,7 +499,7 @@ private struct FileListView: View {
 
     private var list: some View {
         List(selection: $selectedPaths) {
-            ForEach(sortedFiles) { file in
+            ForEach(filteredFiles) { file in
                 if isSelecting {
                     FileListRow(file: file, now: now)
                         .tag(file.url)
@@ -500,7 +528,7 @@ private struct FileListView: View {
                 columns: [GridItem(.adaptive(minimum: 100), spacing: 12)],
                 spacing: 12
             ) {
-                ForEach(sortedFiles) { file in
+                ForEach(filteredFiles) { file in
                     NavigationLink {
                         FilePreviewView(file: file)
                     } label: {
@@ -592,6 +620,14 @@ private struct FileListView: View {
             emptyTitleKey,
             systemImage: emptySymbol,
             description: Text(emptyDescriptionKey)
+        )
+    }
+
+    private var filterEmptyState: some View {
+        ContentUnavailableView(
+            "No Results",
+            systemImage: "line.3.horizontal.decrease.circle",
+            description: Text("No files match the filter.")
         )
     }
 
@@ -689,14 +725,14 @@ private struct FileListView: View {
     }
 
     private var isAllSelected: Bool {
-        !sortedFiles.isEmpty && selectedPaths.count == sortedFiles.count
+        !filteredFiles.isEmpty && selectedPaths.count == filteredFiles.count
     }
 
     private func toggleSelectAll() {
         if isAllSelected {
             selectedPaths.removeAll()
         } else {
-            selectedPaths = Set(sortedFiles.map(\.url))
+            selectedPaths = Set(filteredFiles.map(\.url))
         }
     }
 
