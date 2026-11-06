@@ -443,12 +443,32 @@
         }
       }
     },
+    "No Results": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无结果"
+          }
+        }
+      }
+    },
     "No files here yet.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "这里还没有文件。"
+          }
+        }
+      }
+    },
+    "No files match your search.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有匹配的文件。"
           }
         }
       }
@@ -499,6 +519,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "恢复"
+          }
+        }
+      }
+    },
+    "Results": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "结果"
           }
         }
       }

@@ -14,7 +14,7 @@ struct FileItem: Identifiable, Hashable, Sendable {
     let modifiedAt: Date?
 
     var id: URL { url }
-    var name: String { url.lastPathComponent }
+    nonisolated var name: String { url.lastPathComponent }
 
     nonisolated init(url: URL) {
         self.url = url
@@ -29,7 +29,7 @@ enum LibraryDirectory: String, CaseIterable, Sendable {
     case downloads
     case trash
 
-    var folderName: String {
+    nonisolated var folderName: String {
         switch self {
         case .inbox:
             return "Inbox"
@@ -42,8 +42,8 @@ enum LibraryDirectory: String, CaseIterable, Sendable {
 }
 
 struct FileLibrary: Sendable {
-    static let appGroupIdentifier = "group.me.zzhhoo.OhMyFile"
-    private static let pendingImportKey = "pendingImportCount"
+    nonisolated static let appGroupIdentifier = "group.me.zzhhoo.OhMyFile"
+    nonisolated private static let pendingImportKey = "pendingImportCount"
 
     let rootURL: URL?
 

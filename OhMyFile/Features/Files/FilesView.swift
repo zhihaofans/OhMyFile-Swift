@@ -19,6 +19,8 @@ struct FilesView: View {
     @State private var importedCount = 0
     @State private var showImportAlert = false
     @State private var showInboxFromShare = false
+    @State private var searchResults: [SearchResult] = []
+    @State private var isSearching = false
 
     private let library = FileLibrary()
 
@@ -51,26 +53,47 @@ struct FilesView: View {
     var body: some View {
         NavigationStack {
             List {
-                Section {
-                    ForEach(directories) { directory in
-                        NavigationLink {
-                            FileListView(directory: directory.directory) {
-                                Task { await loadCounts() }
+                if searchText.isEmpty {
+                    Section {
+                        ForEach(directories) { directory in
+                            NavigationLink {
+                                FileListView(directory: directory.directory) {
+                                    Task { await loadCounts() }
+                                }
+                            } label: {
+                                DirectoryRow(directory: directory)
                             }
-                        } label: {
-                            DirectoryRow(directory: directory)
                         }
                     }
-                }
 
-                Section("Files") {
-                    EmptyFilesRow()
+                    Section("Files") {
+                        EmptyFilesRow()
+                    }
+                } else if isSearching {
+                    ProgressView()
+                        .frame(maxWidth: .infinity)
+                        .listRowBackground(Color.clear)
+                } else if searchResults.isEmpty {
+                    SearchEmptyRow()
+                } else {
+                    Section("Results") {
+                        ForEach(searchResults) { result in
+                            NavigationLink {
+                                FilePreviewView(file: result.file)
+                            } label: {
+                                SearchResultRow(result: result)
+                            }
+                        }
+                    }
                 }
             }
             .listStyle(.insetGrouped)
             .navigationTitle("My Files")
             .searchable(text: $searchText, prompt: "Search")
             .task { await loadCounts() }
+            .task(id: searchText) {
+                await search()
+            }
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active {
                     Task { await loadCounts() }
@@ -110,6 +133,34 @@ struct FilesView: View {
         }
     }
 
+    private func search() async {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !query.isEmpty else {
+            searchResults = []
+            isSearching = false
+            return
+        }
+
+        isSearching = true
+
+        // 防抖：输入变化会取消上一个 task。
+        try? await Task.sleep(nanoseconds: 250_000_000)
+        guard !Task.isCancelled else { return }
+
+        let results = await Task.detached { [library, query] in
+            LibraryDirectory.allCases.flatMap { directory in
+                library.files(in: directory)
+                    .filter { $0.name.localizedStandardContains(query) }
+                    .map { SearchResult(file: $0, directory: directory) }
+            }
+        }.value
+
+        guard !Task.isCancelled else { return }
+        searchResults = results
+        isSearching = false
+    }
+
     private func loadCounts() async {
         let loaded = await Task.detached { [library] in
             Dictionary(uniqueKeysWithValues: LibraryDirectory.allCases.map { directory in
@@ -122,6 +173,80 @@ struct FilesView: View {
         if pending > 0 {
             importedCount = pending
             showImportAlert = true
+        }
+    }
+}
+
+private struct SearchResult: Identifiable {
+    let file: FileItem
+    let directory: LibraryDirectory
+
+    var id: URL { file.url }
+}
+
+private struct SearchResultRow: View {
+    let result: SearchResult
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: fileIcon(for: result.file).symbol)
+                .font(.title3)
+                .foregroundStyle(fileIcon(for: result.file).color)
+                .frame(width: 32)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(result.file.name)
+
+                Text("\(result.directory.localizedTitle) · \(fileDetailText(for: result.file))")
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
+    }
+}
+
+private struct SearchEmptyRow: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            Image(systemName: "magnifyingglass")
+                .font(.largeTitle)
+                .foregroundStyle(.secondary)
+
+            Text("No Results")
+                .font(.headline)
+
+            Text("No files match your search.")
+                .font(.subheadline)
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 24)
+        .listRowBackground(Color.clear)
+    }
+}
+
+extension LibraryDirectory {
+    var localizedTitle: String {
+        switch self {
+        case .inbox:
+            return String(localized: "Inbox")
+        case .downloads:
+            return String(localized: "Downloads")
+        case .trash:
+            return String(localized: "Trash")
+        }
+    }
+
+    var titleKey: LocalizedStringKey {
+        switch self {
+        case .inbox:
+            return "Inbox"
+        case .downloads:
+            return "Downloads"
+        case .trash:
+            return "Trash"
         }
     }
 }
@@ -438,7 +563,7 @@ private struct FileListView: View {
         case .moveToTrash(let file):
             return file.name
         case .deletePermanently(let file):
-            return String(localized: "This cannot be undone.")
+            return "\(file.name) · \(String(localized: "This cannot be undone."))"
         case .moveAllToTrash:
             return String(localized: "All files will be moved to Trash.")
         case .emptyTrash:
