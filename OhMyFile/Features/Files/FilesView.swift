@@ -6,6 +6,7 @@
 //  删除为软删除（移入回收站），回收站可恢复或永久清空。
 //
 
+import Combine
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -21,6 +22,7 @@ struct FilesView: View {
     @State private var showInboxFromShare = false
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
+    @State private var now = Date()
 
     private let library = FileLibrary()
 
@@ -81,7 +83,7 @@ struct FilesView: View {
                             NavigationLink {
                                 FilePreviewView(file: result.file)
                             } label: {
-                                SearchResultRow(result: result)
+                                SearchResultRow(result: result, now: now)
                             }
                         }
                     }
@@ -91,6 +93,7 @@ struct FilesView: View {
             .navigationTitle("My Files")
             .searchable(text: $searchText, prompt: "Search")
             .task { await loadCounts() }
+            .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
             .task(id: searchText) {
                 await search()
             }
@@ -186,6 +189,9 @@ private struct SearchResult: Identifiable {
 
 private struct SearchResultRow: View {
     let result: SearchResult
+    let now: Date
+
+    @AppStorage("settings.relativeTime") private var relativeTime = true
 
     var body: some View {
         HStack(spacing: 12) {
@@ -197,7 +203,7 @@ private struct SearchResultRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(result.file.name)
 
-                Text("\(result.directory.localizedTitle) · \(fileDetailText(for: result.file))")
+                Text("\(result.directory.localizedTitle) · \(fileDetailText(for: result.file, relativeTime: relativeTime, now: now))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -287,6 +293,7 @@ private struct FileListView: View {
     @State private var renameText = ""
     @State private var isSelecting = false
     @State private var selectedPaths: Set<URL> = []
+    @State private var now = Date()
 
     private let library = FileLibrary()
 
@@ -410,6 +417,7 @@ private struct FileListView: View {
             }
         }
         .task { await reload() }
+        .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
         .confirmationDialog(
             confirmationTitle,
             isPresented: Binding(
@@ -465,13 +473,13 @@ private struct FileListView: View {
         List(selection: $selectedPaths) {
             ForEach(sortedFiles) { file in
                 if isSelecting {
-                    FileListRow(file: file)
+                    FileListRow(file: file, now: now)
                         .tag(file.url)
                 } else {
                     NavigationLink {
                         FilePreviewView(file: file)
                     } label: {
-                        FileListRow(file: file)
+                        FileListRow(file: file, now: now)
                     }
                     .swipeActions(edge: .trailing) {
                         trailingActions(for: file)
@@ -496,7 +504,7 @@ private struct FileListView: View {
                     NavigationLink {
                         FilePreviewView(file: file)
                     } label: {
-                        FileGridCell(file: file)
+                        FileGridCell(file: file, now: now)
                     }
                     .buttonStyle(.plain)
                     .contextMenu {
@@ -820,6 +828,9 @@ private struct FileListView: View {
 
 private struct FileListRow: View {
     let file: FileItem
+    let now: Date
+
+    @AppStorage("settings.relativeTime") private var relativeTime = true
 
     var body: some View {
         HStack(spacing: 12) {
@@ -831,7 +842,7 @@ private struct FileListRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(file.name)
 
-                Text(fileDetailText(for: file))
+                Text(fileDetailText(for: file, relativeTime: relativeTime, now: now))
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -842,6 +853,9 @@ private struct FileListRow: View {
 
 private struct FileGridCell: View {
     let file: FileItem
+    let now: Date
+
+    @AppStorage("settings.relativeTime") private var relativeTime = true
 
     var body: some View {
         VStack(spacing: 6) {
@@ -855,7 +869,7 @@ private struct FileGridCell: View {
                 .lineLimit(2)
                 .multilineTextAlignment(.center)
 
-            Text(fileDetailText(for: file))
+            Text(fileDetailText(for: file, relativeTime: relativeTime, now: now))
                 .font(.caption2)
                 .foregroundStyle(.secondary)
                 .lineLimit(1)
@@ -899,14 +913,18 @@ struct DirectoryRow: View {
 }
 
 /// 固定英文单位（B / KB / MB / GB），避免跟随系统语言显示「字节」。
-private func fileDetailText(for file: FileItem) -> String {
+private func fileDetailText(for file: FileItem, relativeTime: Bool, now: Date) -> String {
     var parts: [String] = []
 
     if let size = file.size {
         parts.append(formattedSize(size))
     }
     if let date = file.modifiedAt {
-        parts.append(date.formatted(date: .abbreviated, time: .shortened))
+        parts.append(
+            relativeTime
+                ? relativeTimeText(for: date, now: now)
+                : date.formatted(date: .abbreviated, time: .shortened)
+        )
     }
 
     return parts.joined(separator: " · ")

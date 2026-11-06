@@ -10,6 +10,7 @@ import UIKit
 
 struct SettingsView: View {
     @Environment(\.openURL) private var openURL
+    @AppStorage("settings.relativeTime") private var relativeTime = true
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
@@ -23,6 +24,10 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section("App") {
+                    Toggle(isOn: $relativeTime) {
+                        SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
+                    }
+
                     Button {
                         if let url = URL(string: UIApplication.openSettingsURLString) {
                             openURL(url)

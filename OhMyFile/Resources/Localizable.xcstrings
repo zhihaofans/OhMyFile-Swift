@@ -11,12 +11,42 @@
         }
       }
     },
+    "%ld days ago": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 天前"
+          }
+        }
+      }
+    },
     "%ld files selected": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "已选择 %ld 个文件"
+          }
+        }
+      }
+    },
+    "%ld hours ago": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 小时前"
+          }
+        }
+      }
+    },
+    "%ld minutes ago": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 分钟前"
           }
         }
       }
@@ -463,6 +493,16 @@
         }
       }
     },
+    "Just Now": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刚刚"
+          }
+        }
+      }
+    },
     "List": {
       "localizations": {
         "zh-Hans": {
@@ -659,6 +699,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "最近"
+          }
+        }
+      }
+    },
+    "Relative Time": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相对时间"
           }
         }
       }
