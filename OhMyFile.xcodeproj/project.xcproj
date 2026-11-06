@@ -15,9 +15,16 @@
     {
       "kind": "folder",
       "path": "OhMyFile",
-      "target-membership": [ "OhMyFile" ],
+      "target-membership": [
+        "OhMyFile",
+      ],
       "membership-exceptions": [
-        { "target": "OhMyFile", "exclusions": [ "Info.plist" ] },
+        {
+          "target": "OhMyFile",
+          "exclusions": [
+            "Info.plist",
+          ],
+        },
       ],
     },
     { "kind": "folder", "path": "OhMyFileTests", "target-membership": [ "OhMyFileTests" ] },

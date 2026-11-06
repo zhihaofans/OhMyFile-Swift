@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct TextPreviewView: View {
-    let file: InboxFile
+    let file: FileItem
 
     @State private var text: String?
     @State private var errorMessage: String?

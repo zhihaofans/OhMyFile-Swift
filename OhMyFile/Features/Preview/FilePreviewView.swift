@@ -9,7 +9,7 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 struct FilePreviewView: View {
-    let file: InboxFile
+    let file: FileItem
 
     private var capability: FileCapability {
         FileCapabilityResolver.capability(for: file.url)

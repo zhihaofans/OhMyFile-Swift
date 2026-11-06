@@ -238,7 +238,7 @@ AGENTS.md / TODO.md / CHANGELOG.md   三件套
 
 ## 6. 文件导入与分享（进行中）
 
-> Share Extension target 与 App Groups 已创建：接收代码在 `OhMyFileShareExtension/ShareViewController.swift`，主 App 通过 `OhMyFile/FileCore/ImportInbox.swift` 读取收件箱。
+> Share Extension target 与 App Groups 已创建：接收代码在 `OhMyFileShareExtension/ShareViewController.swift`，主 App 通过 `OhMyFile/FileCore/FileLibrary.swift` 读取收件箱 / 下载 / 回收站。
 
 iOS 首期通过 Share Extension 接收其他应用分享的文件。
 
@@ -331,7 +331,7 @@ Share Extension 必须保持轻量。
 - 避免将可重新生成的缓存加入 iCloud 备份。
 - 不要假设所有分享进来的文件都需要永久保存。
 - 网盘文件按需下载，缓存单独存放且可清理；断开连接后清空对应凭证与缓存。
-- 用户可见目录（收件箱 / 下载 / 回收站）与上述内部目录的映射在文件管理实现时确定，并写回本文件。
+- 用户可见目录已映射到 App Group 容器：收件箱 = `Inbox/`（Imported）；下载 = `Downloads/`（T-51 接入后写入）；回收站 = `Trash/`（软删除，清空即永久删除）。Cache / Temporary 暂未使用。
 
 ## 11. UI 与交互
 
@@ -462,7 +462,7 @@ Share Extension 必须保持轻量。
 
 1. **最低系统版本随 Xcode 浮动**：app 与 Share Extension 都用 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0）；项目级和测试 target 硬编码 `27.2`，与产品 target 不一致。升级 Xcode 后产品最低版本会静默改变，测试 target 不会跟着变。改 Deployment Target 先问用户。
 2. **主线程默认隔离**：app target 默认开启 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`（项目级与测试 target 没有）。回调式 API（`URLSession` 回调、文件协调、`AVFoundation` 通知等）在后台线程回调时，闭包隐式继承的 MainActor 隔离会触发运行时 trap（编译通过）。新代码用 `async` API；写回调参数标 `@Sendable`，或调用点标 `nonisolated`。
-3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `ImportInbox` 读取。真机分享链路尚未验证。
+3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `FileLibrary` 读取三个目录。真机分享链路尚未验证。
 4. **没有 macOS target**：`SDKROOT = iphoneos`、`TARGETED_DEVICE_FAMILY = 1,2`；macOS 支撑是规划，不是现状。不要写 `#if os(macOS)` 分支却无法验证。
 5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。注意 `xcuserdata/xcschememanagement.plist`（`OhMyFile.xcodeproj/xcuserdata/zzh.xcuserdatad/xcschemes/`）在加规则前就已被 Git 跟踪，`.gitignore` 不会取消跟踪；要移出需 `git rm --cached`（git 写操作，先问用户，见 TODO.md 的「工程卫生」条目）。
 6. **命令行构建需要放宽 agent 沙盒**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），`@State` / `@AppStorage` 等 SwiftUI 宏会报错。这是 agent 沙盒限制，不是代码错误；需要临时放宽文件沙盒权限（或直接在 Xcode 里构建）。已验证放宽后可构建成功。

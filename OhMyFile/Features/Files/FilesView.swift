@@ -2,8 +2,8 @@
 //  FilesView.swift
 //  OhMyFile
 //
-//  文件页：收件箱（真实文件）/ 下载 / 回收站。
-//  排序、视图切换、清空在收件箱页的工具栏中。
+//  文件页：收件箱 / 下载 / 回收站。
+//  删除为软删除（移入回收站），回收站可恢复或永久清空。
 //
 
 import SwiftUI
@@ -15,16 +15,36 @@ struct FilesView: View {
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
-    @State private var inboxFiles: [InboxFile] = []
-    @State private var showInboxFromShare = false
+    @State private var counts: [LibraryDirectory: Int] = [:]
     @State private var importedCount = 0
     @State private var showImportAlert = false
+    @State private var showInboxFromShare = false
+
+    private let library = FileLibrary()
 
     private var directories: [SystemDirectory] {
         [
-            SystemDirectory(title: "Inbox", systemImage: "tray.fill", color: .blue, itemCount: inboxFiles.count),
-            SystemDirectory(title: "Downloads", systemImage: "arrow.down.circle.fill", color: .purple, itemCount: 0),
-            SystemDirectory(title: "Trash", systemImage: "trash.fill", color: .green, itemCount: 0)
+            SystemDirectory(
+                title: "Inbox",
+                systemImage: "tray.fill",
+                color: .blue,
+                itemCount: counts[.inbox] ?? 0,
+                directory: .inbox
+            ),
+            SystemDirectory(
+                title: "Downloads",
+                systemImage: "arrow.down.circle.fill",
+                color: .purple,
+                itemCount: counts[.downloads] ?? 0,
+                directory: .downloads
+            ),
+            SystemDirectory(
+                title: "Trash",
+                systemImage: "trash.fill",
+                color: .green,
+                itemCount: counts[.trash] ?? 0,
+                directory: .trash
+            )
         ]
     }
 
@@ -33,20 +53,12 @@ struct FilesView: View {
             List {
                 Section {
                     ForEach(directories) { directory in
-                        if directory.title == "Inbox" {
-                            NavigationLink {
-                                InboxView(files: inboxFiles) {
-                                    Task { await loadInbox() }
-                                }
-                            } label: {
-                                DirectoryRow(directory: directory)
+                        NavigationLink {
+                            FileListView(directory: directory.directory) {
+                                Task { await loadCounts() }
                             }
-                        } else {
-                            NavigationLink {
-                                DirectoryView(directory: directory)
-                            } label: {
-                                DirectoryRow(directory: directory)
-                            }
+                        } label: {
+                            DirectoryRow(directory: directory)
                         }
                     }
                 }
@@ -58,24 +70,24 @@ struct FilesView: View {
             .listStyle(.insetGrouped)
             .navigationTitle("My Files")
             .searchable(text: $searchText, prompt: "Search")
-            .task { await loadInbox() }
+            .task { await loadCounts() }
             .onChange(of: scenePhase) { _, phase in
                 if phase == .active {
-                    Task { await loadInbox() }
+                    Task { await loadCounts() }
                 }
             }
             .onChange(of: refreshToken) { _, _ in
-                Task { await loadInbox() }
+                Task { await loadCounts() }
             }
             .onChange(of: openInboxToken) { _, _ in
                 Task {
-                    await loadInbox()
+                    await loadCounts()
                     showInboxFromShare = true
                 }
             }
             .navigationDestination(isPresented: $showInboxFromShare) {
-                InboxView(files: inboxFiles) {
-                    Task { await loadInbox() }
+                FileListView(directory: .inbox) {
+                    Task { await loadCounts() }
                 }
             }
             .toolbar {
@@ -98,10 +110,15 @@ struct FilesView: View {
         }
     }
 
-    private func loadInbox() async {
-        inboxFiles = await Task.detached { ImportInbox.files() }.value
+    private func loadCounts() async {
+        let loaded = await Task.detached { [library] in
+            Dictionary(uniqueKeysWithValues: LibraryDirectory.allCases.map { directory in
+                (directory, library.files(in: directory).count)
+            })
+        }.value
+        counts = loaded
 
-        let pending = await Task.detached { ImportInbox.consumePendingImportCount() }.value
+        let pending = await Task.detached { FileLibrary.consumePendingImportCount() }.value
         if pending > 0 {
             importedCount = pending
             showImportAlert = true
@@ -130,22 +147,25 @@ private struct EmptyFilesRow: View {
     }
 }
 
-private struct InboxView: View {
-    let files: [InboxFile]
+private struct FileListView: View {
+    let directory: LibraryDirectory
     let onChanged: () -> Void
 
     @AppStorage("files.inboxSortField") private var sortFieldRaw = InboxSortField.date.rawValue
     @AppStorage("files.inboxSortAscending") private var sortAscending = false
     @AppStorage("files.viewMode") private var viewModeRaw = ViewMode.list.rawValue
 
+    @State private var files: [FileItem] = []
     @State private var pendingDeletion: Deletion?
     @State private var errorMessage: String?
+
+    private let library = FileLibrary()
 
     private var viewMode: ViewMode {
         ViewMode(rawValue: viewModeRaw) ?? .list
     }
 
-    private var sortedFiles: [InboxFile] {
+    private var sortedFiles: [FileItem] {
         let files = files
         let ascending = sortAscending
 
@@ -173,66 +193,24 @@ private struct InboxView: View {
     var body: some View {
         Group {
             if files.isEmpty {
-                ContentUnavailableView(
-                    "Inbox is Empty",
-                    systemImage: "tray",
-                    description: Text("Files shared to OhMyFile will appear here.")
-                )
+                emptyState
             } else if viewMode == .grid {
-                ScrollView {
-                    LazyVGrid(
-                        columns: [GridItem(.adaptive(minimum: 100), spacing: 12)],
-                        spacing: 12
-                    ) {
-                        ForEach(sortedFiles) { file in
-                            NavigationLink {
-                                FilePreviewView(file: file)
-                            } label: {
-                                FileGridCell(file: file)
-                            }
-                            .buttonStyle(.plain)
-                            .contextMenu {
-                                Button(role: .destructive) {
-                                    pendingDeletion = .file(file)
-                                } label: {
-                                    Label("Delete", systemImage: "trash")
-                                }
-                            }
-                        }
-                    }
-                    .padding()
-                }
+                grid
             } else {
-                List {
-                    ForEach(sortedFiles) { file in
-                        NavigationLink {
-                            FilePreviewView(file: file)
-                        } label: {
-                            FileListRow(file: file)
-                        }
-                        .swipeActions(edge: .trailing) {
-                            Button(role: .destructive) {
-                                pendingDeletion = .file(file)
-                            } label: {
-                                Label("Delete", systemImage: "trash")
-                            }
-                        }
-                    }
-                }
-                .listStyle(.insetGrouped)
+                list
             }
         }
-        .navigationTitle("Inbox")
+        .navigationTitle(titleKey)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button {
-                    pendingDeletion = .all
+                    pendingDeletion = directory == .trash ? .emptyTrash : .moveAllToTrash
                 } label: {
                     Image(systemName: "trash")
                 }
                 .disabled(files.isEmpty)
-                .accessibilityLabel("Clear Inbox")
+                .accessibilityLabel(directory == .trash ? "Empty Trash" : "Move All to Trash")
             }
 
             ToolbarItem(placement: .topBarTrailing) {
@@ -260,6 +238,7 @@ private struct InboxView: View {
                 }
             }
         }
+        .task { await reload() }
         .confirmationDialog(
             confirmationTitle,
             isPresented: Binding(
@@ -268,7 +247,7 @@ private struct InboxView: View {
             ),
             titleVisibility: .visible
         ) {
-            Button("Delete", role: .destructive) {
+            Button(confirmationButtonTitle, role: .destructive) {
                 confirmDeletion()
             }
             Button("Cancel", role: .cancel) {
@@ -290,21 +269,180 @@ private struct InboxView: View {
         }
     }
 
+    private var list: some View {
+        List {
+            ForEach(sortedFiles) { file in
+                NavigationLink {
+                    FilePreviewView(file: file)
+                } label: {
+                    FileListRow(file: file)
+                }
+                .swipeActions(edge: .trailing) {
+                    trailingActions(for: file)
+                }
+            }
+        }
+        .listStyle(.insetGrouped)
+    }
+
+    private var grid: some View {
+        ScrollView {
+            LazyVGrid(
+                columns: [GridItem(.adaptive(minimum: 100), spacing: 12)],
+                spacing: 12
+            ) {
+                ForEach(sortedFiles) { file in
+                    NavigationLink {
+                        FilePreviewView(file: file)
+                    } label: {
+                        FileGridCell(file: file)
+                    }
+                    .buttonStyle(.plain)
+                    .contextMenu {
+                        contextMenuActions(for: file)
+                    }
+                }
+            }
+            .padding()
+        }
+    }
+
+    @ViewBuilder
+    private func trailingActions(for file: FileItem) -> some View {
+        if directory == .trash {
+            Button {
+                restore(file)
+            } label: {
+                Label("Restore", systemImage: "arrow.uturn.backward")
+            }
+
+            Button(role: .destructive) {
+                pendingDeletion = .deletePermanently(file)
+            } label: {
+                Label("Delete Permanently", systemImage: "trash")
+            }
+        } else {
+            Button(role: .destructive) {
+                pendingDeletion = .moveToTrash(file)
+            } label: {
+                Label("Move to Trash", systemImage: "trash")
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func contextMenuActions(for file: FileItem) -> some View {
+        if directory == .trash {
+            Button {
+                restore(file)
+            } label: {
+                Label("Restore", systemImage: "arrow.uturn.backward")
+            }
+
+            Button(role: .destructive) {
+                pendingDeletion = .deletePermanently(file)
+            } label: {
+                Label("Delete Permanently", systemImage: "trash")
+            }
+        } else {
+            Button(role: .destructive) {
+                pendingDeletion = .moveToTrash(file)
+            } label: {
+                Label("Move to Trash", systemImage: "trash")
+            }
+        }
+    }
+
+    private var emptyState: some View {
+        ContentUnavailableView(
+            emptyTitleKey,
+            systemImage: emptySymbol,
+            description: Text(emptyDescriptionKey)
+        )
+    }
+
+    private var titleKey: LocalizedStringKey {
+        switch directory {
+        case .inbox:
+            return "Inbox"
+        case .downloads:
+            return "Downloads"
+        case .trash:
+            return "Trash"
+        }
+    }
+
+    private var emptyTitleKey: LocalizedStringKey {
+        switch directory {
+        case .inbox:
+            return "Inbox is Empty"
+        case .downloads:
+            return "Downloads is Empty"
+        case .trash:
+            return "Trash is Empty"
+        }
+    }
+
+    private var emptySymbol: String {
+        switch directory {
+        case .inbox:
+            return "tray"
+        case .downloads:
+            return "arrow.down.circle"
+        case .trash:
+            return "trash"
+        }
+    }
+
+    private var emptyDescriptionKey: LocalizedStringKey {
+        switch directory {
+        case .inbox:
+            return "Files shared to OhMyFile will appear here."
+        case .downloads:
+            return "Files downloaded to OhMyFile will appear here."
+        case .trash:
+            return "Deleted files will appear here."
+        }
+    }
+
     private var confirmationTitle: String {
         switch pendingDeletion {
-        case .all:
-            return String(localized: "Clear Inbox?")
-        case .file, .none:
-            return String(localized: "Delete File?")
+        case .moveToTrash:
+            return String(localized: "Move to Trash?")
+        case .deletePermanently:
+            return String(localized: "Delete Permanently?")
+        case .moveAllToTrash:
+            return String(localized: "Move All to Trash?")
+        case .emptyTrash:
+            return String(localized: "Empty Trash?")
+        case .none:
+            return String(localized: "Move to Trash?")
+        }
+    }
+
+    private var confirmationButtonTitle: LocalizedStringKey {
+        switch pendingDeletion {
+        case .moveToTrash, .moveAllToTrash:
+            return "Move to Trash"
+        case .deletePermanently:
+            return "Delete Permanently"
+        case .emptyTrash:
+            return "Empty Trash"
+        case .none:
+            return "Delete"
         }
     }
 
     private var confirmationMessage: String {
         switch pendingDeletion {
-        case .file(let file):
+        case .moveToTrash(let file):
             return file.name
-        case .all:
+        case .deletePermanently(let file):
             return String(localized: "This cannot be undone.")
+        case .moveAllToTrash:
+            return String(localized: "All files will be moved to Trash.")
+        case .emptyTrash:
+            return String(localized: "All files will be permanently deleted.")
         case .none:
             return ""
         }
@@ -315,22 +453,44 @@ private struct InboxView: View {
 
         do {
             switch deletion {
-            case .file(let file):
-                try ImportInbox.delete(file)
-            case .all:
-                try ImportInbox.deleteAll()
+            case .moveToTrash(let file):
+                try library.moveToTrash(file, from: directory)
+            case .deletePermanently(let file):
+                try library.deletePermanently(file)
+            case .moveAllToTrash:
+                try library.moveAllToTrash(from: directory)
+            case .emptyTrash:
+                try library.emptyTrash()
             }
             pendingDeletion = nil
+            Task { await reload() }
             onChanged()
         } catch {
             pendingDeletion = nil
             errorMessage = error.localizedDescription
         }
     }
+
+    private func restore(_ file: FileItem) {
+        do {
+            try library.restore(file)
+            Task { await reload() }
+            onChanged()
+        } catch {
+            errorMessage = error.localizedDescription
+        }
+    }
+
+    private func reload() async {
+        let loaded = await Task.detached { [library, directory] in
+            library.files(in: directory)
+        }.value
+        files = loaded
+    }
 }
 
 private struct FileListRow: View {
-    let file: InboxFile
+    let file: FileItem
 
     var body: some View {
         HStack(spacing: 12) {
@@ -352,7 +512,7 @@ private struct FileListRow: View {
 }
 
 private struct FileGridCell: View {
-    let file: InboxFile
+    let file: FileItem
 
     var body: some View {
         VStack(spacing: 6) {
@@ -378,20 +538,6 @@ private struct FileGridCell: View {
     }
 }
 
-private struct DirectoryView: View {
-    let directory: SystemDirectory
-
-    var body: some View {
-        ContentUnavailableView(
-            LocalizedStringKey(directory.title),
-            systemImage: directory.systemImage,
-            description: Text("No files here yet.")
-        )
-        .navigationTitle(LocalizedStringKey(directory.title))
-        .navigationBarTitleDisplayMode(.inline)
-    }
-}
-
 struct SystemDirectory: Identifiable {
     var id: String { title }
 
@@ -399,6 +545,7 @@ struct SystemDirectory: Identifiable {
     let systemImage: String
     let color: Color
     let itemCount: Int
+    let directory: LibraryDirectory
 }
 
 struct DirectoryRow: View {
@@ -423,7 +570,7 @@ struct DirectoryRow: View {
 }
 
 /// 固定英文单位（B / KB / MB / GB），避免跟随系统语言显示「字节」。
-private func fileDetailText(for file: InboxFile) -> String {
+private func fileDetailText(for file: FileItem) -> String {
     var parts: [String] = []
 
     if let size = file.size {
@@ -453,7 +600,7 @@ private func formattedSize(_ bytes: Int64) -> String {
     return String(format: "%.1f %@", value, units[unitIndex])
 }
 
-private func fileIcon(for file: InboxFile) -> (symbol: String, color: Color) {
+private func fileIcon(for file: FileItem) -> (symbol: String, color: Color) {
     let contentType = FileCapabilityResolver.contentType(for: file.url)
 
     if contentType.conforms(to: .image) {
@@ -493,6 +640,8 @@ private enum ViewMode: String {
 }
 
 private enum Deletion {
-    case file(InboxFile)
-    case all
+    case moveToTrash(FileItem)
+    case deletePermanently(FileItem)
+    case moveAllToTrash
+    case emptyTrash
 }
