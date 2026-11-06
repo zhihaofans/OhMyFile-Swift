@@ -2,23 +2,114 @@
 //  RecentView.swift
 //  OhMyFile
 //
-//  最近页：最近打开的文件列表空状态。
+//  最近打开：按打开时间倒序，支持搜索与清空。
 //
 
 import SwiftUI
 
 struct RecentView: View {
+    @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
+    @State private var entries: [RecentEntry] = []
+    @State private var showClearConfirmation = false
+
+    private let store = RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
+
+    private var filteredEntries: [RecentEntry] {
+        let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !query.isEmpty else { return entries }
+        return entries.filter { $0.name.localizedStandardContains(query) }
+    }
 
     var body: some View {
         NavigationStack {
-            ContentUnavailableView(
-                "No Recent Files",
-                systemImage: "clock",
-                description: Text("Files you open will appear here.")
-            )
+            Group {
+                if filteredEntries.isEmpty {
+                    ContentUnavailableView(
+                        searchText.isEmpty
+                            ? LocalizedStringKey("No Recent Files")
+                            : LocalizedStringKey("No Results"),
+                        systemImage: searchText.isEmpty ? "clock" : "magnifyingglass",
+                        description: Text(
+                            searchText.isEmpty
+                                ? LocalizedStringKey("Files you open will appear here.")
+                                : LocalizedStringKey("No files match your search.")
+                        )
+                    )
+                } else {
+                    List(filteredEntries) { entry in
+                        NavigationLink {
+                            FilePreviewView(file: FileItem(url: entry.url))
+                        } label: {
+                            RecentRow(entry: entry)
+                        }
+                    }
+                    .listStyle(.insetGrouped)
+                }
+            }
             .navigationTitle("Recent")
             .searchable(text: $searchText, prompt: "Search")
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        showClearConfirmation = true
+                    } label: {
+                        Image(systemName: "trash")
+                    }
+                    .disabled(entries.isEmpty)
+                    .accessibilityLabel("Clear Recent")
+                }
+            }
+            .onAppear {
+                Task { await load() }
+            }
+            .onChange(of: scenePhase) { _, phase in
+                if phase == .active {
+                    Task { await load() }
+                }
+            }
+            .confirmationDialog(
+                "Clear Recent?",
+                isPresented: $showClearConfirmation,
+                titleVisibility: .visible
+            ) {
+                Button("Clear", role: .destructive) {
+                    store.clear()
+                    Task { await load() }
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("This cannot be undone.")
+            }
         }
+    }
+
+    private func load() async {
+        let loaded = await Task.detached { [store] in
+            store.pruneMissing()
+        }.value
+        entries = loaded
+    }
+}
+
+private struct RecentRow: View {
+    let entry: RecentEntry
+
+    var body: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "doc")
+                .font(.title3)
+                .foregroundStyle(.secondary)
+                .frame(width: 32)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(entry.name)
+
+                Text(entry.openedAt.formatted(date: .abbreviated, time: .shortened))
+                    .font(.caption)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .padding(.vertical, 2)
     }
 }

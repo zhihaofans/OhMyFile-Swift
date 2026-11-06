@@ -283,6 +283,10 @@ private struct FileListView: View {
     @State private var files: [FileItem] = []
     @State private var pendingDeletion: Deletion?
     @State private var errorMessage: String?
+    @State private var renameTarget: FileItem?
+    @State private var renameText = ""
+    @State private var isSelecting = false
+    @State private var selectedPaths: Set<URL> = []
 
     private let library = FileLibrary()
 
@@ -325,30 +329,72 @@ private struct FileListView: View {
                 list
             }
         }
+        .safeAreaInset(edge: .bottom) {
+            if isSelecting {
+                HStack(spacing: 12) {
+                    Button {
+                        toggleSelectAll()
+                    } label: {
+                        Label(isAllSelected ? "Deselect All" : "Select All", systemImage: "checkmark.circle")
+                    }
+                    .disabled(files.isEmpty)
+
+                    if directory == .trash {
+                        Button {
+                            restoreSelected()
+                        } label: {
+                            Label("Restore", systemImage: "arrow.uturn.backward")
+                        }
+                        .disabled(selectedPaths.isEmpty)
+                    }
+
+                    Button(role: .destructive) {
+                        pendingDeletion = .deleteSelected
+                    } label: {
+                        Label("Delete", systemImage: "trash")
+                    }
+                    .disabled(selectedPaths.isEmpty)
+
+                    Spacer()
+
+                    Text("\(selectedPaths.count)")
+                        .font(.callout)
+                        .foregroundStyle(.secondary)
+                }
+                .font(.subheadline)
+                .padding(.horizontal)
+                .padding(.vertical, 10)
+                .background(.regularMaterial)
+            }
+        }
         .navigationTitle(titleKey)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    pendingDeletion = directory == .trash ? .emptyTrash : .moveAllToTrash
-                } label: {
-                    Image(systemName: "trash")
+            if viewMode == .list {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        toggleSelection()
+                    } label: {
+                        Image(systemName: isSelecting ? "checkmark.circle.fill" : "checkmark.circle")
+                    }
+                    .accessibilityLabel(isSelecting ? "Done" : "Select")
                 }
-                .disabled(files.isEmpty)
-                .accessibilityLabel(directory == .trash ? "Empty Trash" : "Move All to Trash")
-            }
-
-            ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    viewModeRaw = (viewMode == .grid ? ViewMode.list : ViewMode.grid).rawValue
-                } label: {
-                    Image(systemName: viewMode == .grid ? "list.bullet" : "square.grid.2x2")
-                }
-                .accessibilityLabel("Switch View")
             }
 
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
+                    Button {
+                        viewModeRaw = (viewMode == .grid ? ViewMode.list : ViewMode.grid).rawValue
+                    } label: {
+                        Label(
+                            viewMode == .grid ? "List" : "Grid",
+                            systemImage: viewMode == .grid ? "list.bullet" : "square.grid.2x2"
+                        )
+                    }
+                    .disabled(isSelecting)
+
+                    Divider()
+
                     Picker("Sort By", selection: $sortFieldRaw) {
                         Text("Name").tag(InboxSortField.name.rawValue)
                         Text("Date").tag(InboxSortField.date.rawValue)
@@ -359,7 +405,7 @@ private struct FileListView: View {
                         Text("Descending").tag(false)
                     }
                 } label: {
-                    Image(systemName: "arrow.up.arrow.down")
+                    Image(systemName: "ellipsis.circle")
                 }
             }
         }
@@ -382,32 +428,62 @@ private struct FileListView: View {
             Text(confirmationMessage)
         }
         .alert(
-            "Error",
+            "Rename",
             isPresented: Binding(
-                get: { errorMessage != nil },
-                set: { if !$0 { errorMessage = nil } }
+                get: { renameTarget != nil },
+                set: { if !$0 { renameTarget = nil } }
             )
         ) {
-            Button("OK", role: .cancel) {}
+            TextField("File name", text: $renameText)
+            Button("Rename") {
+                performRename()
+            }
+            Button("Cancel", role: .cancel) {
+                renameTarget = nil
+            }
         } message: {
-            Text(errorMessage ?? "")
+            Text("Enter a new name.")
+        }
+        .overlay(alignment: .top) {
+            if let errorMessage {
+                Text(errorMessage)
+                    .font(.callout)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(.regularMaterial, in: Capsule())
+                    .padding(.top, 8)
+                    .onTapGesture { self.errorMessage = nil }
+                    .task(id: errorMessage) {
+                        try? await Task.sleep(nanoseconds: 3_000_000_000)
+                        self.errorMessage = nil
+                    }
+            }
         }
     }
 
     private var list: some View {
-        List {
+        List(selection: $selectedPaths) {
             ForEach(sortedFiles) { file in
-                NavigationLink {
-                    FilePreviewView(file: file)
-                } label: {
+                if isSelecting {
                     FileListRow(file: file)
-                }
-                .swipeActions(edge: .trailing) {
-                    trailingActions(for: file)
+                        .tag(file.url)
+                } else {
+                    NavigationLink {
+                        FilePreviewView(file: file)
+                    } label: {
+                        FileListRow(file: file)
+                    }
+                    .swipeActions(edge: .trailing) {
+                        trailingActions(for: file)
+                    }
+                    .contextMenu {
+                        contextMenuActions(for: file)
+                    }
                 }
             }
         }
         .listStyle(.insetGrouped)
+        .environment(\.editMode, .constant(isSelecting ? .active : .inactive))
     }
 
     private var grid: some View {
@@ -470,6 +546,31 @@ private struct FileListView: View {
                 Label("Delete Permanently", systemImage: "trash")
             }
         } else {
+            Button {
+                beginRename(file)
+            } label: {
+                Label("Rename", systemImage: "pencil")
+            }
+
+            Button {
+                copy(file)
+            } label: {
+                Label("Copy", systemImage: "doc.on.doc")
+            }
+
+            Menu {
+                if directory != .inbox {
+                    Button("Inbox") { move(file, to: .inbox) }
+                }
+                if directory != .downloads {
+                    Button("Downloads") { move(file, to: .downloads) }
+                }
+            } label: {
+                Label("Move To", systemImage: "folder")
+            }
+
+            Divider()
+
             Button(role: .destructive) {
                 pendingDeletion = .moveToTrash(file)
             } label: {
@@ -540,6 +641,10 @@ private struct FileListView: View {
             return String(localized: "Move All to Trash?")
         case .emptyTrash:
             return String(localized: "Empty Trash?")
+        case .deleteSelected:
+            return directory == .trash
+                ? String(localized: "Delete Selected?")
+                : String(localized: "Move Selected to Trash?")
         case .none:
             return String(localized: "Move to Trash?")
         }
@@ -547,8 +652,8 @@ private struct FileListView: View {
 
     private var confirmationButtonTitle: LocalizedStringKey {
         switch pendingDeletion {
-        case .moveToTrash, .moveAllToTrash:
-            return "Move to Trash"
+        case .moveToTrash, .moveAllToTrash, .deleteSelected:
+            return directory == .trash ? "Delete Permanently" : "Move to Trash"
         case .deletePermanently:
             return "Delete Permanently"
         case .emptyTrash:
@@ -568,8 +673,68 @@ private struct FileListView: View {
             return String(localized: "All files will be moved to Trash.")
         case .emptyTrash:
             return String(localized: "All files will be permanently deleted.")
+        case .deleteSelected:
+            return String(format: String(localized: "%ld files selected"), selectedPaths.count)
         case .none:
             return ""
+        }
+    }
+
+    private var isAllSelected: Bool {
+        !sortedFiles.isEmpty && selectedPaths.count == sortedFiles.count
+    }
+
+    private func toggleSelectAll() {
+        if isAllSelected {
+            selectedPaths.removeAll()
+        } else {
+            selectedPaths = Set(sortedFiles.map(\.url))
+        }
+    }
+
+    private func toggleSelection() {
+        isSelecting.toggle()
+        if !isSelecting {
+            selectedPaths.removeAll()
+        }
+    }
+
+    private func beginRename(_ file: FileItem) {
+        renameText = file.name
+        renameTarget = file
+    }
+
+    private func performRename() {
+        guard let target = renameTarget else { return }
+
+        do {
+            _ = try library.rename(target, to: renameText)
+            renameTarget = nil
+            Task { await reload() }
+            onChanged()
+        } catch {
+            renameTarget = nil
+            errorMessage = message(for: error)
+        }
+    }
+
+    private func copy(_ file: FileItem) {
+        do {
+            _ = try library.copy(file)
+            Task { await reload() }
+            onChanged()
+        } catch {
+            errorMessage = message(for: error)
+        }
+    }
+
+    private func move(_ file: FileItem, to target: LibraryDirectory) {
+        do {
+            _ = try library.move(file, to: target)
+            Task { await reload() }
+            onChanged()
+        } catch {
+            errorMessage = message(for: error)
         }
     }
 
@@ -586,13 +751,40 @@ private struct FileListView: View {
                 try library.moveAllToTrash(from: directory)
             case .emptyTrash:
                 try library.emptyTrash()
+            case .deleteSelected:
+                for path in selectedPaths {
+                    guard let file = files.first(where: { $0.url == path }) else { continue }
+
+                    if directory == .trash {
+                        try library.deletePermanently(file)
+                    } else {
+                        try library.moveToTrash(file, from: directory)
+                    }
+                }
+                selectedPaths.removeAll()
+                isSelecting = false
             }
             pendingDeletion = nil
             Task { await reload() }
             onChanged()
         } catch {
             pendingDeletion = nil
-            errorMessage = error.localizedDescription
+            errorMessage = message(for: error)
+        }
+    }
+
+    private func restoreSelected() {
+        do {
+            for path in selectedPaths {
+                guard let file = files.first(where: { $0.url == path }) else { continue }
+                try library.restore(file)
+            }
+            selectedPaths.removeAll()
+            isSelecting = false
+            Task { await reload() }
+            onChanged()
+        } catch {
+            errorMessage = message(for: error)
         }
     }
 
@@ -604,6 +796,18 @@ private struct FileListView: View {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    private func message(for error: Error) -> String {
+        if let libraryError = error as? FileLibraryError {
+            switch libraryError {
+            case .invalidName:
+                return String(localized: "The file name is not valid.")
+            case .storageUnavailable:
+                return String(localized: "Storage is unavailable.")
+            }
+        }
+        return error.localizedDescription
     }
 
     private func reload() async {
@@ -769,4 +973,5 @@ private enum Deletion {
     case deletePermanently(FileItem)
     case moveAllToTrash
     case emptyTrash
+    case deleteSelected
 }

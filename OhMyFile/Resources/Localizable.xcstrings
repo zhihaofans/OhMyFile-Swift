@@ -11,6 +11,16 @@
         }
       }
     },
+    "%ld files selected": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已选择 %ld 个文件"
+          }
+        }
+      }
+    },
     "%lld items": {
       "localizations": {
         "zh-Hans": {
@@ -102,6 +112,16 @@
         }
       }
     },
+    "Clear": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空"
+          }
+        }
+      }
+    },
     "Clear Inbox": {
       "localizations": {
         "zh-Hans": {
@@ -122,6 +142,36 @@
         }
       }
     },
+    "Clear Recent": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空最近记录"
+          }
+        }
+      }
+    },
+    "Clear Recent?": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空最近记录？"
+          }
+        }
+      }
+    },
+    "Copy": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制"
+          }
+        }
+      }
+    },
     "Date": {
       "localizations": {
         "zh-Hans": {
@@ -138,6 +188,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除"
+          }
+        }
+      }
+    },
+    "Delete All": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部删除"
           }
         }
       }
@@ -172,6 +232,16 @@
         }
       }
     },
+    "Delete Selected?": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除所选？"
+          }
+        }
+      }
+    },
     "Deleted files will appear here.": {
       "localizations": {
         "zh-Hans": {
@@ -188,6 +258,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "降序"
+          }
+        }
+      }
+    },
+    "Deselect All": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消全选"
+          }
+        }
+      }
+    },
+    "Done": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
           }
         }
       }
@@ -233,6 +323,16 @@
         }
       }
     },
+    "Enter a new name.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入新名称。"
+          }
+        }
+      }
+    },
     "Error": {
       "localizations": {
         "zh-Hans": {
@@ -249,6 +349,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件过大，暂不支持预览。"
+          }
+        }
+      }
+    },
+    "File name": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件名"
           }
         }
       }
@@ -289,6 +399,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开过的文件会出现在这里。"
+          }
+        }
+      }
+    },
+    "Grid": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网格"
           }
         }
       }
@@ -343,6 +463,16 @@
         }
       }
     },
+    "List": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "列表"
+          }
+        }
+      }
+    },
     "Loading…": {
       "localizations": {
         "zh-Hans": {
@@ -369,6 +499,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "全部移到回收站？"
+          }
+        }
+      }
+    },
+    "Move Selected to Trash?": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "将所选移到回收站？"
+          }
+        }
+      }
+    },
+    "Move To": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移动到"
           }
         }
       }
@@ -513,6 +663,16 @@
         }
       }
     },
+    "Rename": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重命名"
+          }
+        }
+      }
+    },
     "Restore": {
       "localizations": {
         "zh-Hans": {
@@ -549,6 +709,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "搜索"
+          }
+        }
+      }
+    },
+    "Select": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择"
+          }
+        }
+      }
+    },
+    "Select All": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全选"
           }
         }
       }
@@ -593,6 +773,16 @@
         }
       }
     },
+    "Storage is unavailable.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存储不可用。"
+          }
+        }
+      }
+    },
     "Switch View": {
       "localizations": {
         "zh-Hans": {
@@ -609,6 +799,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文本编码不受支持。"
+          }
+        }
+      }
+    },
+    "The file name is not valid.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件名无效。"
           }
         }
       }

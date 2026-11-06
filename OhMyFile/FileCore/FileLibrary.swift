@@ -93,6 +93,48 @@ struct FileLibrary: Sendable {
         try FileManager.default.removeItem(at: file.url)
     }
 
+    nonisolated static func directory(for url: URL) -> LibraryDirectory? {
+        let folder = url.deletingLastPathComponent().lastPathComponent
+        return LibraryDirectory.allCases.first { $0.folderName == folder }
+    }
+
+    nonisolated func rename(_ file: FileItem, to newName: String) throws -> URL {
+        let trimmed = newName.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmed.isEmpty,
+              !trimmed.contains("/"),
+              trimmed != ".",
+              trimmed != ".." else {
+            throw FileLibraryError.invalidName
+        }
+
+        let directory = file.url.deletingLastPathComponent()
+        let destination = uniqueURL(in: directory, fileName: trimmed)
+        try FileManager.default.moveItem(at: file.url, to: destination)
+        return destination
+    }
+
+    nonisolated func move(_ file: FileItem, to directory: LibraryDirectory) throws -> URL {
+        guard let target = directoryURL(for: directory) else {
+            throw FileLibraryError.storageUnavailable
+        }
+
+        try ensureDirectory(target)
+        let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
+        try FileManager.default.moveItem(at: file.url, to: destination)
+        return destination
+    }
+
+    nonisolated func copy(_ file: FileItem) throws -> URL {
+        let directory = file.url.deletingLastPathComponent()
+        let base = (file.url.lastPathComponent as NSString).deletingPathExtension
+        let pathExtension = (file.url.lastPathComponent as NSString).pathExtension
+        let copyName = pathExtension.isEmpty ? "\(base) copy" : "\(base) copy.\(pathExtension)"
+        let destination = uniqueURL(in: directory, fileName: copyName)
+        try FileManager.default.copyItem(at: file.url, to: destination)
+        return destination
+    }
+
     nonisolated func moveAllToTrash(from directory: LibraryDirectory) throws {
         guard directory != .trash else {
             try emptyTrash()
@@ -147,4 +189,9 @@ struct FileLibrary: Sendable {
 
         return candidate
     }
+}
+
+enum FileLibraryError: Error {
+    case invalidName
+    case storageUnavailable
 }

@@ -48,5 +48,11 @@ struct FilePreviewView: View {
                 .accessibilityLabel("Share")
             }
         }
+        .task {
+            let url = file.url
+            await Task.detached {
+                RecentFilesStore.record(url)
+            }.value
+        }
     }
 }
