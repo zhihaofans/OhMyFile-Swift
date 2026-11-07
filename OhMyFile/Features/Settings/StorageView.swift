@@ -123,6 +123,7 @@ struct StorageView: View {
             switch action {
             case .clearCache:
                 try library.clearCache()
+                ThumbnailService.shared.clearMemoryCache()
             case .emptyTrash:
                 try library.emptyTrash()
             }
