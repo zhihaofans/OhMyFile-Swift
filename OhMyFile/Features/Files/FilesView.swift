@@ -23,6 +23,7 @@ struct FilesView: View {
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
     @State private var now = Date()
+    @State private var showClipboardSheet = false
 
     private let library = FileLibrary()
 
@@ -116,6 +117,9 @@ struct FilesView: View {
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Menu {
+                        Button("Paste from Clipboard", systemImage: "doc.on.clipboard") {
+                            showClipboardSheet = true
+                        }
                         Button("Import from Files", systemImage: "folder") {}
                         Button("Import from Photos", systemImage: "photo") {}
                         Button("Scan Documents", systemImage: "doc.viewfinder") {}
@@ -129,6 +133,13 @@ struct FilesView: View {
                 Button("OK", role: .cancel) {}
             } message: {
                 Text("Added \(importedCount) files to Inbox")
+            }
+            .sheet(isPresented: $showClipboardSheet) {
+                ClipboardImportSheet {
+                    importedCount = 1
+                    showImportAlert = true
+                    Task { await loadCounts() }
+                }
             }
         }
     }
@@ -952,3 +963,4 @@ private enum Deletion {
     case emptyTrash
     case deleteSelected
 }
+

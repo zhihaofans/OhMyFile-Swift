@@ -325,6 +325,36 @@
         }
       }
     },
+    "Clipboard": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪切板"
+          }
+        }
+      }
+    },
+    "Clipboard is Empty": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪贴板为空"
+          }
+        }
+      }
+    },
+    "Clipboard is empty.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪贴板为空。"
+          }
+        }
+      }
+    },
     "Copy": {
       "localizations": {
         "zh-Hans": {
@@ -637,6 +667,16 @@
         }
       }
     },
+    "Import from Clipboard": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "从剪贴板导入"
+          }
+        }
+      }
+    },
     "Import from Files": {
       "localizations": {
         "zh-Hans": {
@@ -920,12 +960,32 @@
       }
     },
     "PDF": {},
+    "Paste from Clipboard": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "从剪贴板导入"
+          }
+        }
+      }
+    },
     "Preview Not Supported": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "暂不支持预览"
+          }
+        }
+      }
+    },
+    "Reading Clipboard…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在读取剪贴板…"
           }
         }
       }

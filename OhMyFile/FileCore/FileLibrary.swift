@@ -133,13 +133,33 @@ struct FileLibrary: Sendable {
         try FileManager.default.removeItem(at: file.url)
     }
 
-    nonisolated func importFile(from sourceURL: URL) throws -> URL {
+    nonisolated func availableFileName(in directory: LibraryDirectory, preferredName: String) -> String {
+        guard let url = directoryURL(for: directory) else { return preferredName }
+        return uniqueURL(in: url, fileName: preferredName).lastPathComponent
+    }
+
+    nonisolated func importData(_ data: Data, fileName: String) throws -> URL {
         guard let inbox = directoryURL(for: .inbox) else {
             throw FileLibraryError.storageUnavailable
         }
 
         try ensureDirectory(inbox)
-        let destination = uniqueURL(in: inbox, fileName: sourceURL.lastPathComponent)
+        let destination = uniqueURL(in: inbox, fileName: fileName)
+        try data.write(to: destination, options: .atomic)
+        return destination
+    }
+
+    nonisolated func importFile(from sourceURL: URL) throws -> URL {
+        try importFile(from: sourceURL, fileName: sourceURL.lastPathComponent)
+    }
+
+    nonisolated func importFile(from sourceURL: URL, fileName: String) throws -> URL {
+        guard let inbox = directoryURL(for: .inbox) else {
+            throw FileLibraryError.storageUnavailable
+        }
+
+        try ensureDirectory(inbox)
+        let destination = uniqueURL(in: inbox, fileName: fileName)
         try FileManager.default.copyItem(at: sourceURL, to: destination)
         return destination
     }

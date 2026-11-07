@@ -101,6 +101,36 @@ struct FileLibraryOperationTests {
         #expect(names == ["external.txt", "external-1.txt"])
     }
 
+    @Test func importDataWritesIntoInbox() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let url = try library.importData(Data("hello".utf8), fileName: "clip.txt")
+
+        #expect(library.files(in: .inbox).map(\.name) == ["clip.txt"])
+        #expect(try Data(contentsOf: url) == Data("hello".utf8))
+    }
+
+    @Test func importDataHandlesCollision() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        _ = try library.importData(Data("a".utf8), fileName: "clip.txt")
+        _ = try library.importData(Data("b".utf8), fileName: "clip.txt")
+
+        #expect(Set(library.files(in: .inbox).map(\.name)) == ["clip.txt", "clip-1.txt"])
+    }
+
+    @Test func availableFileNameAvoidsCollision() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        _ = try library.importData(Data("a".utf8), fileName: "clip.txt")
+
+        #expect(library.availableFileName(in: .inbox, preferredName: "clip.txt") == "clip-1.txt")
+        #expect(library.availableFileName(in: .inbox, preferredName: "other.txt") == "other.txt")
+    }
+
     @Test func directoryLookupFromURL() throws {
         let root = FileManager.default.temporaryDirectory
             .appendingPathComponent("ohmyfile-dir-\(UUID().uuidString)", isDirectory: true)
