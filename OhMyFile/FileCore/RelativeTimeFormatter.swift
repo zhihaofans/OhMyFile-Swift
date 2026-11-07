@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum RelativeTimeUnit: Equatable {
+nonisolated enum RelativeTimeUnit: Equatable {
     case justNow
     case minutes(Int)
     case hours(Int)

@@ -1,5 +1,6 @@
 import Foundation
 import Testing
+import UniformTypeIdentifiers
 @testable import OhMyFile
 
 struct FileCapabilityTests {
@@ -51,6 +52,13 @@ struct FileCapabilityTests {
         let capability = capability(for: "photo.png")
         #expect(capability.canPreview)
         #expect(!capability.canEdit)
+    }
+
+    @Test func officeDocumentsArePreviewable() throws {
+        for pathExtension in ["doc", "docx", "xls", "xlsx", "ppt", "pptx"] {
+            let type = try #require(UTType(filenameExtension: pathExtension))
+            #expect(FileCapabilityResolver.capability(for: type).canPreview)
+        }
     }
 
     @Test func unknownBinaryHasNoPreviewOrEdit() {

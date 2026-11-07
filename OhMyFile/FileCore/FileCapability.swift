@@ -32,6 +32,21 @@ enum FileCapabilityResolver {
         return .data
     }
 
+    nonisolated private static let officeIdentifiers: Set<String> = [
+        "org.openxmlformats.wordprocessingml.document",
+        "com.microsoft.word.doc",
+        "org.openxmlformats.spreadsheetml.sheet",
+        "com.microsoft.excel.xls",
+        "org.openxmlformats.presentationml.presentation",
+        "com.microsoft.powerpoint.ppt",
+        "com.apple.pages",
+        "com.apple.numbers",
+        "com.apple.keynote",
+        "com.apple.iwork.pages",
+        "com.apple.iwork.numbers",
+        "com.apple.iwork.keynote"
+    ]
+
     nonisolated static func capability(for contentType: UTType) -> FileCapability {
         let canPreview = contentType.conforms(to: .image)
             || contentType.conforms(to: .movie)
@@ -44,6 +59,7 @@ enum FileCapabilityResolver {
             || contentType.conforms(to: .zip)
             || contentType.conforms(to: .json)
             || contentType.conforms(to: .xml)
+            || officeIdentifiers.contains(contentType.identifier)
 
         let canEdit = contentType.conforms(to: .text)
             || contentType.conforms(to: .json)

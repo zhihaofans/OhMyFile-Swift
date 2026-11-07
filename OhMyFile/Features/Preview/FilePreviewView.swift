@@ -5,6 +5,7 @@
 //  统一预览入口：文本只读、其余 QuickLook、不支持的类型给出提示。
 //
 
+import QuickLook
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -21,14 +22,13 @@ struct FilePreviewView: View {
         return type.conforms(to: .text)
             || type.conforms(to: .json)
             || type.conforms(to: .xml)
-            || type.conforms(to: .spreadsheet)
     }
 
     var body: some View {
         Group {
             if isText {
                 TextPreviewView(file: file)
-            } else if capability.canPreview {
+            } else if QLPreviewController.canPreview(file.url as NSURL) {
                 QuickLookPreview(url: file.url)
                     .ignoresSafeArea()
             } else {

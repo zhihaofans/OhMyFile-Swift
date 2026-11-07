@@ -23,6 +23,21 @@ func fileIcon(for url: URL) -> (symbol: String, color: Color) {
     if contentType.conforms(to: .pdf) {
         return ("doc.richtext", .red)
     }
+
+    let wordExtensions: Set<String> = ["doc", "docx", "rtf", "pages", "odt"]
+    let spreadsheetExtensions: Set<String> = ["xls", "xlsx", "numbers", "ods", "csv"]
+    let presentationExtensions: Set<String> = ["ppt", "pptx", "key", "odp"]
+    let pathExtension = url.pathExtension.lowercased()
+
+    if wordExtensions.contains(pathExtension) {
+        return ("doc.richtext", .blue)
+    }
+    if spreadsheetExtensions.contains(pathExtension) {
+        return ("tablecells", .green)
+    }
+    if presentationExtensions.contains(pathExtension) {
+        return ("rectangle.on.rectangle", .orange)
+    }
     if contentType.conforms(to: .zip) {
         return ("archivebox", .brown)
     }
