@@ -8,12 +8,28 @@
 import SwiftUI
 
 struct RootTabView: View {
+    @AppStorage("settings.appearance") private var appearanceRaw = AppearanceMode.system.rawValue
+    @AppStorage("settings.lightAccent") private var lightAccentHex = AccentColorStorage.defaultLightHex
+    @AppStorage("settings.darkAccent") private var darkAccentHex = AccentColorStorage.defaultDarkHex
+
+    @Environment(\.colorScheme) private var colorScheme
+
     @State private var selectedTab: MainTab = .files
     @State private var shareRefreshToken = UUID()
     @State private var openInboxToken = UUID()
     @State private var openedExternalFile: ExternalFileRequest?
     @State private var openFileAlert: OpenFileAlert?
     @State private var isImporting = false
+
+    private var appearance: AppearanceMode {
+        AppearanceMode(rawValue: appearanceRaw) ?? .system
+    }
+
+    private var tintColor: Color {
+        colorScheme == .dark
+            ? AccentColorStorage.color(from: darkAccentHex)
+            : AccentColorStorage.color(from: lightAccentHex)
+    }
 
     var body: some View {
         TabView(selection: $selectedTab) {
@@ -29,6 +45,8 @@ struct RootTabView: View {
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
                 .tag(MainTab.settings)
         }
+        .preferredColorScheme(appearance.colorScheme)
+        .tint(tintColor)
         .onOpenURL { url in
             if url.isFileURL {
                 handleOpenFile(url)

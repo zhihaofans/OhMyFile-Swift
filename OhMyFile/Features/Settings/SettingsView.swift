@@ -2,7 +2,7 @@
 //  SettingsView.swift
 //  OhMyFile
 //
-//  设置页：当前只保留已实现的入口；未接入的板块先隐藏。
+//  设置页：外观、存储空间、相对时间、语言（跳系统设置）、版本。
 //
 
 import SwiftUI
@@ -25,6 +25,12 @@ struct SettingsView: View {
             Form {
                 Section("App") {
                     NavigationLink {
+                        AppearanceSettingsView()
+                    } label: {
+                        SettingsLabel(title: "Appearance", systemImage: "paintbrush.fill", color: .purple)
+                    }
+
+                    NavigationLink {
                         StorageView()
                     } label: {
                         SettingsLabel(title: "Storage", systemImage: "internaldrive", color: .gray)
@@ -35,24 +41,37 @@ struct SettingsView: View {
                     }
 
                     Button {
-                        if let url = URL(string: UIApplication.openSettingsURLString) {
-                            openURL(url)
-                        }
+                        openSystemSettings()
                     } label: {
-                        SettingsLabel(title: "App Settings", systemImage: "gearshape.fill", color: .gray)
+                        HStack {
+                            SettingsLabel(title: "Language", systemImage: "globe", color: .blue)
+
+                            Spacer()
+
+                            Text("System Settings")
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
 
                 Section("About") {
                     HStack {
                         Text("Version")
+
                         Spacer()
+
                         Text("\(appVersion) (\(buildNumber))")
                             .foregroundStyle(.secondary)
                     }
                 }
             }
             .navigationTitle("Settings")
+        }
+    }
+
+    private func openSystemSettings() {
+        if let url = URL(string: UIApplication.openSettingsURLString) {
+            openURL(url)
         }
     }
 }

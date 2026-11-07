@@ -68,9 +68,6 @@ struct FilesView: View {
                         }
                     }
 
-                    Section("Files") {
-                        EmptyFilesRow()
-                    }
                 } else if isSearching {
                     ProgressView()
                         .frame(maxWidth: .infinity)
@@ -195,10 +192,7 @@ private struct SearchResultRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: fileIcon(for: result.file.url).symbol)
-                .font(.title3)
-                .foregroundStyle(fileIcon(for: result.file.url).color)
-                .frame(width: 32)
+            FileThumbnailView(file: result.file, size: 36)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(result.file.name)
@@ -254,27 +248,6 @@ extension LibraryDirectory {
         case .trash:
             return "Trash"
         }
-    }
-}
-
-private struct EmptyFilesRow: View {
-    var body: some View {
-        VStack(spacing: 8) {
-            Image(systemName: "doc")
-                .font(.largeTitle)
-                .foregroundStyle(.secondary)
-
-            Text("No Files Yet")
-                .font(.headline)
-
-            Text("Share files from other apps to OhMyFile, or tap + to import.")
-                .font(.subheadline)
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 24)
-        .listRowBackground(Color.clear)
     }
 }
 
