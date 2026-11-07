@@ -61,6 +61,16 @@
         }
       }
     },
+    "Open OhMyFile": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开 OhMyFile"
+          }
+        }
+      }
+    },
     "Shared storage is unavailable.": {
       "localizations": {
         "zh-Hans": {

@@ -87,7 +87,7 @@ final class ShareViewController: UIViewController {
         let message = String(format: String(localized: "Imported %ld files"), imported)
 
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: String(localized: "Close"), style: .default) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: String(localized: "Open OhMyFile"), style: .default) { [weak self] _ in
             self?.openMainAppAndFinish()
         })
         present(alert, animated: true)
