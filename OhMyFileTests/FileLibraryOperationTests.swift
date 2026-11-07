@@ -75,6 +75,32 @@ struct FileLibraryOperationTests {
         #expect(library.files(in: .inbox).map(\.name).contains("a copy.txt"))
     }
 
+    @Test func importsExternalFileIntoInbox() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let source = root.appendingPathComponent("external.txt")
+        try Data("external".utf8).write(to: source)
+
+        let imported = try library.importFile(from: source)
+
+        #expect(imported.deletingLastPathComponent().lastPathComponent == "Inbox")
+        #expect(library.files(in: .inbox).map(\.name) == ["external.txt"])
+    }
+
+    @Test func importFileHandlesNameCollision() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let source = root.appendingPathComponent("external.txt")
+        try Data("external".utf8).write(to: source)
+        _ = try library.importFile(from: source)
+        _ = try library.importFile(from: source)
+
+        let names = Set(library.files(in: .inbox).map(\.name))
+        #expect(names == ["external.txt", "external-1.txt"])
+    }
+
     @Test func directoryLookupFromURL() throws {
         let root = FileManager.default.temporaryDirectory
             .appendingPathComponent("ohmyfile-dir-\(UUID().uuidString)", isDirectory: true)

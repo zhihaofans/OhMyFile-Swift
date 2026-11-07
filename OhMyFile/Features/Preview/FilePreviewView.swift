@@ -10,6 +10,7 @@ import UniformTypeIdentifiers
 
 struct FilePreviewView: View {
     let file: FileItem
+    var recordsRecent = true
 
     private var capability: FileCapability {
         FileCapabilityResolver.capability(for: file.url)
@@ -49,6 +50,8 @@ struct FilePreviewView: View {
             }
         }
         .task {
+            guard recordsRecent else { return }
+
             let url = file.url
             await Task.detached {
                 RecentFilesStore.record(url)
