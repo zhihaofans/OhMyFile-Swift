@@ -4,6 +4,8 @@
 
 ## [Unreleased]
 
+## [0.0.1] - 2026-11-08
+
 ### 新增
 
 - 从其他 App 分享文件到 OhMyFile（Share Extension），文件写入收件箱并可在文件页查看
