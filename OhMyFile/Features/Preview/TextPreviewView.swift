@@ -41,28 +41,15 @@ struct TextPreviewView: View {
         isLoading = true
 
         do {
+            try await CloudFileDownloader.ensureDownloaded(at: file.url)
             text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
             errorMessage = nil
         } catch {
             text = nil
-            errorMessage = message(for: error)
+            errorMessage = textLoadingMessage(for: error)
         }
 
         isLoading = false
     }
 
-    private func message(for error: Error) -> String {
-        guard let loadingError = error as? TextFileLoader.LoadingError else {
-            return error.localizedDescription
-        }
-
-        switch loadingError {
-        case .tooLarge:
-            return String(localized: "File is too large to preview.")
-        case .unsupportedEncoding:
-            return String(localized: "Text encoding is not supported.")
-        case .readFailed:
-            return String(localized: "Unable to read file.")
-        }
-    }
 }

@@ -17,6 +17,14 @@ struct FilePreviewView: View {
         FileCapabilityResolver.capability(for: file.url)
     }
 
+    private var isMarkdown: Bool {
+        let markdownType = UTType("net.daringfireball.markdown")
+        if let markdownType, capability.contentType.conforms(to: markdownType) {
+            return true
+        }
+        return ["md", "markdown", "mdown", "mkd"].contains(file.url.pathExtension.lowercased())
+    }
+
     private var isText: Bool {
         let type = capability.contentType
         return type.conforms(to: .text)
@@ -26,7 +34,9 @@ struct FilePreviewView: View {
 
     var body: some View {
         Group {
-            if isText {
+            if isMarkdown {
+                MarkdownPreviewView(file: file)
+            } else if isText {
                 TextPreviewView(file: file)
             } else if QLPreviewController.canPreview(file.url as NSURL) {
                 QuickLookPreview(url: file.url)

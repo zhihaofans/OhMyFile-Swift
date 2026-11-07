@@ -557,6 +557,26 @@
         }
       }
     },
+    "Extended Markdown": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扩展 Markdown"
+          }
+        }
+      }
+    },
+    "File download timed out. Please try again.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件下载超时，请稍后再试。"
+          }
+        }
+      }
+    },
     "File is too large to preview.": {
       "localizations": {
         "zh-Hans": {
@@ -980,6 +1000,16 @@
         }
       }
     },
+    "Reading": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "阅读"
+          }
+        }
+      }
+    },
     "Reading Clipboard…": {
       "localizations": {
         "zh-Hans": {
@@ -1118,6 +1148,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "排序方式"
+          }
+        }
+      }
+    },
+    "Source": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "源码"
           }
         }
       }
@@ -1329,6 +1369,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "视频"
+          }
+        }
+      }
+    },
+    "View": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "视图"
           }
         }
       }
