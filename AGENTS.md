@@ -331,7 +331,7 @@ Share Extension 必须保持轻量。
 - 避免将可重新生成的缓存加入 iCloud 备份。
 - 不要假设所有分享进来的文件都需要永久保存。
 - 网盘文件按需下载，缓存单独存放且可清理；断开连接后清空对应凭证与缓存。
-- 用户可见目录已映射到 App Group 容器：收件箱 = `Inbox/`（Imported）；下载 = `Downloads/`（T-51 接入后写入）；回收站 = `Trash/<来源目录>/`（按 Inbox / Downloads 分子目录，恢复时回原目录，清空即永久删除）。Cache / Temporary 暂未使用。
+- 用户可见目录已映射到 App Group 容器：收件箱 = `Inbox/`（Imported）；下载 = `Downloads/`（T-51 接入后写入）；回收站 = `Trash/<来源目录>/`（按 Inbox / Downloads 分子目录，恢复时回原目录，清空即永久删除）。Cache = `Cache/`（设置中可清理，不影响用户文件）；Temporary = `Temporary/`（暂未使用）。
 
 ## 11. UI 与交互
 

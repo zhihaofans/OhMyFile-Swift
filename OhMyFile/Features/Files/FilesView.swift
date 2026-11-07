@@ -953,7 +953,7 @@ private func fileDetailText(for file: FileItem, relativeTime: Bool, now: Date) -
     var parts: [String] = []
 
     if let size = file.size {
-        parts.append(formattedSize(size))
+        parts.append(formattedFileSize(size))
     }
     if let date = file.modifiedAt {
         parts.append(
@@ -964,23 +964,6 @@ private func fileDetailText(for file: FileItem, relativeTime: Bool, now: Date) -
     }
 
     return parts.joined(separator: " · ")
-}
-
-private func formattedSize(_ bytes: Int64) -> String {
-    let units = ["B", "KB", "MB", "GB", "TB"]
-    var value = Double(bytes)
-    var unitIndex = 0
-
-    while value >= 1000, unitIndex < units.count - 1 {
-        value /= 1000
-        unitIndex += 1
-    }
-
-    if unitIndex == 0 {
-        return "\(bytes) B"
-    }
-
-    return String(format: "%.1f %@", value, units[unitIndex])
 }
 
 private func fileIcon(for file: FileItem) -> (symbol: String, color: Color) {

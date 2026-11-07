@@ -200,6 +200,74 @@ struct FileLibrary: Sendable {
         }
     }
 
+    nonisolated var cacheURL: URL? {
+        rootURL?.appendingPathComponent("Cache", isDirectory: true)
+    }
+
+    nonisolated var temporaryURL: URL? {
+        rootURL?.appendingPathComponent("Temporary", isDirectory: true)
+    }
+
+    nonisolated func storageUsage() -> StorageUsage {
+        let categories = StorageCategory.allCases.map { category -> StorageCategoryUsage in
+            let url: URL?
+
+            switch category {
+            case .inbox:
+                url = directoryURL(for: .inbox)
+            case .downloads:
+                url = directoryURL(for: .downloads)
+            case .trash:
+                url = directoryURL(for: .trash)
+            case .cache:
+                url = cacheURL
+            case .temporary:
+                url = temporaryURL
+            }
+
+            let usage = url.map { directoryUsage(at: $0) } ?? (0, 0)
+            return StorageCategoryUsage(category: category, bytes: usage.bytes, fileCount: usage.count)
+        }
+
+        return StorageUsage(categories: categories)
+    }
+
+    nonisolated func clearCache() throws {
+        guard let cacheURL else { return }
+
+        let items = (try? FileManager.default.contentsOfDirectory(
+            at: cacheURL,
+            includingPropertiesForKeys: nil,
+            options: .skipsHiddenFiles
+        )) ?? []
+
+        for item in items {
+            try FileManager.default.removeItem(at: item)
+        }
+    }
+
+    nonisolated private func directoryUsage(at url: URL) -> (bytes: Int64, count: Int) {
+        guard let enumerator = FileManager.default.enumerator(
+            at: url,
+            includingPropertiesForKeys: [.fileSizeKey, .isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return (0, 0)
+        }
+
+        var bytes: Int64 = 0
+        var count = 0
+
+        for case let fileURL as URL in enumerator {
+            let values = try? fileURL.resourceValues(forKeys: [.fileSizeKey, .isRegularFileKey])
+            guard values?.isRegularFile == true else { continue }
+            bytes += Int64(values?.fileSize ?? 0)
+            count += 1
+        }
+
+        return (bytes, count)
+    }
+
     /// 读取并清空 Share Extension 留下的导入计数，用于回到 App 时提示。
     nonisolated static func consumePendingImportCount() -> Int {
         guard let defaults = UserDefaults(suiteName: appGroupIdentifier) else { return 0 }

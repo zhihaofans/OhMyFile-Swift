@@ -24,6 +24,12 @@ struct SettingsView: View {
         NavigationStack {
             Form {
                 Section("App") {
+                    NavigationLink {
+                        StorageView()
+                    } label: {
+                        SettingsLabel(title: "Storage", systemImage: "internaldrive", color: .gray)
+                    }
+
                     Toggle(isOn: $relativeTime) {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }

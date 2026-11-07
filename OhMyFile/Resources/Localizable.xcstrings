@@ -21,6 +21,16 @@
         }
       }
     },
+    "%ld files": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 个文件"
+          }
+        }
+      }
+    },
     "%ld files selected": {
       "localizations": {
         "zh-Hans": {
@@ -162,6 +172,46 @@
         }
       }
     },
+    "By Category": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分类占用"
+          }
+        }
+      }
+    },
+    "Cache": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缓存"
+          }
+        }
+      }
+    },
+    "Cache Cleared": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缓存已清理"
+          }
+        }
+      }
+    },
+    "Cache will be cleared. Files are not affected.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "缓存将被清理，文件不受影响。"
+          }
+        }
+      }
+    },
     "Cancel": {
       "localizations": {
         "zh-Hans": {
@@ -178,6 +228,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "清空"
+          }
+        }
+      }
+    },
+    "Clear Cache": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理缓存"
+          }
+        }
+      }
+    },
+    "Clear Cache?": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清理缓存？"
           }
         }
       }
@@ -903,6 +973,16 @@
         }
       }
     },
+    "Storage": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存储空间"
+          }
+        }
+      }
+    },
     "Storage is unavailable.": {
       "localizations": {
         "zh-Hans": {
@@ -919,6 +999,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "切换视图"
+          }
+        }
+      }
+    },
+    "Temporary": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "临时"
           }
         }
       }
@@ -973,6 +1063,16 @@
         }
       }
     },
+    "Total Usage": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "总占用"
+          }
+        }
+      }
+    },
     "Trash": {
       "extractionState": "stale",
       "localizations": {
@@ -980,6 +1080,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "回收站"
+          }
+        }
+      }
+    },
+    "Trash Cleared": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "回收站已清空"
           }
         }
       }
