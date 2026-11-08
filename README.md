@@ -1,5 +1,14 @@
 # OhMyFile
 
+<p align="center">
+  <img src="OhMyFile/Assets.xcassets/AppIcon.appiconset/AppIcon-Light.png" width="128" alt="OhMyFile icon">
+</p>
+
+<p align="center">
+  <a href="https://github.com/zhihaofans/OhMyFile-Swift/tags"><img src="https://img.shields.io/github/v/tag/zhihaofans/OhMyFile-Swift?label=version&color=blue" alt="Version"></a>
+  <img src="https://img.shields.io/badge/platform-iOS%2017%2B-blue" alt="Platform">
+</p>
+
 一款以 iOS 为首发平台的原生文件预览与编辑应用。
 
 ## 核心流程
@@ -17,7 +26,7 @@
 
 ## 当前状态
 
-工程初始化（Xcode 模板），尚未实现业务功能。开发规划见 [TODO.md](TODO.md)，已完成变化见 [CHANGELOG.md](CHANGELOG.md)。
+0.0.2 已实现分享导入、文件管理（收件箱 / 下载 / 回收站）、常见格式预览（文本 / Markdown / JSON / XML / CSV / Office 等）、相册 / 拍照 / 扫描 / 剪贴板导入，以及设置（外观 / 权限 / 存储 / 关于）等基础功能。开发规划见 [TODO.md](TODO.md)，已完成变化见 [CHANGELOG.md](CHANGELOG.md)。
 
 ## 开发
 
