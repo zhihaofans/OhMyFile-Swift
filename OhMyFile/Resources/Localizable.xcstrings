@@ -223,6 +223,16 @@
         }
       }
     },
+    "Authorized": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已授权"
+          }
+        }
+      }
+    },
     "Built with SwiftUI, QuickLook, PDFKit, VisionKit, UniformTypeIdentifiers, PhotosUI and SF Symbols.": {
       "localizations": {
         "zh-Hans": {
@@ -269,6 +279,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "缓存将被清理，文件不受影响。"
+          }
+        }
+      }
+    },
+    "Camera": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相机"
           }
         }
       }
@@ -523,6 +543,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除的文件会出现在这里。"
+          }
+        }
+      }
+    },
+    "Denied": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未授权"
           }
         }
       }
@@ -917,6 +947,16 @@
         }
       }
     },
+    "Microphone": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "麦克风"
+          }
+        }
+      }
+    },
     "Move All to Trash": {
       "extractionState": "stale",
       "localizations": {
@@ -1079,6 +1119,16 @@
         }
       }
     },
+    "Not Requested": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未请求"
+          }
+        }
+      }
+    },
     "OK": {
       "localizations": {
         "zh-Hans": {
@@ -1126,6 +1176,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "从剪贴板导入"
+          }
+        }
+      }
+    },
+    "Permissions": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "权限管理"
           }
         }
       }
@@ -1200,6 +1260,16 @@
         }
       }
     },
+    "Record audio when capturing video.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍摄视频时录制声音。"
+          }
+        }
+      }
+    },
     "Relative Time": {
       "extractionState": "stale",
       "localizations": {
@@ -1227,6 +1297,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "恢复"
+          }
+        }
+      }
+    },
+    "Restricted": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受限"
           }
         }
       }
@@ -1439,6 +1519,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "拍照导入"
+          }
+        }
+      }
+    },
+    "Take photos and scan documents.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍照导入与扫描文档。"
           }
         }
       }

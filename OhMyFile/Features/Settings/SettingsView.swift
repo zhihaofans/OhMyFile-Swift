@@ -36,6 +36,12 @@ struct SettingsView: View {
                         SettingsLabel(title: "Storage", systemImage: "internaldrive", color: .gray)
                     }
 
+                    NavigationLink {
+                        PermissionsView()
+                    } label: {
+                        SettingsLabel(title: "Permissions", systemImage: "lock.shield.fill", color: .green)
+                    }
+
                     Toggle(isOn: $relativeTime) {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
