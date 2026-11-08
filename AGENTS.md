@@ -66,6 +66,7 @@ OhMyFile 是一款以 iOS 为首发平台的原生文件预览与编辑应用。
 - 以下都算发版动作，每次都先问用户，上次同意不代表这次同意：改 `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION`；把 CHANGELOG 的 `[Unreleased]` 切成 `## [x.y.z]`；打 tag；上传 TestFlight / App Store。
 - 功能提交不带版本号：做完先留在 `[Unreleased]`，等用户说「发版」再单独一次提交做版本变更。
 - 版本号与 build 号一起更新：改 `MARKETING_VERSION` 时，`CURRENT_PROJECT_VERSION` 同步 +1；App 与 Share Extension 保持一致；两者放在同一次版本提交里。
+- 发版后 CHANGELOG 冻结：打 tag / 发布后，新条目一律写入 `[Unreleased]`，不得再修改已发布的 `[x.y.z]` 段；下次发版时才把 `[Unreleased]` 切到新版本段。
 - 版本语义按 SemVer 2.0：X = 不兼容改动，Y = 新功能，Z = 修复；预发布写 `0.1.0-rc.1`。
 - 问的时候给：当前版本、建议版本与理由、要改的文件、要不要同时打 tag / 发布。
 
