@@ -55,13 +55,17 @@ struct SettingsView: View {
                 }
 
                 Section("About") {
-                    HStack {
-                        Text("Version")
+                    NavigationLink {
+                        AboutView()
+                    } label: {
+                        HStack {
+                            Text("About")
 
-                        Spacer()
+                            Spacer()
 
-                        Text("\(appVersion) (\(buildNumber))")
-                            .foregroundStyle(.secondary)
+                            Text("\(appVersion) (\(buildNumber))")
+                                .foregroundStyle(.secondary)
+                        }
                     }
                 }
             }

@@ -102,6 +102,16 @@
         }
       }
     },
+    "Acknowledgements": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "致谢"
+          }
+        }
+      }
+    },
     "Added %lld files to Inbox": {
       "localizations": {
         "zh-Hans": {
@@ -209,6 +219,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "音频"
+          }
+        }
+      }
+    },
+    "Built with SwiftUI, QuickLook, PDFKit, VisionKit, UniformTypeIdentifiers, PhotosUI and SF Symbols.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "基于 SwiftUI、QuickLook、PDFKit、VisionKit、UniformTypeIdentifiers、PhotosUI 与 SF Symbols 构建。"
           }
         }
       }
@@ -657,6 +677,16 @@
         }
       }
     },
+    "Files are processed locally on this device. Nothing is uploaded without your permission.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件只在本机处理，未经你的许可不会上传任何内容。"
+          }
+        }
+      }
+    },
     "Files downloaded to OhMyFile will appear here.": {
       "localizations": {
         "zh-Hans": {
@@ -693,6 +723,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "筛选"
+          }
+        }
+      }
+    },
+    "GitHub Repository": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub 仓库"
           }
         }
       }
@@ -1110,6 +1150,26 @@
         }
       }
     },
+    "Privacy": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隐私"
+          }
+        }
+      }
+    },
+    "Rate on App Store": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在 App Store 评分"
+          }
+        }
+      }
+    },
     "Reading": {
       "localizations": {
         "zh-Hans": {
@@ -1241,6 +1301,16 @@
         }
       }
     },
+    "Send Feedback": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "发送反馈"
+          }
+        }
+      }
+    },
     "Settings": {
       "localizations": {
         "zh-Hans": {
@@ -1252,6 +1322,16 @@
       }
     },
     "Share": {},
+    "Share App": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享 App"
+          }
+        }
+      }
+    },
     "Share files from other apps to OhMyFile, or tap + to import.": {
       "localizations": {
         "zh-Hans": {
@@ -1389,6 +1469,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文本编码不受支持。"
+          }
+        }
+      }
+    },
+    "Thanks to Apple and the open-source community.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "感谢 Apple 与开源社区。"
           }
         }
       }
