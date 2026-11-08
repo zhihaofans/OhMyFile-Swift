@@ -29,9 +29,10 @@ struct AboutView: View {
         List {
             Section {
                 VStack(spacing: 10) {
-                    Image(systemName: "doc.fill")
-                        .font(.system(size: 48))
-                        .foregroundStyle(.tint)
+                    Image("AppIconPreview")
+                        .resizable()
+                        .frame(width: 84, height: 84)
+                        .clipShape(RoundedRectangle(cornerRadius: 19, style: .continuous))
 
                     Text("OhMyFile")
                         .font(.title2.bold())
