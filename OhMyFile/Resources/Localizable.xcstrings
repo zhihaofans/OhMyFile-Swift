@@ -1050,6 +1050,16 @@
         }
       }
     },
+    "Photo": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片"
+          }
+        }
+      }
+    },
     "Preview Not Supported": {
       "localizations": {
         "zh-Hans": {
@@ -1419,6 +1429,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法读取文件。"
+          }
+        }
+      }
+    },
+    "Unable to read the selected photos.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法读取所选照片。"
           }
         }
       }

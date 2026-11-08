@@ -7,6 +7,7 @@
 //
 
 import Combine
+import PhotosUI
 import SwiftUI
 import UniformTypeIdentifiers
 
@@ -24,6 +25,10 @@ struct FilesView: View {
     @State private var isSearching = false
     @State private var now = Date()
     @State private var showClipboardSheet = false
+    @State private var showPhotosPicker = false
+    @State private var selectedPhotoItems: [PhotosPickerItem] = []
+    @State private var isImportingPhotos = false
+    @State private var photoImportError: String?
 
     private let library = FileLibrary()
 
@@ -121,7 +126,9 @@ struct FilesView: View {
                             showClipboardSheet = true
                         }
                         Button("Import from Files", systemImage: "folder") {}
-                        Button("Import from Photos", systemImage: "photo") {}
+                        Button("Import from Photos", systemImage: "photo") {
+                            showPhotosPicker = true
+                        }
                         Button("Scan Documents", systemImage: "doc.viewfinder") {}
                         Button("New Folder", systemImage: "folder.badge.plus") {}
                     } label: {
@@ -139,6 +146,39 @@ struct FilesView: View {
                     importedCount = 1
                     showImportAlert = true
                     Task { await loadCounts() }
+                }
+            }
+            .photosPicker(
+                isPresented: $showPhotosPicker,
+                selection: $selectedPhotoItems,
+                maxSelectionCount: 20,
+                matching: .images
+            )
+            .onChange(of: selectedPhotoItems) { _, items in
+                guard !items.isEmpty else { return }
+                importPhotos(items)
+                selectedPhotoItems = []
+            }
+            .overlay {
+                if isImportingPhotos {
+                    ProgressView("Importing…")
+                        .padding()
+                        .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+                }
+            }
+            .overlay(alignment: .top) {
+                if let photoImportError {
+                    Text(photoImportError)
+                        .font(.callout)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(.regularMaterial, in: Capsule())
+                        .padding(.top, 8)
+                        .onTapGesture { self.photoImportError = nil }
+                        .task(id: photoImportError) {
+                            try? await Task.sleep(nanoseconds: 3_000_000_000)
+                            self.photoImportError = nil
+                        }
                 }
             }
         }
@@ -170,6 +210,42 @@ struct FilesView: View {
         guard !Task.isCancelled else { return }
         searchResults = results
         isSearching = false
+    }
+
+    private func importPhotos(_ items: [PhotosPickerItem]) {
+        isImportingPhotos = true
+
+        Task {
+            var imported = 0
+            var failed = 0
+
+            for item in items {
+                guard let data = try? await item.loadTransferable(type: Data.self) else {
+                    failed += 1
+                    continue
+                }
+
+                let pathExtension = item.supportedContentTypes.first?.preferredFilenameExtension ?? "jpg"
+                let fileName = "\(String(localized: "Photo")).\(pathExtension)"
+
+                do {
+                    _ = try FileLibrary().importData(data, fileName: fileName)
+                    imported += 1
+                } catch {
+                    failed += 1
+                }
+            }
+
+            isImportingPhotos = false
+            importedCount = imported
+            showImportAlert = imported > 0
+
+            if failed > 0 {
+                photoImportError = String(localized: "Unable to read the selected photos.")
+            }
+
+            await loadCounts()
+        }
     }
 
     private func loadCounts() async {
