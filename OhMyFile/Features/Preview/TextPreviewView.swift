@@ -13,6 +13,11 @@ struct TextPreviewView: View {
     @State private var text: String?
     @State private var errorMessage: String?
     @State private var isLoading = true
+    @State private var isEditing = false
+
+    private var canEdit: Bool {
+        file.url.pathExtension.lowercased() == "txt"
+    }
 
     var body: some View {
         Group {
@@ -32,6 +37,26 @@ struct TextPreviewView: View {
                     systemImage: "exclamationmark.triangle",
                     description: Text(errorMessage ?? "")
                 )
+            }
+        }
+        .toolbar {
+            if canEdit {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                    .disabled(text == nil)
+                    .accessibilityLabel("Edit")
+                }
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            NavigationStack {
+                TextEditorView(file: file, text: text ?? "") {
+                    Task { await load() }
+                }
             }
         }
         .task { await load() }
