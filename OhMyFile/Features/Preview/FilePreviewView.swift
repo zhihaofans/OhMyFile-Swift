@@ -36,6 +36,13 @@ struct FilePreviewView: View {
         }
     }
 
+    private var isCSV: Bool {
+        if capability.contentType.conforms(to: .commaSeparatedText) {
+            return true
+        }
+        return ["csv", "tsv"].contains(file.url.pathExtension.lowercased())
+    }
+
     private var isMarkdown: Bool {
         let markdownType = UTType("net.daringfireball.markdown")
         if let markdownType, capability.contentType.conforms(to: markdownType) {
@@ -55,6 +62,8 @@ struct FilePreviewView: View {
         Group {
             if let structuredKind {
                 StructuredPreviewView(file: file, kind: structuredKind)
+            } else if isCSV {
+                CSVPreviewView(file: file)
             } else if isMarkdown {
                 MarkdownPreviewView(file: file)
             } else if isText {

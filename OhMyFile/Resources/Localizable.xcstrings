@@ -365,6 +365,16 @@
         }
       }
     },
+    "Column Width": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "列宽"
+          }
+        }
+      }
+    },
     "Copy": {
       "localizations": {
         "zh-Hans": {
@@ -827,6 +837,16 @@
         }
       }
     },
+    "Medium": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中"
+          }
+        }
+      }
+    },
     "Move All to Trash": {
       "extractionState": "stale",
       "localizations": {
@@ -904,6 +924,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "名称"
+          }
+        }
+      }
+    },
+    "Narrow": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "窄"
           }
         }
       }
@@ -1158,6 +1188,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "从其他 App 分享文件到 OhMyFile，或点击右上角 + 导入。"
+          }
+        }
+      }
+    },
+    "Showing first %ld rows": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅显示前 %ld 行"
           }
         }
       }
@@ -1419,6 +1459,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "视图"
+          }
+        }
+      }
+    },
+    "Wide": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "宽"
+          }
+        }
+      }
+    },
+    "Wrap Text": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自动换行"
           }
         }
       }
