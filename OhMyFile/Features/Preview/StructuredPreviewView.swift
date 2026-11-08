@@ -8,7 +8,7 @@
 import SwiftUI
 import UIKit
 
-enum StructuredKind {
+enum StructuredKind: Equatable {
     case json
     case xml
 }
@@ -20,6 +20,7 @@ struct StructuredPreviewView: View {
     @State private var text: String?
     @State private var errorMessage: String?
     @State private var showSource = false
+    @State private var isEditing = false
 
     var body: some View {
         Group {
@@ -45,6 +46,18 @@ struct StructuredPreviewView: View {
             }
         }
         .toolbar {
+            if kind == .xml {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        isEditing = true
+                    } label: {
+                        Image(systemName: "pencil")
+                    }
+                    .disabled(text == nil)
+                    .accessibilityLabel("Edit")
+                }
+            }
+
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Picker("View", selection: $showSource) {
@@ -53,6 +66,17 @@ struct StructuredPreviewView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            NavigationStack {
+                StructuredEditorView(
+                    file: file,
+                    kind: .xml,
+                    text: text ?? ""
+                ) {
+                    Task { await load() }
                 }
             }
         }

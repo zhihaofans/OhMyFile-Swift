@@ -253,6 +253,26 @@
         }
       }
     },
+    "CSV rows have different column counts.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV 各行字段数不一致，请检查后再保存。"
+          }
+        }
+      }
+    },
+    "CSV structure is invalid.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV 结构无效。"
+          }
+        }
+      }
+    },
     "Cache": {
       "localizations": {
         "zh-Hans": {

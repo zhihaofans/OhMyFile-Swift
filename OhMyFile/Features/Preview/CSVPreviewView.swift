@@ -14,7 +14,9 @@ struct CSVPreviewView: View {
     @AppStorage("csv.columnWidth") private var columnWidth = 140.0
 
     @State private var table: CSVTable?
+    @State private var sourceText: String?
     @State private var errorMessage: String?
+    @State private var isEditing = false
 
     var body: some View {
         Group {
@@ -32,6 +34,16 @@ struct CSVPreviewView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isEditing = true
+                } label: {
+                    Image(systemName: "pencil")
+                }
+                .disabled(sourceText == nil)
+                .accessibilityLabel("Edit")
+            }
+
+            ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Toggle("Wrap Text", isOn: $wrapText)
 
@@ -42,6 +54,17 @@ struct CSVPreviewView: View {
                     }
                 } label: {
                     Image(systemName: "ellipsis.circle")
+                }
+            }
+        }
+        .sheet(isPresented: $isEditing) {
+            NavigationStack {
+                StructuredEditorView(
+                    file: file,
+                    kind: .csv,
+                    text: sourceText ?? ""
+                ) {
+                    Task { await load() }
                 }
             }
         }
@@ -104,6 +127,7 @@ struct CSVPreviewView: View {
         do {
             try await CloudFileDownloader.ensureDownloaded(at: file.url)
             let text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
+            sourceText = text
             table = CSVParser.parse(text)
         } catch {
             errorMessage = textLoadingMessage(for: error)
