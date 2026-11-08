@@ -17,6 +17,25 @@ struct FilePreviewView: View {
         FileCapabilityResolver.capability(for: file.url)
     }
 
+    private var structuredKind: StructuredKind? {
+        let type = capability.contentType
+        if type.conforms(to: .json) {
+            return .json
+        }
+        if type.conforms(to: .xml) {
+            return .xml
+        }
+
+        switch file.url.pathExtension.lowercased() {
+        case "json":
+            return .json
+        case "xml", "plist":
+            return .xml
+        default:
+            return nil
+        }
+    }
+
     private var isMarkdown: Bool {
         let markdownType = UTType("net.daringfireball.markdown")
         if let markdownType, capability.contentType.conforms(to: markdownType) {
@@ -34,7 +53,9 @@ struct FilePreviewView: View {
 
     var body: some View {
         Group {
-            if isMarkdown {
+            if let structuredKind {
+                StructuredPreviewView(file: file, kind: structuredKind)
+            } else if isMarkdown {
                 MarkdownPreviewView(file: file)
             } else if isText {
                 TextPreviewView(file: file)

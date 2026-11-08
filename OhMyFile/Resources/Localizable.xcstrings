@@ -253,6 +253,16 @@
         }
       }
     },
+    "Cannot Open File": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开文件"
+          }
+        }
+      }
+    },
     "Clear": {
       "localizations": {
         "zh-Hans": {
@@ -743,6 +753,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "收件箱为空"
+          }
+        }
+      }
+    },
+    "Invalid JSON": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON 格式错误"
+          }
+        }
+      }
+    },
+    "Invalid XML": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XML 格式错误"
           }
         }
       }
@@ -1319,6 +1349,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "回收站为空"
+          }
+        }
+      }
+    },
+    "Tree": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "树形"
           }
         }
       }
