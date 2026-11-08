@@ -17,6 +17,10 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Take photos or scan documents into OhMyFile.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Record audio when capturing video into OhMyFile.</string>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
 	<key>CFBundleURLTypes</key>

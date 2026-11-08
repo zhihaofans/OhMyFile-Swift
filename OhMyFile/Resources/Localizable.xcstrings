@@ -142,6 +142,16 @@
         }
       }
     },
+    "Allow camera access in Settings to take photos or scan documents.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请在系统设置中允许相机访问，用于拍照或扫描文档。"
+          }
+        }
+      }
+    },
     "App": {
       "localizations": {
         "zh-Hans": {
@@ -239,6 +249,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "缓存将被清理，文件不受影响。"
+          }
+        }
+      }
+    },
+    "Camera / Scan": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍照 / 扫描"
+          }
+        }
+      }
+    },
+    "Camera Access Required": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要相机权限"
           }
         }
       }
@@ -1019,6 +1049,16 @@
         }
       }
     },
+    "Open Settings": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开设置"
+          }
+        }
+      }
+    },
     "Order": {
       "localizations": {
         "zh-Hans": {
@@ -1137,6 +1177,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "结果"
+          }
+        }
+      }
+    },
+    "Scan": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描"
+          }
+        }
+      }
+    },
+    "Scan Document": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扫描文档"
           }
         }
       }
@@ -1293,6 +1353,16 @@
         }
       }
     },
+    "Take Photo": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍照导入"
+          }
+        }
+      }
+    },
     "Temporary": {
       "localizations": {
         "zh-Hans": {
@@ -1423,6 +1493,16 @@
         }
       }
     },
+    "Unable to create the scanned PDF.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法生成扫描 PDF。"
+          }
+        }
+      }
+    },
     "Unable to read file.": {
       "localizations": {
         "zh-Hans": {
@@ -1443,6 +1523,16 @@
         }
       }
     },
+    "Unable to save the photo.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存照片。"
+          }
+        }
+      }
+    },
     "Unsupported Format": {
       "localizations": {
         "zh-Hans": {
@@ -1459,6 +1549,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "版本"
+          }
+        }
+      }
+    },
+    "Video": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "视频"
           }
         }
       }

@@ -7,8 +7,10 @@
 //
 
 import Combine
+import AVFoundation
 import PhotosUI
 import SwiftUI
+import UIKit
 import UniformTypeIdentifiers
 
 struct FilesView: View {
@@ -27,8 +29,14 @@ struct FilesView: View {
     @State private var showClipboardSheet = false
     @State private var showPhotosPicker = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
-    @State private var isImportingPhotos = false
-    @State private var photoImportError: String?
+    @State private var isImportingMedia = false
+    @State private var importErrorMessage: String?
+
+    @Environment(\.openURL) private var openURL
+    @State private var showCameraChoice = false
+    @State private var showCamera = false
+    @State private var showScanner = false
+    @State private var cameraAccessDenied = false
 
     private let library = FileLibrary()
 
@@ -129,7 +137,9 @@ struct FilesView: View {
                         Button("Import from Photos", systemImage: "photo") {
                             showPhotosPicker = true
                         }
-                        Button("Scan Documents", systemImage: "doc.viewfinder") {}
+                        Button("Camera / Scan", systemImage: "camera") {
+                            showCameraChoice = true
+                        }
                         Button("New Folder", systemImage: "folder.badge.plus") {}
                     } label: {
                         Image(systemName: "plus")
@@ -159,25 +169,60 @@ struct FilesView: View {
                 importPhotos(items)
                 selectedPhotoItems = []
             }
+            .confirmationDialog(
+                "Camera / Scan",
+                isPresented: $showCameraChoice,
+                titleVisibility: .visible
+            ) {
+                Button("Take Photo") {
+                    requestCameraThen { showCamera = true }
+                }
+                Button("Scan Document") {
+                    requestCameraThen { showScanner = true }
+                }
+                Button("Cancel", role: .cancel) {}
+            }
+            .fullScreenCover(isPresented: $showCamera) {
+                CameraPicker { capture in
+                    handleCapture(capture)
+                }
+                .ignoresSafeArea()
+            }
+            .fullScreenCover(isPresented: $showScanner) {
+                DocumentScanner { images in
+                    handleScan(images)
+                }
+                .ignoresSafeArea()
+            }
+            .alert("Camera Access Required", isPresented: $cameraAccessDenied) {
+                Button("Open Settings") {
+                    if let url = URL(string: UIApplication.openSettingsURLString) {
+                        openURL(url)
+                    }
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Allow camera access in Settings to take photos or scan documents.")
+            }
             .overlay {
-                if isImportingPhotos {
+                if isImportingMedia {
                     ProgressView("Importing…")
                         .padding()
                         .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
                 }
             }
             .overlay(alignment: .top) {
-                if let photoImportError {
-                    Text(photoImportError)
+                if let importErrorMessage {
+                    Text(importErrorMessage)
                         .font(.callout)
                         .padding(.horizontal, 16)
                         .padding(.vertical, 10)
                         .background(.regularMaterial, in: Capsule())
                         .padding(.top, 8)
-                        .onTapGesture { self.photoImportError = nil }
-                        .task(id: photoImportError) {
+                        .onTapGesture { self.importErrorMessage = nil }
+                        .task(id: importErrorMessage) {
                             try? await Task.sleep(nanoseconds: 3_000_000_000)
-                            self.photoImportError = nil
+                            self.importErrorMessage = nil
                         }
                 }
             }
@@ -212,8 +257,95 @@ struct FilesView: View {
         isSearching = false
     }
 
+    private func requestCameraThen(_ action: @escaping () -> Void) {
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            action()
+        case .notDetermined:
+            Task {
+                let granted = await Self.requestCameraAccess()
+                if granted {
+                    action()
+                } else {
+                    cameraAccessDenied = true
+                }
+            }
+        default:
+            cameraAccessDenied = true
+        }
+    }
+
+    nonisolated private static func requestCameraAccess() async -> Bool {
+        await withCheckedContinuation { continuation in
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                continuation.resume(returning: granted)
+            }
+        }
+    }
+
+    private func handleCapture(_ capture: CameraCapture) {
+        isImportingMedia = true
+
+        Task {
+            defer { isImportingMedia = false }
+
+            do {
+                switch capture {
+                case .photo(let image):
+                    guard let data = image.jpegData(compressionQuality: 0.9) else {
+                        importErrorMessage = String(localized: "Unable to save the photo.")
+                        return
+                    }
+                    _ = try FileLibrary().importData(
+                        data,
+                        fileName: "\(String(localized: "Photo")).jpg"
+                    )
+                case .video(let url):
+                    defer { try? FileManager.default.removeItem(at: url) }
+
+                    let pathExtension = url.pathExtension.isEmpty ? "mov" : url.pathExtension
+                    _ = try FileLibrary().importFile(
+                        from: url,
+                        fileName: "\(String(localized: "Video")).\(pathExtension)"
+                    )
+                }
+
+                importedCount = 1
+                showImportAlert = true
+                await loadCounts()
+            } catch {
+                importErrorMessage = error.localizedDescription
+            }
+        }
+    }
+
+    private func handleScan(_ images: [UIImage]) {
+        guard !images.isEmpty, let data = ScannedPDF.make(from: images) else {
+            importErrorMessage = String(localized: "Unable to create the scanned PDF.")
+            return
+        }
+
+        isImportingMedia = true
+
+        Task {
+            defer { isImportingMedia = false }
+
+            do {
+                _ = try FileLibrary().importData(
+                    data,
+                    fileName: "\(String(localized: "Scan")).pdf"
+                )
+                importedCount = 1
+                showImportAlert = true
+                await loadCounts()
+            } catch {
+                importErrorMessage = error.localizedDescription
+            }
+        }
+    }
+
     private func importPhotos(_ items: [PhotosPickerItem]) {
-        isImportingPhotos = true
+        isImportingMedia = true
 
         Task {
             var imported = 0
@@ -236,12 +368,12 @@ struct FilesView: View {
                 }
             }
 
-            isImportingPhotos = false
+            isImportingMedia = false
             importedCount = imported
             showImportAlert = imported > 0
 
             if failed > 0 {
-                photoImportError = String(localized: "Unable to read the selected photos.")
+                importErrorMessage = String(localized: "Unable to read the selected photos.")
             }
 
             await loadCounts()
