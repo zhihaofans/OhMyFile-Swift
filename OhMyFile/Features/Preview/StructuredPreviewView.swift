@@ -46,7 +46,7 @@ struct StructuredPreviewView: View {
             }
         }
         .toolbar {
-            if kind == .xml {
+            if kind == .xml || kind == .json {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         isEditing = true
@@ -73,7 +73,7 @@ struct StructuredPreviewView: View {
             NavigationStack {
                 StructuredEditorView(
                     file: file,
-                    kind: .xml,
+                    kind: kind == .xml ? .xml : .json,
                     text: text ?? ""
                 ) {
                     Task { await load() }
@@ -131,7 +131,10 @@ private struct JSONStructuredContent: View {
                 ProgressView()
             }
         }
-        .task {
+        .task(id: text) {
+            root = nil
+            errorMessage = nil
+
             do {
                 root = try JSONTreeParser.parse(text)
             } catch {
@@ -175,7 +178,10 @@ private struct XMLStructuredContent: View {
                 ProgressView()
             }
         }
-        .task {
+        .task(id: text) {
+            root = nil
+            errorMessage = nil
+
             do {
                 root = try XMLTreeParser.parse(text)
             } catch {

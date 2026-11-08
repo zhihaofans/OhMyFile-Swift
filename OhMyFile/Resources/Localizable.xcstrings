@@ -937,6 +937,16 @@
         }
       }
     },
+    "Invalid JSON: %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON 格式错误：%@"
+          }
+        }
+      }
+    },
     "Invalid XML": {
       "localizations": {
         "zh-Hans": {

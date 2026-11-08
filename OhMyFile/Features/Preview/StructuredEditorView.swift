@@ -11,6 +11,7 @@ struct StructuredEditorView: View {
     enum Kind {
         case xml
         case csv
+        case json
     }
 
     let file: FileItem
@@ -101,6 +102,18 @@ struct StructuredEditorView: View {
                 return nil
             } catch {
                 return String(localized: "Invalid XML")
+            }
+
+        case .json:
+            do {
+                _ = try JSONTreeParser.parse(draft)
+                return nil
+            } catch {
+                let nsError = error as NSError
+                if let debug = nsError.userInfo["NSDebugDescription"] as? String {
+                    return String(format: String(localized: "Invalid JSON: %@"), debug)
+                }
+                return String(localized: "Invalid JSON")
             }
 
         case .csv:
