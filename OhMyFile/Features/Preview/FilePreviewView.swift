@@ -36,6 +36,13 @@ struct FilePreviewView: View {
         }
     }
 
+    private var isHTML: Bool {
+        if capability.contentType.conforms(to: .html) {
+            return true
+        }
+        return ["html", "htm"].contains(file.url.pathExtension.lowercased())
+    }
+
     private var isCSV: Bool {
         if capability.contentType.conforms(to: .commaSeparatedText) {
             return true
@@ -62,6 +69,8 @@ struct FilePreviewView: View {
         Group {
             if let structuredKind {
                 StructuredPreviewView(file: file, kind: structuredKind)
+            } else if isHTML {
+                HTMLPreviewView(file: file)
             } else if isCSV {
                 CSVPreviewView(file: file)
             } else if isMarkdown {

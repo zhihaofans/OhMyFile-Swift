@@ -757,6 +757,16 @@
         }
       }
     },
+    "Font Size": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "字号"
+          }
+        }
+      }
+    },
     "GitHub Repository": {
       "localizations": {
         "zh-Hans": {
@@ -907,12 +917,32 @@
         }
       }
     },
+    "Large": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大"
+          }
+        }
+      }
+    },
     "Light": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "浅色"
+          }
+        }
+      }
+    },
+    "Link Copied": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "链接已复制"
           }
         }
       }
@@ -953,6 +983,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "麦克风"
+          }
+        }
+      }
+    },
+    "Mode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模式"
           }
         }
       }
@@ -1155,6 +1195,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "顺序"
+          }
+        }
+      }
+    },
+    "Original": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原样"
           }
         }
       }
@@ -1442,6 +1492,16 @@
         }
       }
     },
+    "Small": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小"
+          }
+        }
+      }
+    },
     "Sort By": {
       "localizations": {
         "zh-Hans": {
@@ -1579,6 +1639,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件名无效。"
+          }
+        }
+      }
+    },
+    "Theme": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "主题"
           }
         }
       }
