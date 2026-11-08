@@ -1280,6 +1280,16 @@
         }
       }
     },
+    "Preview": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "预览"
+          }
+        }
+      }
+    },
     "Preview Not Supported": {
       "localizations": {
         "zh-Hans": {

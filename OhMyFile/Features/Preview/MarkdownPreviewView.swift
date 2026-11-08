@@ -16,6 +16,7 @@ struct MarkdownPreviewView: View {
 
     @State private var text: String?
     @State private var errorMessage: String?
+    @State private var isEditing = false
 
     var body: some View {
         Group {
@@ -36,6 +37,16 @@ struct MarkdownPreviewView: View {
             }
         }
         .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isEditing = true
+                } label: {
+                    Image(systemName: "pencil")
+                }
+                .disabled(text == nil)
+                .accessibilityLabel("Edit")
+            }
+
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
                     Picker("View", selection: $showSource) {
@@ -58,23 +69,20 @@ struct MarkdownPreviewView: View {
                 }
             }
         }
+        .sheet(isPresented: $isEditing) {
+            NavigationStack {
+                MarkdownEditorView(file: file, text: text ?? "") {
+                    Task { await load() }
+                }
+            }
+        }
         .task {
             await load()
         }
     }
 
     private func readingView(_ text: String) -> some View {
-        let blocks = MarkdownParser.parse(text, extended: extended)
-
-        return ScrollView {
-            LazyVStack(alignment: .leading, spacing: 10) {
-                ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
-                    MarkdownBlockView(block: block, extended: extended)
-                }
-            }
-            .padding()
-            .frame(maxWidth: .infinity, alignment: .leading)
-        }
+        MarkdownContentView(text: text, extended: extended)
     }
 
     private func sourceView(_ text: String) -> some View {
@@ -93,6 +101,25 @@ struct MarkdownPreviewView: View {
             text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
         } catch {
             errorMessage = textLoadingMessage(for: error)
+        }
+    }
+}
+
+struct MarkdownContentView: View {
+    let text: String
+    let extended: Bool
+
+    var body: some View {
+        let blocks = MarkdownParser.parse(text, extended: extended)
+
+        ScrollView {
+            LazyVStack(alignment: .leading, spacing: 10) {
+                ForEach(Array(blocks.enumerated()), id: \.offset) { _, block in
+                    MarkdownBlockView(block: block, extended: extended)
+                }
+            }
+            .padding()
+            .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
 }
