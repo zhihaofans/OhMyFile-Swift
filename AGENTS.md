@@ -65,6 +65,7 @@ OhMyFile 是一款以 iOS 为首发平台的原生文件预览与编辑应用。
 
 - 以下都算发版动作，每次都先问用户，上次同意不代表这次同意：改 `MARKETING_VERSION` / `CURRENT_PROJECT_VERSION`；把 CHANGELOG 的 `[Unreleased]` 切成 `## [x.y.z]`；打 tag；上传 TestFlight / App Store。
 - 功能提交不带版本号：做完先留在 `[Unreleased]`，等用户说「发版」再单独一次提交做版本变更。
+- 版本号与 build 号一起更新：改 `MARKETING_VERSION` 时，`CURRENT_PROJECT_VERSION` 同步 +1；App 与 Share Extension 保持一致；两者放在同一次版本提交里。
 - 版本语义按 SemVer 2.0：X = 不兼容改动，Y = 新功能，Z = 修复；预发布写 `0.1.0-rc.1`。
 - 问的时候给：当前版本、建议版本与理由、要改的文件、要不要同时打 tag / 发布。
 
@@ -439,7 +440,7 @@ Share Extension 必须保持轻量。
 | 并发默认隔离 | `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`，`SWIFT_APPROACHABLE_CONCURRENCY = YES` |
 | Supported Destinations | iPhone + iPad（`TARGETED_DEVICE_FAMILY = 1,2`，`SDKROOT = iphoneos`） |
 | 支持方向 | iPhone：竖 + 横；iPad：四个方向 |
-| App 版本 | `MARKETING_VERSION = 0.0.1`，`CURRENT_PROJECT_VERSION = 1` |
+| App 版本 | `MARKETING_VERSION = 0.0.1`，`CURRENT_PROJECT_VERSION = 1`（App / Share Extension / 测试 target 已统一） |
 | App Groups / Share Extension / Entitlements | App Group：`group.me.zzhhoo.OhMyFile`；Share Extension：`OhMyFileShareExtension`；主 App 与 Extension 各有一份 entitlements |
 | Info.plist | 主 App：`OhMyFile/Info.plist`（`CFBundleURLTypes` → `ohmyfile`；`CFBundleDocumentTypes` 声明 `public.item`、`CFBundleTypeRole = Viewer`、`LSHandlerRank = Default`、`LSSupportsOpeningDocumentsInPlace = true`；已从同步文件夹 resources 排除）；Share Extension：独立 `Info.plist`。两者都保留 `GENERATE_INFOPLIST_FILE = YES` 合并生成键 |
 | 第三方依赖 | 无；规划接入 SwiftUtils（优先复用）与 CrashKit（崩溃收集） |
@@ -467,7 +468,7 @@ Share Extension 必须保持轻量。
 5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。注意 `xcuserdata/xcschememanagement.plist`（`OhMyFile.xcodeproj/xcuserdata/zzh.xcuserdatad/xcschemes/`）在加规则前就已被 Git 跟踪，`.gitignore` 不会取消跟踪；要移出需 `git rm --cached`（git 写操作，先问用户，见 TODO.md 的「工程卫生」条目）。
 6. **命令行构建需要放宽 agent 沙盒**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），`@State` / `@AppStorage` 等 SwiftUI 宏会报错。这是 agent 沙盒限制，不是代码错误；需要临时放宽文件沙盒权限（或直接在 Xcode 里构建）。已验证放宽后可构建成功。
 7. **Swift 5 语言模式**：`SWIFT_VERSION = 5.0`，但已启用 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`、`SWIFT_APPROACHABLE_CONCURRENCY`、`SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY`。迁移到 Swift 6 语言模式会改变全局并发检查，属跨文件改动，先出方案。
-8. **版本号多处**：app target 的 `MARKETING_VERSION` 是真实版本（0.0.1），Share Extension 已对齐为 0.0.1；测试 target 的 `1.0` 无实际含义。改版本时 app 与 Extension 必须一致，且先问用户（§2）。
+8. **版本号**：App、Share Extension、测试 target 的 `MARKETING_VERSION` 已统一为 0.0.1，`CURRENT_PROJECT_VERSION` 均为 1。改版本时所有 target 保持一致，且先问用户（§2）；版本号更新时同步递增 `CURRENT_PROJECT_VERSION`。
 9. **没有 File Provider Extension target**：系统「文件」App 里出现 OhMyFile 需要新增 File Provider Extension 与对应 entitlements；新增 Target 属跨 Target 改动，先出方案并征得同意。
 10. **示例文件尚未接入构建**：README.md、CHANGELOG.md 目前只存在于仓库；接入后要保证 bundle 内 `SampleFiles/` 副本与仓库根一致，改文档后重新构建，不在源码目录留副本。
 11. **CrashKit / SwiftUtils 尚未接入**：当前工程没有 SPM 依赖；接入需新增 Package 依赖与对应配置，属依赖变更，先出方案并征得同意。
