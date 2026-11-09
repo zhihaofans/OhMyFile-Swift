@@ -11,6 +11,7 @@ import UIKit
 struct SettingsView: View {
     @Environment(\.openURL) private var openURL
     @AppStorage("settings.relativeTime") private var relativeTime = true
+    @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
@@ -57,6 +58,17 @@ struct SettingsView: View {
                 }
 
                 Section("Files") {
+                    Picker(selection: $launchPageRaw) {
+                        Text("Files").tag(LaunchPage.files.rawValue)
+                        Text("Recent").tag(LaunchPage.recent.rawValue)
+                        Text("Settings").tag(LaunchPage.settings.rawValue)
+                        Text("Inbox").tag(LaunchPage.inbox.rawValue)
+                        Text("Downloads").tag(LaunchPage.downloads.rawValue)
+                        Text("Trash").tag(LaunchPage.trash.rawValue)
+                    } label: {
+                        SettingsLabel(title: "Launch Page", systemImage: "rectangle.on.rectangle", color: .indigo)
+                    }
+
                     Toggle(isOn: $relativeTime) {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
@@ -67,7 +79,7 @@ struct SettingsView: View {
                         AboutView()
                     } label: {
                         HStack {
-                            Text("About")
+                            SettingsLabel(title: "About", systemImage: "info.circle.fill", color: .gray)
 
                             Spacer()
 

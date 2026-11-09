@@ -16,13 +16,15 @@ import UniformTypeIdentifiers
 struct FilesView: View {
     let refreshToken: UUID
     let openInboxToken: UUID
+    let initialDirectory: LibraryDirectory?
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @State private var counts: [LibraryDirectory: Int] = [:]
     @State private var importedCount = 0
     @State private var showImportAlert = false
-    @State private var showInboxFromShare = false
+    @State private var openedDirectory: LibraryDirectory?
+    @State private var didApplyInitialDirectory = false
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
     @State private var now = Date()
@@ -104,6 +106,14 @@ struct FilesView: View {
             .navigationTitle("My Files")
             .searchable(text: $searchText, prompt: "Search")
             .task { await loadCounts() }
+            .onAppear {
+                guard !didApplyInitialDirectory else { return }
+                didApplyInitialDirectory = true
+
+                if let initialDirectory {
+                    openedDirectory = initialDirectory
+                }
+            }
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
             .task(id: searchText) {
                 await search()
@@ -119,11 +129,11 @@ struct FilesView: View {
             .onChange(of: openInboxToken) { _, _ in
                 Task {
                     await loadCounts()
-                    showInboxFromShare = true
+                    openedDirectory = .inbox
                 }
             }
-            .navigationDestination(isPresented: $showInboxFromShare) {
-                FileListView(directory: .inbox) {
+            .navigationDestination(item: $openedDirectory) { directory in
+                FileListView(directory: directory) {
                     Task { await loadCounts() }
                 }
             }

@@ -103,10 +103,7 @@ private struct RecentRow: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(systemName: "doc")
-                .font(.title3)
-                .foregroundStyle(.secondary)
-                .frame(width: 32)
+            FileThumbnailView(file: FileItem(url: entry.url), size: 36)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(entry.name)

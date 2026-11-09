@@ -14,12 +14,22 @@ struct RootTabView: View {
 
     @Environment(\.colorScheme) private var colorScheme
 
-    @State private var selectedTab: MainTab = .files
+    @State private var selectedTab: MainTab
+    @State private var launchDirectory: LibraryDirectory?
     @State private var shareRefreshToken = UUID()
     @State private var openInboxToken = UUID()
     @State private var openedExternalFile: ExternalFileRequest?
     @State private var openFileAlert: OpenFileAlert?
     @State private var isImporting = false
+
+    init() {
+        let raw = UserDefaults.standard.string(forKey: "settings.launchPage")
+            ?? LaunchPage.files.rawValue
+        let page = LaunchPage(rawValue: raw) ?? .files
+
+        _selectedTab = State(initialValue: page.mainTab)
+        _launchDirectory = State(initialValue: page.directory)
+    }
 
     private var appearance: AppearanceMode {
         AppearanceMode(rawValue: appearanceRaw) ?? .system
@@ -33,7 +43,11 @@ struct RootTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            FilesView(refreshToken: shareRefreshToken, openInboxToken: openInboxToken)
+            FilesView(
+                refreshToken: shareRefreshToken,
+                openInboxToken: openInboxToken,
+                initialDirectory: launchDirectory
+            )
                 .tabItem { Label("Files", systemImage: "folder.fill") }
                 .tag(MainTab.files)
 
@@ -132,6 +146,39 @@ private struct ExternalFileRequest: Identifiable {
     var id: URL { url }
 }
 
+enum LaunchPage: String, CaseIterable {
+    case settings
+    case recent
+    case files
+    case inbox
+    case downloads
+    case trash
+
+    var mainTab: MainTab {
+        switch self {
+        case .settings:
+            return .settings
+        case .recent:
+            return .recent
+        default:
+            return .files
+        }
+    }
+
+    var directory: LibraryDirectory? {
+        switch self {
+        case .inbox:
+            return .inbox
+        case .downloads:
+            return .downloads
+        case .trash:
+            return .trash
+        default:
+            return nil
+        }
+    }
+}
+
 private enum OpenFileAlert: Identifiable {
     case unsupported(URL)
     case error(String)
@@ -146,7 +193,7 @@ private enum OpenFileAlert: Identifiable {
     }
 }
 
-private enum MainTab: Hashable {
+enum MainTab: Hashable {
     case files
     case recent
     case settings
