@@ -116,17 +116,24 @@ struct FileLibrary: Sendable {
         try FileManager.default.moveItem(at: file.url, to: destination)
     }
 
-    nonisolated func restore(_ file: FileItem) throws {
+    nonisolated static func trashSource(for url: URL) -> LibraryDirectory? {
+        let folder = url.deletingLastPathComponent().lastPathComponent
+        return LibraryDirectory.allCases.first { $0 != .trash && $0.folderName == folder }
+    }
+
+    @discardableResult
+    nonisolated func restore(_ file: FileItem) throws -> URL? {
         let sourceFolder = file.url.deletingLastPathComponent().lastPathComponent
         let targetDirectory = LibraryDirectory.allCases.first {
             $0 != .trash && $0.folderName == sourceFolder
         } ?? .inbox
 
-        guard let target = directoryURL(for: targetDirectory) else { return }
+        guard let target = directoryURL(for: targetDirectory) else { return nil }
 
         try ensureDirectory(target)
         let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
         try FileManager.default.moveItem(at: file.url, to: destination)
+        return destination
     }
 
     nonisolated func deletePermanently(_ file: FileItem) throws {

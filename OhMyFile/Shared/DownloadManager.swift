@@ -39,6 +39,8 @@ final class DownloadManager: NSObject {
         }
         tasks = restored
         origins = originStore.load()
+        pruneOrigins()
+        migrateOriginsToXattrs()
         persist()
 
         let configuration = URLSessionConfiguration.background(withIdentifier: sessionIdentifier)
@@ -134,6 +136,64 @@ final class DownloadManager: NSObject {
         activeTasks[id] = nil
         tasks.removeAll { $0.id == id }
         persist()
+        pruneOrigins()
+    }
+
+    /// 只保留下载目录与回收站下载子目录中仍存在的文件的源链接记录。
+    func pruneOrigins() {
+        let fileManager = FileManager.default
+        let library = FileLibrary()
+        var existing = Set<String>()
+
+        if let downloads = library.directoryURL(for: .downloads),
+           let names = try? fileManager.contentsOfDirectory(atPath: downloads.path) {
+            existing.formUnion(names)
+        }
+
+        if let trash = library.directoryURL(for: .trash) {
+            let trashDownloads = trash.appendingPathComponent(LibraryDirectory.downloads.folderName)
+            if let names = try? fileManager.contentsOfDirectory(atPath: trashDownloads.path) {
+                existing.formUnion(names)
+            }
+        }
+
+        let pruned = origins.filter { existing.contains($0.key) }
+        guard pruned.count != origins.count else { return }
+
+        origins = pruned
+        originStore.save(origins)
+    }
+
+    private func migrateOriginsToXattrs() {
+        let library = FileLibrary()
+        var directories: [URL] = []
+
+        if let downloads = library.directoryURL(for: .downloads) {
+            directories.append(downloads)
+        }
+        if let trash = library.directoryURL(for: .trash) {
+            directories.append(
+                trash.appendingPathComponent(LibraryDirectory.downloads.folderName)
+            )
+        }
+
+        let fileManager = FileManager.default
+
+        for directory in directories {
+            guard let urls = try? fileManager.contentsOfDirectory(
+                at: directory,
+                includingPropertiesForKeys: nil,
+                options: .skipsHiddenFiles
+            ) else {
+                continue
+            }
+
+            for url in urls where OriginURLStore.get(for: url) == nil {
+                if let origin = origins[url.lastPathComponent] {
+                    OriginURLStore.set(origin, for: url)
+                }
+            }
+        }
     }
 
     private func startSystemDownload(for id: UUID) {
@@ -168,8 +228,18 @@ final class DownloadManager: NSObject {
         persist()
     }
 
-    func originURL(for fileName: String) -> URL? {
-        origins[fileName]
+    func originURL(for fileURL: URL) -> URL? {
+        if let url = OriginURLStore.get(for: fileURL) {
+            return url
+        }
+        return origins[fileURL.lastPathComponent]
+    }
+
+    func migrateOrigin(from oldName: String, to newName: String) {
+        guard oldName != newName, let url = origins[oldName] else { return }
+        origins[newName] = url
+        origins[oldName] = nil
+        originStore.save(origins)
     }
 
     private func markCompleted(id: UUID, fileName: String) {
@@ -183,6 +253,14 @@ final class DownloadManager: NSObject {
 
         origins[fileName] = tasks[index].url
         originStore.save(origins)
+
+        if let downloads = FileLibrary().directoryURL(for: .downloads) {
+            OriginURLStore.set(
+                tasks[index].url,
+                for: downloads.appendingPathComponent(fileName)
+            )
+        }
+
         persist()
     }
 

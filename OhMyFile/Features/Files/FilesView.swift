@@ -520,6 +520,7 @@ private struct FileListView: View {
     @State private var downloadURL = ""
     @State private var downloadError: String?
     @State private var downloadNotice: String?
+    @State private var sharedLink: SharedLink?
     @State private var downloadStep = DownloadStep.url
     @State private var clipboardHasText = false
     @State private var isResolvingURL = false
@@ -696,6 +697,10 @@ private struct FileListView: View {
                 }
             }
             .presentationDetents([.height(260)])
+        }
+        .sheet(item: $sharedLink) { link in
+            ShareSheet(items: [link.url])
+                .presentationDetents([.medium, .large])
         }
         .overlay(alignment: .top) {
             if let downloadNotice {
@@ -950,8 +955,10 @@ private struct FileListView: View {
                 Label("Copy", systemImage: "doc.on.doc")
             }
 
-            if directory == .downloads, let origin = downloadManager.originURL(for: file.name) {
-                ShareLink(item: origin) {
+            if let origin = downloadManager.originURL(for: file.url) {
+                Button {
+                    sharedLink = SharedLink(url: origin)
+                } label: {
                     Label("Share Link", systemImage: "link")
                 }
             }
@@ -1172,7 +1179,12 @@ private struct FileListView: View {
         do {
             for path in selectedPaths {
                 guard let file = files.first(where: { $0.url == path }) else { continue }
-                try library.restore(file)
+                if let restoredURL = try library.restore(file) {
+                    downloadManager.migrateOrigin(
+                        from: file.name,
+                        to: restoredURL.lastPathComponent
+                    )
+                }
             }
             selectedPaths.removeAll()
             isSelecting = false
@@ -1185,7 +1197,12 @@ private struct FileListView: View {
 
     private func restore(_ file: FileItem) {
         do {
-            try library.restore(file)
+            if let restoredURL = try library.restore(file) {
+                downloadManager.migrateOrigin(
+                    from: file.name,
+                    to: restoredURL.lastPathComponent
+                )
+            }
             Task { await reload() }
             onChanged()
         } catch {
@@ -1372,6 +1389,11 @@ struct DirectoryRow: View {
 private func fileDetailText(for file: FileItem, relativeTime: Bool, now: Date) -> String {
     var parts: [String] = []
 
+    if FileLibrary.directory(for: file.url) == .trash,
+       let source = FileLibrary.trashSource(for: file.url) {
+        parts.append(source.localizedTitle)
+    }
+
     if let size = file.size {
         parts.append(formattedFileSize(size))
     }
@@ -1524,4 +1546,19 @@ private struct DownloadRow: View {
 private enum DownloadStep {
     case url
     case fileName
+}
+
+private struct SharedLink: Identifiable {
+    let id = UUID()
+    let url: URL
+}
+
+private struct ShareSheet: UIViewControllerRepresentable {
+    let items: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: items, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

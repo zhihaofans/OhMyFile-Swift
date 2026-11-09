@@ -56,11 +56,8 @@ struct StructuredEditorView: View {
                 }
 
                 ToolbarItem(placement: .topBarTrailing) {
-                    ShareLink(item: file.url) {
-                        Image(systemName: "square.and.arrow.up")
-                    }
-                    .disabled(hasChanges || isSaving)
-                    .accessibilityLabel("Share")
+                    ShareFileButton(fileURL: file.url)
+                        .disabled(hasChanges || isSaving)
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
