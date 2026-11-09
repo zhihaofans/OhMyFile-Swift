@@ -28,6 +28,7 @@ struct FilesView: View {
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
     @State private var now = Date()
+    @State private var downloadManager = DownloadManager.shared
     @State private var showClipboardSheet = false
     @State private var showPhotosPicker = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
@@ -56,7 +57,8 @@ struct FilesView: View {
                 systemImage: "arrow.down.circle.fill",
                 color: .purple,
                 itemCount: counts[.downloads] ?? 0,
-                directory: .downloads
+                directory: .downloads,
+                subtitle: downloadSubtitle
             ),
             SystemDirectory(
                 title: "Trash",
@@ -390,6 +392,22 @@ struct FilesView: View {
         }
     }
 
+    private var downloadSubtitle: String? {
+        let tasks = downloadManager.tasks
+        let failed = tasks.filter { $0.status == .failed }.count
+        let downloading = tasks.filter { $0.status == .downloading || $0.status == .pending }.count
+        let completed = tasks.filter { $0.status == .completed }.count
+
+        guard failed > 0 || downloading > 0 else { return nil }
+
+        return String(
+            format: String(localized: "%ld failed · %ld downloading · %ld completed"),
+            failed,
+            downloading,
+            completed
+        )
+    }
+
     private func loadCounts() async {
         let loaded = await Task.detached { [library] in
             Dictionary(uniqueKeysWithValues: LibraryDirectory.allCases.map { directory in
@@ -716,7 +734,7 @@ private struct FileListView: View {
                 }
             }
 
-            if viewMode == .list {
+            if viewMode == .list, !filteredFiles.isEmpty {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
                         toggleSelection()
@@ -1320,6 +1338,7 @@ struct SystemDirectory: Identifiable {
     let color: Color
     let itemCount: Int
     let directory: LibraryDirectory
+    var subtitle: String? = nil
 }
 
 struct DirectoryRow: View {
@@ -1335,9 +1354,15 @@ struct DirectoryRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(LocalizedStringKey(directory.title))
 
-                Text("\(directory.itemCount) items")
-                    .font(.caption)
-                    .foregroundStyle(.secondary)
+                if let subtitle = directory.subtitle {
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                } else {
+                    Text("\(directory.itemCount) items")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                }
             }
         }
     }

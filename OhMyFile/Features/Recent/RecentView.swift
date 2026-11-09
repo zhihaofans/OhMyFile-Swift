@@ -108,15 +108,31 @@ private struct RecentRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(entry.name)
 
-                Text(
-                    relativeTime
-                        ? relativeTimeText(for: entry.openedAt, now: now)
-                        : entry.openedAt.formatted(date: .abbreviated, time: .shortened)
-                )
+                Text(subtitle)
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, 2)
+    }
+
+    private var subtitle: String {
+        var parts: [String] = []
+
+        if let directory = FileLibrary.directory(for: entry.url) {
+            parts.append(directory.localizedTitle)
+        }
+
+        parts.append(
+            relativeTime
+                ? relativeTimeText(for: entry.openedAt, now: now)
+                : entry.openedAt.formatted(date: .abbreviated, time: .shortened)
+        )
+
+        if let size = FileItem(url: entry.url).size {
+            parts.append(formattedFileSize(size))
+        }
+
+        return parts.joined(separator: " · ")
     }
 }

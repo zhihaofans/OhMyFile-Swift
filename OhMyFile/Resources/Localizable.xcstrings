@@ -31,6 +31,16 @@
         }
       }
     },
+    "%ld failed · %ld downloading · %ld completed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 项失败 · %ld 项在下载 · %ld 项已完成"
+          }
+        }
+      }
+    },
     "%ld files": {
       "localizations": {
         "zh-Hans": {

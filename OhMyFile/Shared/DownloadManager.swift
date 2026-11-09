@@ -32,7 +32,12 @@ final class DownloadManager: NSObject {
     override init() {
         super.init()
 
-        tasks = store.load().filter { $0.status == .downloading || $0.status == .pending }
+        var restored = store.load().filter { $0.status == .downloading || $0.status == .pending }
+        for index in restored.indices {
+            restored[index].status = .failed
+            restored[index].errorMessage = String(localized: "Download was interrupted.")
+        }
+        tasks = restored
         origins = originStore.load()
         persist()
 
@@ -145,15 +150,6 @@ final class DownloadManager: NSObject {
     }
 
     private func reconcile(_ systemTasks: [URLSessionTask]) {
-        let systemIDs = Set(systemTasks.compactMap { $0.taskDescription.flatMap(UUID.init(uuidString:)) })
-
-        for index in tasks.indices where tasks[index].status == .downloading {
-            if !systemIDs.contains(tasks[index].id) {
-                tasks[index].status = .failed
-                tasks[index].errorMessage = String(localized: "Download was interrupted.")
-            }
-        }
-
         for systemTask in systemTasks {
             guard let idString = systemTask.taskDescription,
                   let id = UUID(uuidString: idString),
@@ -162,6 +158,11 @@ final class DownloadManager: NSObject {
             }
 
             activeTasks[id] = downloadTask
+
+            if let index = tasks.firstIndex(where: { $0.id == id }) {
+                tasks[index].status = .downloading
+                tasks[index].errorMessage = nil
+            }
         }
 
         persist()
