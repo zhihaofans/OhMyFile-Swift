@@ -16,6 +16,7 @@ struct TextEditorView: View {
     @State private var draft: String
     @State private var originalText: String
     @State private var isSaving = false
+    @State private var showSavedNotice = false
     @State private var activeAlert: EditorAlert?
 
     init(file: FileItem, text: String, onSaved: @escaping () -> Void) {
@@ -46,11 +47,29 @@ struct TextEditorView: View {
                     }
                 }
 
+                ToolbarItem(placement: .topBarTrailing) {
+                    ShareLink(item: file.url) {
+                        Image(systemName: "square.and.arrow.up")
+                    }
+                    .disabled(hasChanges || isSaving)
+                    .accessibilityLabel("Share")
+                }
+
                 ToolbarItem(placement: .confirmationAction) {
                     Button("Save") {
                         activeAlert = .save
                     }
                     .disabled(!hasChanges || isSaving)
+                }
+            }
+            .overlay(alignment: .top) {
+                if showSavedNotice {
+                    Text("Saved")
+                        .font(.callout)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 10)
+                        .background(.regularMaterial, in: Capsule())
+                        .padding(.top, 8)
                 }
             }
             .alert(item: $activeAlert) { alert in
@@ -101,7 +120,11 @@ struct TextEditorView: View {
                 originalText = draft
                 isSaving = false
                 onSaved()
-                dismiss()
+                showSavedNotice = true
+                Task {
+                    try? await Task.sleep(nanoseconds: 2_000_000_000)
+                    showSavedNotice = false
+                }
             } catch {
                 isSaving = false
                 activeAlert = .error(String(localized: "Unable to save the file."))
