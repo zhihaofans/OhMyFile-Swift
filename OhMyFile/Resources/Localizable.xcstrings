@@ -172,6 +172,16 @@
         }
       }
     },
+    "App Lock": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "应用锁"
+          }
+        }
+      }
+    },
     "App Settings": {
       "extractionState": "stale",
       "localizations": {
@@ -239,6 +249,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "可用空间"
+          }
+        }
+      }
+    },
+    "Biometrics": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生物识别"
           }
         }
       }
@@ -363,6 +383,16 @@
         }
       }
     },
+    "Change Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改密码"
+          }
+        }
+      }
+    },
     "Clear": {
       "localizations": {
         "zh-Hans": {
@@ -475,12 +505,32 @@
         }
       }
     },
+    "Confirm Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "确认新密码"
+          }
+        }
+      }
+    },
     "Copy": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "复制"
+          }
+        }
+      }
+    },
+    "Current Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "当前密码"
           }
         }
       }
@@ -707,6 +757,26 @@
         }
       }
     },
+    "Enter Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入密码"
+          }
+        }
+      }
+    },
+    "Enter a 6-digit passcode.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请输入 6 位数字密码。"
+          }
+        }
+      }
+    },
     "Enter a new name.": {
       "localizations": {
         "zh-Hans": {
@@ -733,6 +803,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "扩展 Markdown"
+          }
+        }
+      }
+    },
+    "Face ID / Touch ID failed. Enter your passcode.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID / Touch ID 验证失败，请输入密码。"
           }
         }
       }
@@ -833,6 +913,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "字号"
+          }
+        }
+      }
+    },
+    "Forgot passcode cannot be recovered. Clearing app data is required.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "忘记密码无法找回，需要清除 App 数据。"
           }
         }
       }
@@ -943,6 +1033,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "收件箱为空"
+          }
+        }
+      }
+    },
+    "Incorrect passcode.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密码错误。"
           }
         }
       }
@@ -1188,6 +1288,16 @@
         }
       }
     },
+    "New Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新密码"
+          }
+        }
+      }
+    },
     "No Files Yet": {
       "localizations": {
         "zh-Hans": {
@@ -1245,6 +1355,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "没有匹配的文件。"
+          }
+        }
+      }
+    },
+    "Not Available": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不可用"
           }
         }
       }
@@ -1310,6 +1430,26 @@
       }
     },
     "PDF": {},
+    "Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密码"
+          }
+        }
+      }
+    },
+    "Passcodes do not match.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "两次输入的密码不一致。"
+          }
+        }
+      }
+    },
     "Paste from Clipboard": {
       "localizations": {
         "zh-Hans": {
@@ -1567,6 +1707,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "发送反馈"
+          }
+        }
+      }
+    },
+    "Set Passcode": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设置密码"
           }
         }
       }
@@ -1873,6 +2023,16 @@
         }
       }
     },
+    "Turn Off App Lock": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭应用锁"
+          }
+        }
+      }
+    },
     "Unable to Read File": {
       "localizations": {
         "zh-Hans": {
@@ -1923,12 +2083,52 @@
         }
       }
     },
+    "Unable to save the passcode.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存密码。"
+          }
+        }
+      }
+    },
     "Unable to save the photo.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "无法保存照片。"
+          }
+        }
+      }
+    },
+    "Unlock": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁"
+          }
+        }
+      }
+    },
+    "Unlock OhMyFile": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解锁 OhMyFile"
+          }
+        }
+      }
+    },
+    "Unlock with %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 %@ 解锁"
           }
         }
       }

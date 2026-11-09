@@ -13,6 +13,7 @@ struct RootTabView: View {
     @AppStorage("settings.darkAccent") private var darkAccentHex = AccentColorStorage.defaultDarkHex
 
     @Environment(\.colorScheme) private var colorScheme
+    @Environment(\.scenePhase) private var scenePhase
 
     @State private var selectedTab: MainTab
     @State private var launchDirectory: LibraryDirectory?
@@ -21,6 +22,7 @@ struct RootTabView: View {
     @State private var openedExternalFile: ExternalFileRequest?
     @State private var openFileAlert: OpenFileAlert?
     @State private var isImporting = false
+    @State private var lockController = AppLockController()
 
     init() {
         let raw = UserDefaults.standard.string(forKey: "settings.launchPage")
@@ -55,7 +57,7 @@ struct RootTabView: View {
                 .tabItem { Label("Recent", systemImage: "clock.fill") }
                 .tag(MainTab.recent)
 
-            SettingsView()
+            SettingsView(lockController: lockController)
                 .tabItem { Label("Settings", systemImage: "gearshape.fill") }
                 .tag(MainTab.settings)
         }
@@ -97,6 +99,18 @@ struct RootTabView: View {
                 ProgressView("Importing…")
                     .padding()
                     .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 12))
+            }
+        }
+        .overlay {
+            if lockController.isLocked {
+                LockScreenView(controller: lockController)
+                    .transition(.opacity)
+                    .zIndex(1)
+            }
+        }
+        .onChange(of: scenePhase) { _, phase in
+            if phase == .background || phase == .inactive {
+                lockController.lock()
             }
         }
     }

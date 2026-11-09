@@ -17,6 +17,8 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Unlock OhMyFile with Face ID.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Take photos or scan documents into OhMyFile.</string>
 	<key>NSMicrophoneUsageDescription</key>

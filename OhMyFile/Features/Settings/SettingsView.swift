@@ -9,6 +9,8 @@ import SwiftUI
 import UIKit
 
 struct SettingsView: View {
+    let lockController: AppLockController
+
     @Environment(\.openURL) private var openURL
     @AppStorage("settings.relativeTime") private var relativeTime = true
     @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
@@ -54,6 +56,12 @@ struct SettingsView: View {
                             Text("System Settings")
                                 .foregroundStyle(.secondary)
                         }
+                    }
+
+                    NavigationLink {
+                        AppLockSettingsView(controller: lockController)
+                    } label: {
+                        SettingsLabel(title: "App Lock", systemImage: "lock.shield.fill", color: .green)
                     }
                 }
 
