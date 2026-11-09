@@ -497,6 +497,16 @@ private struct FileListView: View {
     @State private var isSelecting = false
     @State private var selectedPaths: Set<URL> = []
     @State private var now = Date()
+    @State private var downloadManager = DownloadManager.shared
+    @State private var showDownloadSheet = false
+    @State private var downloadURL = ""
+    @State private var downloadError: String?
+    @State private var downloadNotice: String?
+    @State private var downloadStep = DownloadStep.url
+    @State private var clipboardHasText = false
+    @State private var isResolvingURL = false
+    @State private var pendingDownloadURL = ""
+    @State private var resolvedFileName = ""
 
     private let library = FileLibrary()
 
@@ -542,11 +552,13 @@ private struct FileListView: View {
 
     var body: some View {
         Group {
-            if files.isEmpty {
+            let hasDownloadTasks = directory == .downloads && !downloadManager.tasks.isEmpty
+
+            if files.isEmpty, !hasDownloadTasks {
                 emptyState
-            } else if filteredFiles.isEmpty {
+            } else if filteredFiles.isEmpty, !hasDownloadTasks {
                 filterEmptyState
-            } else if viewMode == .grid {
+            } else if viewMode == .grid, !hasDownloadTasks {
                 grid
             } else {
                 list
@@ -590,9 +602,120 @@ private struct FileListView: View {
                 .background(.regularMaterial)
             }
         }
+        .onChange(of: downloadManager.completedCount) { _, _ in
+            if let fileName = downloadManager.lastCompletedFileName {
+                downloadNotice = fileName
+            }
+            Task { await reload() }
+        }
+        .sheet(isPresented: $showDownloadSheet) {
+            NavigationStack {
+                Form {
+                    if downloadStep == .url {
+                        HStack {
+                            TextField("Enter URL", text: $downloadURL)
+                                .keyboardType(.URL)
+                                .textInputAutocapitalization(.never)
+                                .autocorrectionDisabled()
+
+                            if clipboardHasText {
+                                Button("Paste") {
+                                    pasteClipboardURL()
+                                }
+                                .font(.caption)
+                            }
+                        }
+                    } else {
+                        TextField("File Name", text: $resolvedFileName)
+                            .textInputAutocapitalization(.never)
+                            .autocorrectionDisabled()
+
+                        Text(pendingDownloadURL)
+                            .font(.caption)
+                            .foregroundStyle(.secondary)
+                            .lineLimit(2)
+                    }
+
+                    if let downloadError {
+                        Text(downloadError)
+                            .foregroundStyle(.red)
+                            .font(.caption)
+                    }
+                }
+                .navigationTitle("Download")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            showDownloadSheet = false
+                        }
+                    }
+
+                    ToolbarItem(placement: .confirmationAction) {
+                        if downloadStep == .url {
+                            Button {
+                                resolveURL()
+                            } label: {
+                                if isResolvingURL {
+                                    ProgressView()
+                                } else {
+                                    Text("Next")
+                                }
+                            }
+                            .disabled(
+                                downloadURL.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                                    || isResolvingURL
+                            )
+                        } else {
+                            Button("Download") {
+                                startDownload()
+                            }
+                            .disabled(
+                                resolvedFileName.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                            )
+                        }
+                    }
+                }
+            }
+            .presentationDetents([.height(260)])
+        }
+        .overlay(alignment: .top) {
+            if let downloadNotice {
+                Text(String(format: String(localized: "Download Complete: %@"), downloadNotice))
+                    .font(.callout)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                    .background(.regularMaterial, in: Capsule())
+                    .padding(.top, 8)
+                    .onTapGesture { self.downloadNotice = nil }
+                    .task(id: downloadNotice) {
+                        try? await Task.sleep(nanoseconds: 3_000_000_000)
+                        self.downloadNotice = nil
+                    }
+            }
+        }
         .navigationTitle(titleKey)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            if directory == .downloads {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        let pasteboard = UIPasteboard.general
+                        clipboardHasText = pasteboard.hasStrings || pasteboard.hasURLs
+                        downloadStep = .url
+                        showDownloadSheet = true
+                    } label: {
+                        if isResolvingURL {
+                            ProgressView()
+                        } else {
+                            Image(systemName: "plus")
+                        }
+                    }
+                    .disabled(isResolvingURL)
+                    .accessibilityLabel("Download")
+                }
+            }
+
             if viewMode == .list {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -701,6 +824,19 @@ private struct FileListView: View {
 
     private var list: some View {
         List(selection: $selectedPaths) {
+            if directory == .downloads, !downloadManager.tasks.isEmpty {
+                Section("Downloads") {
+                    ForEach(downloadManager.tasks) { task in
+                        DownloadRow(
+                            task: task,
+                            onCancel: { downloadManager.cancel(id: task.id) },
+                            onRetry: { downloadManager.retry(id: task.id) },
+                            onRemove: { downloadManager.remove(id: task.id) }
+                        )
+                    }
+                }
+            }
+
             ForEach(filteredFiles) { file in
                 if isSelecting {
                     FileListRow(file: file, now: now)
@@ -796,15 +932,10 @@ private struct FileListView: View {
                 Label("Copy", systemImage: "doc.on.doc")
             }
 
-            Menu {
-                if directory != .inbox {
-                    Button("Inbox") { move(file, to: .inbox) }
+            if directory == .downloads, let origin = downloadManager.originURL(for: file.name) {
+                ShareLink(item: origin) {
+                    Label("Share Link", systemImage: "link")
                 }
-                if directory != .downloads {
-                    Button("Downloads") { move(file, to: .downloads) }
-                }
-            } label: {
-                Label("Move To", systemImage: "folder")
             }
 
             Divider()
@@ -1056,6 +1187,74 @@ private struct FileListView: View {
         return error.localizedDescription
     }
 
+    private func pasteClipboardURL() {
+        let pasteboard = UIPasteboard.general
+
+        if let url = pasteboard.url?.absoluteString {
+            downloadURL = url
+            return
+        }
+
+        if let string = pasteboard.string {
+            downloadURL = extractURL(from: string) ?? string
+        }
+    }
+
+    private func extractURL(from string: String) -> String? {
+        guard let regex = try? NSRegularExpression(pattern: #"https?://[^\s"'<>]+"#) else {
+            return nil
+        }
+
+        let range = NSRange(string.startIndex..., in: string)
+        guard let match = regex.firstMatch(in: string, range: range),
+              let matchRange = Range(match.range, in: string) else {
+            return nil
+        }
+
+        return String(string[matchRange])
+    }
+
+    private func resolveURL() {
+        if let extracted = extractURL(from: downloadURL) {
+            downloadURL = extracted
+        }
+
+        isResolvingURL = true
+        downloadError = nil
+        let urlString = downloadURL
+
+        Task {
+            let suggested = await downloadManager.resolveSuggestedFileName(urlString: urlString)
+            isResolvingURL = false
+
+            guard let suggested else {
+                downloadError = String(localized: "Invalid URL.")
+                return
+            }
+
+            pendingDownloadURL = urlString
+            resolvedFileName = suggested
+            downloadStep = .fileName
+        }
+    }
+
+    private func startDownload() {
+        guard downloadManager.start(
+            urlString: pendingDownloadURL,
+            fileName: resolvedFileName
+        ) else {
+            downloadError = String(localized: "Invalid URL.")
+            return
+        }
+
+        downloadStep = .url
+        downloadURL = ""
+        resolvedFileName = ""
+        pendingDownloadURL = ""
+        downloadError = nil
+        showDownloadSheet = false
+    }
+
     private func reload() async {
         let loaded = await Task.detached { [library, directory] in
             library.files(in: directory)
@@ -1182,3 +1381,122 @@ private enum Deletion {
     case deleteSelected
 }
 
+
+private struct DownloadRow: View {
+    let task: DownloadTask
+    let onCancel: () -> Void
+    let onRetry: () -> Void
+    let onRemove: () -> Void
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 6) {
+            HStack(alignment: .top, spacing: 10) {
+                Image(systemName: statusSymbol)
+                    .font(.title3)
+                    .foregroundStyle(statusColor)
+                    .frame(width: 28)
+
+                VStack(alignment: .leading, spacing: 2) {
+                    Text(task.fileName)
+                        .lineLimit(1)
+
+                    Text(subtitle)
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                        .lineLimit(2)
+                }
+
+                Spacer()
+
+                actionButton
+            }
+
+            if task.status == .downloading || task.status == .pending {
+                ProgressView(value: task.progress)
+            }
+        }
+        .padding(.vertical, 4)
+    }
+
+    private var statusSymbol: String {
+        switch task.status {
+        case .pending:
+            return "clock"
+        case .downloading:
+            return "arrow.down.circle"
+        case .completed:
+            return "checkmark.circle.fill"
+        case .failed:
+            return "exclamationmark.circle.fill"
+        case .cancelled:
+            return "xmark.circle"
+        }
+    }
+
+    private var statusColor: Color {
+        switch task.status {
+        case .completed:
+            return .green
+        case .failed:
+            return .red
+        case .cancelled:
+            return .secondary
+        default:
+            return .blue
+        }
+    }
+
+    private var subtitle: String {
+        switch task.status {
+        case .downloading, .pending:
+            let percent = Int(task.progress * 100)
+            let current = formattedFileSize(task.bytesWritten)
+            let total = task.totalBytes > 0
+                ? formattedFileSize(task.totalBytes)
+                : String(localized: "Unknown")
+            return "\(percent)% · \(current) / \(total)"
+        case .completed:
+            return formattedFileSize(task.bytesWritten)
+        case .failed:
+            return task.errorMessage ?? String(localized: "Failed")
+        case .cancelled:
+            return String(localized: "Cancelled")
+        }
+    }
+
+    @ViewBuilder
+    private var actionButton: some View {
+        switch task.status {
+        case .downloading, .pending:
+            Button("Cancel", role: .cancel) {
+                onCancel()
+            }
+            .font(.caption)
+        case .failed, .cancelled:
+            HStack(spacing: 8) {
+                Button("Retry") {
+                    onRetry()
+                }
+                .font(.caption)
+                .buttonStyle(.bordered)
+
+                Button("Remove") {
+                    onRemove()
+                }
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+            }
+        case .completed:
+            Button("Remove") {
+                onRemove()
+            }
+            .font(.caption2)
+            .foregroundStyle(.secondary)
+        }
+    }
+}
+
+private enum DownloadStep {
+    case url
+    case fileName
+}

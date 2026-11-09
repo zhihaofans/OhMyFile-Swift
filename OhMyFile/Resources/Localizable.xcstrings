@@ -373,6 +373,16 @@
         }
       }
     },
+    "Cancelled": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已取消"
+          }
+        }
+      }
+    },
     "Cannot Open File": {
       "localizations": {
         "zh-Hans": {
@@ -501,6 +511,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "列宽"
+          }
+        }
+      }
+    },
+    "Completed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已完成"
           }
         }
       }
@@ -707,6 +727,46 @@
         }
       }
     },
+    "Download": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载"
+          }
+        }
+      }
+    },
+    "Download Complete: %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载完成：%@"
+          }
+        }
+      }
+    },
+    "Download was interrupted.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载已中断。"
+          }
+        }
+      }
+    },
+    "Downloading": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载中"
+          }
+        }
+      }
+    },
     "Downloads": {
       "localizations": {
         "zh-Hans": {
@@ -767,6 +827,16 @@
         }
       }
     },
+    "Enter URL": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入链接"
+          }
+        }
+      }
+    },
     "Enter a 6-digit passcode.": {
       "localizations": {
         "zh-Hans": {
@@ -813,6 +883,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "Face ID / Touch ID 验证失败，请输入密码。"
+          }
+        }
+      }
+    },
+    "Failed": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "失败"
+          }
+        }
+      }
+    },
+    "File Name": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件名"
           }
         }
       }
@@ -1067,6 +1157,16 @@
         }
       }
     },
+    "Invalid URL.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "链接无效。"
+          }
+        }
+      }
+    },
     "Invalid XML": {
       "localizations": {
         "zh-Hans": {
@@ -1298,6 +1398,16 @@
         }
       }
     },
+    "Next": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一步"
+          }
+        }
+      }
+    },
     "No Files Yet": {
       "localizations": {
         "zh-Hans": {
@@ -1450,12 +1560,32 @@
         }
       }
     },
+    "Paste": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "粘贴"
+          }
+        }
+      }
+    },
     "Paste from Clipboard": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "从剪贴板导入"
+          }
+        }
+      }
+    },
+    "Pending": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待中"
           }
         }
       }
@@ -1571,6 +1701,16 @@
         }
       }
     },
+    "Remove": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除"
+          }
+        }
+      }
+    },
     "Rename": {
       "localizations": {
         "zh-Hans": {
@@ -1607,6 +1747,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "结果"
+          }
+        }
+      }
+    },
+    "Retry": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重试"
           }
         }
       }
@@ -1738,6 +1888,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "分享 App"
+          }
+        }
+      }
+    },
+    "Share Link": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享链接"
           }
         }
       }
@@ -2073,6 +2233,16 @@
         }
       }
     },
+    "Unable to save the downloaded file.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法保存下载的文件。"
+          }
+        }
+      }
+    },
     "Unable to save the file.": {
       "localizations": {
         "zh-Hans": {
@@ -2099,6 +2269,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法保存照片。"
+          }
+        }
+      }
+    },
+    "Unknown": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未知"
           }
         }
       }
