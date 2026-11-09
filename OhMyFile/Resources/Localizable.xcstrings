@@ -233,6 +233,16 @@
         }
       }
     },
+    "Available": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用空间"
+          }
+        }
+      }
+    },
     "Built with SwiftUI, QuickLook, PDFKit, VisionKit, UniformTypeIdentifiers, PhotosUI and SF Symbols.": {
       "localizations": {
         "zh-Hans": {
@@ -593,6 +603,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "取消全选"
+          }
+        }
+      }
+    },
+    "Device": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "设备"
           }
         }
       }
@@ -1779,6 +1799,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "该文件类型无法预览，要直接导入吗？"
+          }
+        }
+      }
+    },
+    "Total Capacity": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "总容量"
           }
         }
       }

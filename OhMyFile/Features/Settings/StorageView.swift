@@ -11,6 +11,7 @@ struct StorageView: View {
     @Environment(\.scenePhase) private var scenePhase
 
     @State private var usage: StorageUsage?
+    @State private var deviceStorage: DeviceStorage?
     @State private var pendingAction: StorageAction?
     @State private var statusMessage: String?
 
@@ -35,6 +36,15 @@ struct StorageView: View {
                 } else {
                     ProgressView()
                         .frame(maxWidth: .infinity)
+                }
+            }
+
+            Section("Device") {
+                if let deviceStorage {
+                    LabeledContent("Total Capacity", value: formattedFileSize(deviceStorage.totalBytes))
+                    LabeledContent("Available", value: formattedFileSize(deviceStorage.availableBytes))
+                } else {
+                    ProgressView()
                 }
             }
 
@@ -114,6 +124,10 @@ struct StorageView: View {
             library.storageUsage()
         }.value
         usage = loaded
+
+        deviceStorage = await Task.detached {
+            DeviceStorageReader.read()
+        }.value
     }
 
     private func performAction() {

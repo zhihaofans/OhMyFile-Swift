@@ -42,10 +42,6 @@ struct SettingsView: View {
                         SettingsLabel(title: "Permissions", systemImage: "lock.shield.fill", color: .green)
                     }
 
-                    Toggle(isOn: $relativeTime) {
-                        SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
-                    }
-
                     Button {
                         openSystemSettings()
                     } label: {
@@ -57,6 +53,12 @@ struct SettingsView: View {
                             Text("System Settings")
                                 .foregroundStyle(.secondary)
                         }
+                    }
+                }
+
+                Section("Files") {
+                    Toggle(isOn: $relativeTime) {
+                        SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
                 }
 
