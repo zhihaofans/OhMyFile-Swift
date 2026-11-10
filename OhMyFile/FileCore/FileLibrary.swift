@@ -172,8 +172,20 @@ struct FileLibrary: Sendable {
     }
 
     nonisolated static func directory(for url: URL) -> LibraryDirectory? {
-        let folder = url.deletingLastPathComponent().lastPathComponent
-        return LibraryDirectory.allCases.first { $0.folderName == folder }
+        let library = FileLibrary()
+        let parent = url.standardizedFileURL.deletingLastPathComponent()
+
+        for directory in LibraryDirectory.allCases {
+            guard let root = library.directoryURL(for: directory)?.standardizedFileURL else {
+                continue
+            }
+
+            if parent.path == root.path {
+                return directory
+            }
+        }
+
+        return nil
     }
 
     nonisolated func rename(_ file: FileItem, to newName: String) throws -> URL {

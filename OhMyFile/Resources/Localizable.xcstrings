@@ -887,6 +887,16 @@
         }
       }
     },
+    "External": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部"
+          }
+        }
+      }
+    },
     "Face ID / Touch ID failed. Enter your passcode.": {
       "localizations": {
         "zh-Hans": {
@@ -2129,6 +2139,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件名无效。"
+          }
+        }
+      }
+    },
+    "The file no longer exists. Its recent record has been removed.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件已不存在，已删除最近记录。"
           }
         }
       }

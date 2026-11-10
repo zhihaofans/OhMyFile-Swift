@@ -69,7 +69,7 @@ struct RecentFilesStoreTests {
         #expect(store.entries().isEmpty)
     }
 
-    @Test func pruneMissingRemovesDeletedFiles() throws {
+    @Test func pruneMissingKeepsExternalRecords() throws {
         let (store, root) = try makeStore()
         defer { try? FileManager.default.removeItem(at: root) }
 
@@ -81,7 +81,10 @@ struct RecentFilesStoreTests {
         try FileManager.default.removeItem(at: a)
 
         let pruned = store.pruneMissing()
-        #expect(pruned.map(\.name) == ["b.txt"])
+
+        // 临时目录属于「外部」，无安全作用域时无法可靠判断存在性，保留记录；
+        // 真正不存在时在打开最近记录时删除。
+        #expect(pruned.map(\.name) == ["b.txt", "a.txt"])
     }
 
     @Test func persistsAcrossInstances() throws {

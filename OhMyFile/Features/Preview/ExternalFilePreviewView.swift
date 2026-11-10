@@ -17,11 +17,14 @@ struct ExternalFilePreviewView: View {
     @State private var isImporting = false
     @State private var errorMessage: String?
     @State private var accessingSecurityScope = false
+    @State private var isPreparing = true
 
     var body: some View {
         NavigationStack {
             Group {
-                if let importedFile {
+                if isPreparing {
+                    ProgressView("Loading…")
+                } else if let importedFile {
                     FilePreviewView(file: importedFile)
                 } else {
                     FilePreviewView(file: FileItem(url: url), recordsRecent: false)
@@ -47,6 +50,17 @@ struct ExternalFilePreviewView: View {
             }
             .onAppear {
                 accessingSecurityScope = url.startAccessingSecurityScopedResource()
+
+                let store = RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
+                let recordedURL = url
+                Task.detached {
+                    store.record(recordedURL, at: Date())
+                }
+
+                Task {
+                    try? await CloudFileDownloader.ensureDownloaded(at: url)
+                    isPreparing = false
+                }
             }
             .onDisappear {
                 if accessingSecurityScope {

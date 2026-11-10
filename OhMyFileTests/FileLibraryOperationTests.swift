@@ -132,10 +132,17 @@ struct FileLibraryOperationTests {
     }
 
     @Test func directoryLookupFromURL() throws {
-        let root = FileManager.default.temporaryDirectory
-            .appendingPathComponent("ohmyfile-dir-\(UUID().uuidString)", isDirectory: true)
-        let url = root.appendingPathComponent("Downloads/file.txt")
+        let library = FileLibrary()
+        if let downloads = library.directoryURL(for: .downloads) {
+            let inside = downloads.appendingPathComponent("file.txt")
+            #expect(FileLibrary.directory(for: inside) == .downloads)
+        }
 
-        #expect(FileLibrary.directory(for: url) == .downloads)
+        // 外部路径即使含有同名文件夹，也不能误判为 App 目录。
+        let outside = FileManager.default.temporaryDirectory
+            .appendingPathComponent("ohmyfile-dir-\(UUID().uuidString)", isDirectory: true)
+            .appendingPathComponent("Downloads/file.txt")
+
+        #expect(FileLibrary.directory(for: outside) == nil)
     }
 }

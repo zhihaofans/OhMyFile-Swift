@@ -7,9 +7,10 @@
 
 import Foundation
 
-struct RecentEntry: Codable, Hashable, Identifiable, Sendable {
+nonisolated struct RecentEntry: Codable, Hashable, Identifiable, Sendable {
     let path: String
     let openedAt: Date
+    var bookmark: Data? = nil
 
     var id: String { path }
     var url: URL { URL(fileURLWithPath: path) }
@@ -45,10 +46,29 @@ struct RecentFilesStore: Sendable {
     nonisolated func record(_ url: URL, at date: Date) {
         guard storageURL != nil else { return }
 
-        var items = entries().filter {
-            $0.path != url.path && FileManager.default.fileExists(atPath: $0.path)
+        var items = entries().filter { entry in
+            guard entry.path != url.path else { return false }
+
+            // 外部文件没有常驻安全作用域，fileExists 可能不可靠，保留记录。
+            if FileLibrary.directory(for: entry.url) == nil {
+                return true
+            }
+
+            return FileManager.default.fileExists(atPath: entry.path)
         }
-        items.insert(RecentEntry(path: url.path, openedAt: date), at: 0)
+
+        let bookmark: Data?
+        if FileLibrary.directory(for: url) == nil {
+            bookmark = try? url.bookmarkData(
+                options: [],
+                includingResourceValuesForKeys: nil,
+                relativeTo: nil
+            )
+        } else {
+            bookmark = nil
+        }
+
+        items.insert(RecentEntry(path: url.path, openedAt: date, bookmark: bookmark), at: 0)
 
         if items.count > Self.maxCount {
             items = Array(items.prefix(Self.maxCount))
@@ -65,7 +85,14 @@ struct RecentFilesStore: Sendable {
     }
 
     nonisolated func pruneMissing() -> [RecentEntry] {
-        let items = entries().filter { FileManager.default.fileExists(atPath: $0.path) }
+        let items = entries().filter { entry in
+            // 外部文件保留，打开时再校验（无安全作用域时 fileExists 可能为 false）。
+            if FileLibrary.directory(for: entry.url) == nil {
+                return true
+            }
+
+            return FileManager.default.fileExists(atPath: entry.path)
+        }
         save(items)
         return items
     }
