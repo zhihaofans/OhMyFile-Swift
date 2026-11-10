@@ -17,10 +17,17 @@ struct StructuredPreviewView: View {
     let file: FileItem
     let kind: StructuredKind
 
+    @Environment(\.colorScheme) private var colorScheme
+
     @State private var text: String?
     @State private var errorMessage: String?
     @State private var showSource = false
     @State private var isEditing = false
+    @State private var isSearching = false
+    @State private var searchQuery = ""
+    @State private var currentMatch = 0
+    @State private var matchCount = 0
+    @State private var sourceBeforeSearch = false
 
     var body: some View {
         Group {
@@ -64,10 +71,36 @@ struct StructuredPreviewView: View {
                         Text("Tree").tag(false)
                         Text("Text").tag(true)
                     }
+
+                    Divider()
+
+                    Button {
+                        sourceBeforeSearch = showSource
+                        showSource = true
+                        isSearching = true
+                    } label: {
+                        Label("Search Content", systemImage: "magnifyingglass")
+                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
             }
+        }
+        .safeAreaInset(edge: .top) {
+            if isSearching {
+                SearchBarView(
+                    query: $searchQuery,
+                    matchCount: matchCount,
+                    currentIndex: currentMatch,
+                    onPrevious: { moveMatch(-1) },
+                    onNext: { moveMatch(1) },
+                    onClose: { closeSearch() },
+                    onSubmit: { moveMatch(1) }
+                )
+            }
+        }
+        .onChange(of: searchQuery) { _, _ in
+            currentMatch = 0
         }
         .sheet(isPresented: $isEditing) {
             NavigationStack {
@@ -86,13 +119,32 @@ struct StructuredPreviewView: View {
     }
 
     private func sourceView(_ text: String) -> some View {
-        ScrollView {
-            Text(text)
-                .font(.system(.body, design: .monospaced))
-                .textSelection(.enabled)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-        }
+        SearchableText(
+            text: text,
+            query: isSearching ? searchQuery : "",
+            currentMatch: currentMatch,
+            font: UIFont.monospacedSystemFont(ofSize: 17, weight: .regular),
+            colorScheme: colorScheme,
+            onMatchCountChange: { count in
+                matchCount = count
+                if currentMatch >= count {
+                    currentMatch = 0
+                }
+            }
+        )
+    }
+
+    private func moveMatch(_ delta: Int) {
+        guard matchCount > 0 else { return }
+        currentMatch = (currentMatch + delta + matchCount) % matchCount
+    }
+
+    private func closeSearch() {
+        isSearching = false
+        searchQuery = ""
+        currentMatch = 0
+        matchCount = 0
+        showSource = sourceBeforeSearch
     }
 
     private func load() async {

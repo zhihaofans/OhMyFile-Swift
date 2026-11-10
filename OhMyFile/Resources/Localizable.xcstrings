@@ -1861,6 +1861,16 @@
         }
       }
     },
+    "Search Content": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "搜索内容"
+          }
+        }
+      }
+    },
     "Select": {
       "localizations": {
         "zh-Hans": {

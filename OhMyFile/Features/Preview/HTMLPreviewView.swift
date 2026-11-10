@@ -20,6 +20,9 @@ struct HTMLPreviewView: View {
     @State private var html: String?
     @State private var errorMessage: String?
     @State private var copiedLink: String?
+    @State private var isSearching = false
+    @State private var searchQuery = ""
+    @State private var findFound = true
 
     private var fontSize: HTMLFontSize {
         HTMLFontSize(rawValue: fontSizeRaw) ?? .medium
@@ -32,9 +35,16 @@ struct HTMLPreviewView: View {
     var body: some View {
         Group {
             if let html {
-                HTMLWebView(html: renderedHTML(from: html)) { link in
-                    copiedLink = link
-                }
+                HTMLWebView(
+                    html: renderedHTML(from: html),
+                    searchQuery: isSearching ? searchQuery : "",
+                    onLinkCopied: { link in
+                        copiedLink = link
+                    },
+                    onFindResult: { found in
+                        findFound = found
+                    }
+                )
                 .ignoresSafeArea(edges: .bottom)
             } else if let errorMessage {
                 ContentUnavailableView(
@@ -69,10 +79,38 @@ struct HTMLPreviewView: View {
                         Text("Dark").tag(HTMLReadingTheme.dark.rawValue)
                     }
                     .disabled(!showReading)
+
+                    Divider()
+
+                    Button {
+                        isSearching = true
+                    } label: {
+                        Label("Search Content", systemImage: "magnifyingglass")
+                    }
                 } label: {
                     Image(systemName: "ellipsis.circle")
                 }
             }
+        }
+        .safeAreaInset(edge: .top) {
+            if isSearching {
+                SearchBarView(
+                    query: $searchQuery,
+                    matchCount: findFound ? 1 : 0,
+                    currentIndex: 0,
+                    showsNavigation: false,
+                    onPrevious: {},
+                    onNext: {},
+                    onClose: {
+                        isSearching = false
+                        searchQuery = ""
+                        findFound = true
+                    }
+                )
+            }
+        }
+        .onChange(of: searchQuery) { _, _ in
+            findFound = true
         }
         .overlay(alignment: .top) {
             if copiedLink != nil {
@@ -120,7 +158,9 @@ struct HTMLPreviewView: View {
 
 private struct HTMLWebView: UIViewRepresentable {
     let html: String
+    let searchQuery: String
     let onLinkCopied: (String) -> Void
+    let onFindResult: (Bool) -> Void
 
     func makeUIView(context: Context) -> WKWebView {
         let configuration = WKWebViewConfiguration()
@@ -140,24 +180,65 @@ private struct HTMLWebView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         context.coordinator.load(html: html)
+        context.coordinator.search(query: searchQuery)
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(onLinkCopied: onLinkCopied)
+        Coordinator(onLinkCopied: onLinkCopied, onFindResult: onFindResult)
     }
 
     final class Coordinator: NSObject, WKNavigationDelegate {
         private let onLinkCopied: (String) -> Void
+        private let onFindResult: (Bool) -> Void
         private var loadedHTML: String?
+        private var currentHTML = ""
+        private var lastQuery = ""
+        private var searchWorkItem: DispatchWorkItem?
         private var ruleListReady = false
         private var pendingHTML: String?
         weak var webView: WKWebView?
 
-        init(onLinkCopied: @escaping (String) -> Void) {
+        init(onLinkCopied: @escaping (String) -> Void, onFindResult: @escaping (Bool) -> Void) {
             self.onLinkCopied = onLinkCopied
+            self.onFindResult = onFindResult
+        }
+
+        func search(query: String) {
+            guard query != lastQuery else { return }
+            lastQuery = query
+
+            guard !query.isEmpty else {
+                // 关闭搜索：重新加载页面以清除高亮。
+                loadedHTML = nil
+                load(html: currentHTML)
+                return
+            }
+
+            searchWorkItem?.cancel()
+
+            let workItem = DispatchWorkItem { [weak self] in
+                self?.performFind(query: query)
+            }
+            searchWorkItem = workItem
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.35, execute: workItem)
+        }
+
+        private func performFind(query: String) {
+            guard let webView else { return }
+
+            let configuration = WKFindConfiguration()
+            configuration.caseSensitive = false
+            configuration.wraps = true
+
+            webView.find(query, configuration: configuration) { [weak self] result in
+                Task { @MainActor [weak self] in
+                    self?.onFindResult(result.matchFound)
+                }
+            }
         }
 
         func load(html: String) {
+            currentHTML = html
             guard html != loadedHTML else { return }
             loadedHTML = html
             pendingHTML = html

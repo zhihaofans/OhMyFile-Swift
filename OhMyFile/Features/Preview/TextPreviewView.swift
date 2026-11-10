@@ -2,18 +2,25 @@
 //  TextPreviewView.swift
 //  OhMyFile
 //
-//  只读文本预览，UTF-8，单文件上限 2 MB。
+//  只读文本预览，UTF-8，单文件上限 2 MB；支持内容搜索。
 //
 
 import SwiftUI
+import UIKit
 
 struct TextPreviewView: View {
     let file: FileItem
+
+    @Environment(\.colorScheme) private var colorScheme
 
     @State private var text: String?
     @State private var errorMessage: String?
     @State private var isLoading = true
     @State private var isEditing = false
+    @State private var isSearching = false
+    @State private var searchQuery = ""
+    @State private var currentMatch = 0
+    @State private var matchCount = 0
 
     private var canEdit: Bool {
         file.url.pathExtension.lowercased() == "txt"
@@ -24,13 +31,19 @@ struct TextPreviewView: View {
             if isLoading {
                 ProgressView("Loading…")
             } else if let text {
-                ScrollView {
-                    Text(verbatim: text)
-                        .font(.callout)
-                        .textSelection(.enabled)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding()
-                }
+                SearchableText(
+                    text: text,
+                    query: isSearching ? searchQuery : "",
+                    currentMatch: currentMatch,
+                    font: UIFont.preferredFont(forTextStyle: .callout),
+                    colorScheme: colorScheme,
+                    onMatchCountChange: { count in
+                        matchCount = count
+                        if currentMatch >= count {
+                            currentMatch = 0
+                        }
+                    }
+                )
             } else {
                 ContentUnavailableView(
                     "Unable to Read File",
@@ -39,7 +52,29 @@ struct TextPreviewView: View {
                 )
             }
         }
+        .safeAreaInset(edge: .top) {
+            if isSearching {
+                SearchBarView(
+                    query: $searchQuery,
+                    matchCount: matchCount,
+                    currentIndex: currentMatch,
+                    onPrevious: { moveMatch(-1) },
+                    onNext: { moveMatch(1) },
+                    onClose: { closeSearch() },
+                    onSubmit: { moveMatch(1) }
+                )
+            }
+        }
         .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button {
+                    isSearching = true
+                } label: {
+                    Image(systemName: "magnifyingglass")
+                }
+                .accessibilityLabel("Search Content")
+            }
+
             if canEdit {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button {
@@ -59,7 +94,22 @@ struct TextPreviewView: View {
                 }
             }
         }
+        .onChange(of: searchQuery) { _, _ in
+            currentMatch = 0
+        }
         .task { await load() }
+    }
+
+    private func moveMatch(_ delta: Int) {
+        guard matchCount > 0 else { return }
+        currentMatch = (currentMatch + delta + matchCount) % matchCount
+    }
+
+    private func closeSearch() {
+        isSearching = false
+        searchQuery = ""
+        currentMatch = 0
+        matchCount = 0
     }
 
     private func load() async {

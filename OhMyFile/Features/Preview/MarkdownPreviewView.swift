@@ -7,9 +7,12 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct MarkdownPreviewView: View {
     let file: FileItem
+
+    @Environment(\.colorScheme) private var colorScheme
 
     @AppStorage("settings.markdownExtended") private var extended = false
     @AppStorage("markdown.showSource") private var showSource = false
@@ -17,6 +20,11 @@ struct MarkdownPreviewView: View {
     @State private var text: String?
     @State private var errorMessage: String?
     @State private var isEditing = false
+    @State private var isSearching = false
+    @State private var searchQuery = ""
+    @State private var currentMatch = 0
+    @State private var matchCount = 0
+    @State private var sourceBeforeSearch = false
 
     var body: some View {
         Group {
@@ -56,6 +64,16 @@ struct MarkdownPreviewView: View {
 
                     Divider()
 
+                    Divider()
+
+                    Button {
+                        sourceBeforeSearch = showSource
+                        showSource = true
+                        isSearching = true
+                    } label: {
+                        Label("Search Content", systemImage: "magnifyingglass")
+                    }
+
                     Button {
                         extended.toggle()
                     } label: {
@@ -68,6 +86,22 @@ struct MarkdownPreviewView: View {
                     Image(systemName: "ellipsis.circle")
                 }
             }
+        }
+        .safeAreaInset(edge: .top) {
+            if isSearching {
+                SearchBarView(
+                    query: $searchQuery,
+                    matchCount: matchCount,
+                    currentIndex: currentMatch,
+                    onPrevious: { moveMatch(-1) },
+                    onNext: { moveMatch(1) },
+                    onClose: { closeSearch() },
+                    onSubmit: { moveMatch(1) }
+                )
+            }
+        }
+        .onChange(of: searchQuery) { _, _ in
+            currentMatch = 0
         }
         .sheet(isPresented: $isEditing) {
             NavigationStack {
@@ -86,13 +120,32 @@ struct MarkdownPreviewView: View {
     }
 
     private func sourceView(_ text: String) -> some View {
-        ScrollView {
-            Text(text)
-                .font(.system(.body, design: .monospaced))
-                .textSelection(.enabled)
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding()
-        }
+        SearchableText(
+            text: text,
+            query: isSearching ? searchQuery : "",
+            currentMatch: currentMatch,
+            font: UIFont.monospacedSystemFont(ofSize: 17, weight: .regular),
+            colorScheme: colorScheme,
+            onMatchCountChange: { count in
+                matchCount = count
+                if currentMatch >= count {
+                    currentMatch = 0
+                }
+            }
+        )
+    }
+
+    private func moveMatch(_ delta: Int) {
+        guard matchCount > 0 else { return }
+        currentMatch = (currentMatch + delta + matchCount) % matchCount
+    }
+
+    private func closeSearch() {
+        isSearching = false
+        searchQuery = ""
+        currentMatch = 0
+        matchCount = 0
+        showSource = sourceBeforeSearch
     }
 
     private func load() async {
