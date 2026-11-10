@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import LocalAuthentication
 import SwiftUI
 import UIKit
 
@@ -15,6 +16,8 @@ struct PermissionsView: View {
 
     @State private var cameraStatus: AVAuthorizationStatus = .notDetermined
     @State private var microphoneStatus: AVAudioApplication.recordPermission = .undetermined
+    @State private var biometricAvailable = false
+    @State private var biometricType: LABiometryType = .none
 
     var body: some View {
         List {
@@ -36,6 +39,21 @@ struct PermissionsView: View {
                     statusColor: microphoneStatusColor,
                     purpose: "Record audio when capturing video."
                 )
+            }
+
+            Section {
+                permissionRow(
+                    title: biometricTitle,
+                    icon: biometricIcon,
+                    color: .green,
+                    status: biometricAvailable
+                        ? String(localized: "Supported")
+                        : String(localized: "Not Supported"),
+                    statusColor: biometricAvailable ? .green : .secondary,
+                    purpose: "Used to unlock OhMyFile when App Lock is enabled."
+                )
+            } footer: {
+                Text("Face ID / Touch ID is managed by system settings.")
             }
         }
         .navigationTitle("Permissions")
@@ -98,6 +116,40 @@ struct PermissionsView: View {
     private func refresh() {
         cameraStatus = AVCaptureDevice.authorizationStatus(for: .video)
         microphoneStatus = AVAudioApplication.shared.recordPermission
+
+        let context = LAContext()
+        var error: NSError?
+        biometricAvailable = context.canEvaluatePolicy(
+            .deviceOwnerAuthenticationWithBiometrics,
+            error: &error
+        )
+        biometricType = biometricAvailable ? context.biometryType : .none
+    }
+
+    private var biometricTitle: String {
+        guard biometricAvailable else {
+            return String(localized: "Biometrics")
+        }
+
+        switch biometricType {
+        case .faceID:
+            return "Face ID"
+        case .touchID:
+            return "Touch ID"
+        case .opticID:
+            return "Optic ID"
+        default:
+            return String(localized: "Biometrics")
+        }
+    }
+
+    private var biometricIcon: String {
+        switch biometricType {
+        case .touchID:
+            return "touchid"
+        default:
+            return "faceid"
+        }
     }
 
     private func openSettings() {

@@ -897,6 +897,16 @@
         }
       }
     },
+    "Face ID / Touch ID is managed by system settings.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID / Touch ID 由系统设置管理。"
+          }
+        }
+      }
+    },
     "Failed": {
       "localizations": {
         "zh-Hans": {
@@ -1499,6 +1509,16 @@
         }
       }
     },
+    "Not Supported": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不可用"
+          }
+        }
+      }
+    },
     "OK": {
       "localizations": {
         "zh-Hans": {
@@ -1992,6 +2012,16 @@
         }
       }
     },
+    "Supported": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用"
+          }
+        }
+      }
+    },
     "Switch View": {
       "extractionState": "stale",
       "localizations": {
@@ -2339,6 +2369,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "不支持该格式"
+          }
+        }
+      }
+    },
+    "Used to unlock OhMyFile when App Lock is enabled.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启应用锁后用于解锁 OhMyFile。"
           }
         }
       }
