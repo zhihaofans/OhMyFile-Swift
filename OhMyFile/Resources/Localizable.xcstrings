@@ -917,6 +917,16 @@
         }
       }
     },
+    "External Folders": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部文件夹"
+          }
+        }
+      }
+    },
     "Face ID / Touch ID failed. Enter your passcode.": {
       "localizations": {
         "zh-Hans": {
@@ -1494,6 +1504,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "无结果"
+          }
+        }
+      }
+    },
+    "No external folders.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂无外部文件夹。"
           }
         }
       }

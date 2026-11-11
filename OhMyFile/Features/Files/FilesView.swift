@@ -21,6 +21,7 @@ struct FilesView: View {
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @State private var counts: [LibraryDirectory: Int] = [:]
+    @State private var mountedFolders: [MountedFolder] = []
     @State private var importedCount = 0
     @State private var showImportAlert = false
     @State private var openedDirectory: LibraryDirectory?
@@ -82,6 +83,18 @@ struct FilesView: View {
                                 }
                             } label: {
                                 DirectoryRow(directory: directory)
+                            }
+                        }
+                    }
+
+                    Section("External Folders") {
+                        if mountedFolders.isEmpty {
+                            Text("No external folders.")
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        } else {
+                            ForEach(mountedFolders) { folder in
+                                Text(folder.name)
                             }
                         }
                     }
@@ -1561,4 +1574,10 @@ private struct ShareSheet: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
+}
+
+struct MountedFolder: Identifiable {
+    let id = UUID()
+    let name: String
+    let url: URL
 }
