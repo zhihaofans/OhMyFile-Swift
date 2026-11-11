@@ -9,6 +9,11 @@ import SwiftUI
 import UniformTypeIdentifiers
 
 func fileIcon(for url: URL) -> (symbol: String, color: Color) {
+    // .ts / .m 等扩展名会被系统识别成视频 / 音频类型，代码扩展名优先。
+    if let language = CodeLanguage.detect(for: url) {
+        return codeIcon(for: language)
+    }
+
     let contentType = FileCapabilityResolver.contentType(for: url)
 
     if contentType.conforms(to: .image) {
@@ -49,4 +54,39 @@ func fileIcon(for url: URL) -> (symbol: String, color: Color) {
     }
 
     return ("questionmark", .gray)
+}
+
+private func codeIcon(for language: CodeLanguage) -> (symbol: String, color: Color) {
+    let color: Color
+
+    switch language {
+    case .swift:
+        color = .orange
+    case .kotlin:
+        color = .purple
+    case .java:
+        color = .brown
+    case .javascript:
+        color = .yellow
+    case .typescript:
+        color = .blue
+    case .python:
+        color = .green
+    case .css:
+        color = .cyan
+    case .cFamily:
+        color = .indigo
+    case .shell:
+        color = .mint
+    case .go:
+        color = .teal
+    case .rust:
+        color = .orange
+    case .ruby:
+        color = .red
+    case .php:
+        color = .indigo
+    }
+
+    return ("chevron.left.forwardslash.chevron.right", color)
 }

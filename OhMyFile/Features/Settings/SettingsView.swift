@@ -14,6 +14,8 @@ struct SettingsView: View {
     @Environment(\.openURL) private var openURL
     @AppStorage("settings.relativeTime") private var relativeTime = true
     @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
+    @AppStorage("settings.treeCollapsedByDefault") private var treeCollapsedByDefault = false
+    @AppStorage("settings.codeTheme") private var codeThemeRaw = CodeTheme.xcode.id
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
@@ -62,6 +64,20 @@ struct SettingsView: View {
                         AppLockSettingsView(controller: lockController)
                     } label: {
                         SettingsLabel(title: "App Lock", systemImage: "lock.shield.fill", color: .green)
+                    }
+                }
+
+                Section("Editor") {
+                    Picker(selection: $codeThemeRaw) {
+                        ForEach(CodeTheme.all) { theme in
+                            Text(LocalizedStringKey(theme.nameKey)).tag(theme.id)
+                        }
+                    } label: {
+                        SettingsLabel(title: "Highlight Theme", systemImage: "paintpalette.fill", color: .purple)
+                    }
+
+                    Toggle(isOn: $treeCollapsedByDefault) {
+                        SettingsLabel(title: "Collapse Tree by Default", systemImage: "list.bullet.indent", color: .teal)
                     }
                 }
 

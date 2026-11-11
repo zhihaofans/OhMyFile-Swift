@@ -515,6 +515,16 @@
         }
       }
     },
+    "Collapse Tree by Default": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "树状预览默认折叠"
+          }
+        }
+      }
+    },
     "Column Width": {
       "localizations": {
         "zh-Hans": {
@@ -807,6 +817,16 @@
         }
       }
     },
+    "Editor": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编辑器"
+          }
+        }
+      }
+    },
     "Empty Trash": {
       "localizations": {
         "zh-Hans": {
@@ -1063,6 +1083,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "网格"
+          }
+        }
+      }
+    },
+    "Highlight Theme": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高亮主题"
           }
         }
       }
@@ -1958,6 +1988,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "从其他 App 分享文件到 OhMyFile，或点击右上角 + 导入。"
+          }
+        }
+      }
+    },
+    "Showing first %ld lines": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "显示前 %ld 行"
           }
         }
       }

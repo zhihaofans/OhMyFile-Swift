@@ -160,6 +160,8 @@ struct StructuredPreviewView: View {
 private struct JSONStructuredContent: View {
     let text: String
 
+    @AppStorage("settings.treeCollapsedByDefault") private var collapsedByDefault = false
+
     @State private var root: JSONNode?
     @State private var errorMessage: String?
 
@@ -168,7 +170,7 @@ private struct JSONStructuredContent: View {
             if let root {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 6) {
-                        JSONNodeView(node: root, depth: 0)
+                        JSONNodeView(node: root, depth: 0, collapsedByDefault: collapsedByDefault)
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -207,6 +209,8 @@ private struct JSONStructuredContent: View {
 private struct XMLStructuredContent: View {
     let text: String
 
+    @AppStorage("settings.treeCollapsedByDefault") private var collapsedByDefault = false
+
     @State private var root: XMLNode?
     @State private var errorMessage: String?
 
@@ -215,7 +219,7 @@ private struct XMLStructuredContent: View {
             if let root {
                 ScrollView {
                     VStack(alignment: .leading, spacing: 6) {
-                        XMLNodeView(node: root, depth: 0)
+                        XMLNodeView(node: root, depth: 0, collapsedByDefault: collapsedByDefault)
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -246,20 +250,22 @@ private struct XMLStructuredContent: View {
 private struct JSONNodeView: View {
     let node: JSONNode
     let depth: Int
+    let collapsedByDefault: Bool
 
     @State private var isExpanded: Bool
 
-    init(node: JSONNode, depth: Int) {
+    init(node: JSONNode, depth: Int, collapsedByDefault: Bool) {
         self.node = node
         self.depth = depth
-        _isExpanded = State(initialValue: depth < 2)
+        self.collapsedByDefault = collapsedByDefault
+        _isExpanded = State(initialValue: collapsedByDefault ? false : depth < 2)
     }
 
     var body: some View {
         if let children = node.children {
             DisclosureGroup(isExpanded: $isExpanded) {
                 ForEach(children) { child in
-                    JSONNodeView(node: child, depth: depth + 1)
+                    JSONNodeView(node: child, depth: depth + 1, collapsedByDefault: collapsedByDefault)
                 }
             } label: {
                 HStack(spacing: 4) {
@@ -339,13 +345,15 @@ private struct JSONNodeView: View {
 private struct XMLNodeView: View {
     let node: XMLNode
     let depth: Int
+    let collapsedByDefault: Bool
 
     @State private var isExpanded: Bool
 
-    init(node: XMLNode, depth: Int) {
+    init(node: XMLNode, depth: Int, collapsedByDefault: Bool) {
         self.node = node
         self.depth = depth
-        _isExpanded = State(initialValue: depth < 2)
+        self.collapsedByDefault = collapsedByDefault
+        _isExpanded = State(initialValue: collapsedByDefault ? false : depth < 2)
     }
 
     var body: some View {
@@ -370,7 +378,7 @@ private struct XMLNodeView: View {
         } else {
             DisclosureGroup(isExpanded: $isExpanded) {
                 ForEach(node.children) { child in
-                    XMLNodeView(node: child, depth: depth + 1)
+                    XMLNodeView(node: child, depth: depth + 1, collapsedByDefault: collapsedByDefault)
                 }
             } label: {
                 openTag

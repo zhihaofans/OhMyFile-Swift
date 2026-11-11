@@ -75,6 +75,8 @@ struct FilePreviewView: View {
                 CSVPreviewView(file: file)
             } else if isMarkdown {
                 MarkdownPreviewView(file: file)
+            } else if let codeLanguage = CodeLanguage.detect(for: file.url) {
+                CodePreviewView(file: file, language: codeLanguage)
             } else if isText {
                 TextPreviewView(file: file)
             } else if QLPreviewController.canPreview(file.url as NSURL) {
