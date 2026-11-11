@@ -14,9 +14,6 @@
 
 > 成本小、影响面大：版本策略、工程配置、依赖、日志、提审要求先定，避免后续返工。
 
-- [ ] T-60 决定 `OhMyFile.xcodeproj/xcuserdata/` 是否移出版本控制
-  - 背景：加 `.gitignore` 前该文件已被跟踪，`.gitignore` 不会取消跟踪；移除需 `git rm --cached`（git 写操作，先征得同意）。
-  - 验收：明确保留或移除，并同步 AGENTS.md。
 - [ ] T-63 接入 SwiftUtils（优先复用）
   - 方式：通过 SPM 添加依赖并锁定版本，接入前出方案确认来源、版本与许可。
   - 验收：依赖加入并记录在 `Package.resolved`；至少一个现有功能使用 SwiftUtils 的能力；`xcodebuild -list` 仍正常；不重复实现 SwiftUtils 已有的工具。

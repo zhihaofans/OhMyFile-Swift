@@ -465,7 +465,7 @@ Share Extension 必须保持轻量。
 2. **主线程默认隔离**：app target 默认开启 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`（项目级与测试 target 没有）。回调式 API（`URLSession` 回调、文件协调、`AVFoundation` 通知等）在后台线程回调时，闭包隐式继承的 MainActor 隔离会触发运行时 trap（编译通过）。新代码用 `async` API；写回调参数标 `@Sendable`，或调用点标 `nonisolated`。
 3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `FileLibrary` 读取三个目录。真机分享链路尚未验证。
 4. **没有 macOS target**：`SDKROOT = iphoneos`、`TARGETED_DEVICE_FAMILY = 1,2`；macOS 支撑是规划，不是现状。不要写 `#if os(macOS)` 分支却无法验证。
-5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。注意 `xcuserdata/xcschememanagement.plist`（`OhMyFile.xcodeproj/xcuserdata/zzh.xcuserdatad/xcschemes/`）在加规则前就已被 Git 跟踪，`.gitignore` 不会取消跟踪；要移出需 `git rm --cached`（git 写操作，先问用户，见 TODO.md 的「工程卫生」条目）。
+5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。`xcuserdata/xcschememanagement.plist` 已不再被跟踪（T-60 已用 `git rm --cached` 处理）；不要重新提交该目录，本机 Xcode 会重新生成。
 6. **命令行构建需要放宽 agent 沙盒**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），`@State` / `@AppStorage` 等 SwiftUI 宏会报错。这是 agent 沙盒限制，不是代码错误；需要临时放宽文件沙盒权限（或直接在 Xcode 里构建）。已验证放宽后可构建成功。
 7. **Swift 5 语言模式**：`SWIFT_VERSION = 5.0`，但已启用 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`、`SWIFT_APPROACHABLE_CONCURRENCY`、`SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY`。迁移到 Swift 6 语言模式会改变全局并发检查，属跨文件改动，先出方案。
 8. **版本号**：App、Share Extension、测试 target 的 `MARKETING_VERSION` 已统一为 0.0.2，`CURRENT_PROJECT_VERSION` 均为 2。改版本时所有 target 保持一致，且先问用户（§2）；版本号更新时同步递增 `CURRENT_PROJECT_VERSION`。
