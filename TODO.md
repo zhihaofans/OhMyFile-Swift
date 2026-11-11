@@ -14,9 +14,6 @@
 
 > 成本小、影响面大：版本策略、工程配置、依赖、日志、提审要求先定，避免后续返工。
 
-- [ ] T-61 确定最低系统版本策略
-  - 背景：app target 用 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前实际 17.0，随 Xcode 浮动）；测试 target 硬编码 27.2，两者不一致。
-  - 验收：策略定稿（保留 RECOMMENDED 或改固定值），App 与测试 target 一致，写进 AGENTS.md。
 - [ ] T-60 决定 `OhMyFile.xcodeproj/xcuserdata/` 是否移出版本控制
   - 背景：加 `.gitignore` 前该文件已被跟踪，`.gitignore` 不会取消跟踪；移除需 `git rm --cached`（git 写操作，先征得同意）。
   - 验收：明确保留或移除，并同步 AGENTS.md。

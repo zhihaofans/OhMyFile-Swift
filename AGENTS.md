@@ -435,8 +435,7 @@ Share Extension 必须保持轻量。
 | 单元测试 Bundle ID | `me.zzhhoo.OhMyFileTests` |
 | UI 测试 Bundle ID | `me.zzhhoo.OhMyFileUITests` |
 | Team | `9DU6DRLH3R`（Automatic signing） |
-| App / Share Extension Deployment Target | `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0，两者已统一）；测试 target 为 27.2（不一致，T-61 处理） |
-| 测试 Deployment Target | 硬编码 `27.2` |
+| App / Share Extension / 测试 / 项目级 Deployment Target | 固定 17.0（T-61 已统一） |
 | Swift Language Version | `5.0`（Swift 5 语言模式） |
 | 并发默认隔离 | `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`，`SWIFT_APPROACHABLE_CONCURRENCY = YES` |
 | Supported Destinations | iPhone + iPad（`TARGETED_DEVICE_FAMILY = 1,2`，`SDKROOT = iphoneos`） |
@@ -462,7 +461,7 @@ Share Extension 必须保持轻量。
 
 ## 18. 已知限制与坑
 
-1. **最低系统版本随 Xcode 浮动**：app 与 Share Extension 都用 `$(RECOMMENDED_IPHONEOS_DEPLOYMENT_TARGET)`（当前解析为 17.0）；项目级和测试 target 硬编码 `27.2`，与产品 target 不一致。升级 Xcode 后产品最低版本会静默改变，测试 target 不会跟着变。改 Deployment Target 先问用户。
+1. **最低系统版本已固定**：App / Share Extension / 测试 / 项目级 Deployment Target 统一为固定 `17.0`（T-61）；升级 Xcode 不再静默改变最低版本。改 Deployment Target 先问用户。
 2. **主线程默认隔离**：app target 默认开启 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`（项目级与测试 target 没有）。回调式 API（`URLSession` 回调、文件协调、`AVFoundation` 通知等）在后台线程回调时，闭包隐式继承的 MainActor 隔离会触发运行时 trap（编译通过）。新代码用 `async` API；写回调参数标 `@Sendable`，或调用点标 `nonisolated`。
 3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `FileLibrary` 读取三个目录。真机分享链路尚未验证。
 4. **没有 macOS target**：`SDKROOT = iphoneos`、`TARGETED_DEVICE_FAMILY = 1,2`；macOS 支撑是规划，不是现状。不要写 `#if os(macOS)` 分支却无法验证。
