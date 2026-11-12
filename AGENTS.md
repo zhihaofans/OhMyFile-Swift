@@ -444,6 +444,7 @@ Share Extension 必须保持轻量。
 | App Groups / Share Extension / Entitlements | App Group：`group.me.zzhhoo.OhMyFile`；Share Extension：`OhMyFileShareExtension`；主 App 与 Extension 各有一份 entitlements |
 | Info.plist | 主 App：`OhMyFile/Info.plist`（`CFBundleURLTypes` → `ohmyfile`；`CFBundleDocumentTypes` 声明 `public.item`、`CFBundleTypeRole = Viewer`、`LSHandlerRank = Default`、`LSSupportsOpeningDocumentsInPlace = true`；已从同步文件夹 resources 排除）；Share Extension：独立 `Info.plist`。两者都保留 `GENERATE_INFOPLIST_FILE = YES` 合并生成键 |
 | 第三方依赖 | 无；规划接入 SwiftUtils（优先复用）与 CrashKit（崩溃收集） |
+| 隐私清单 | `OhMyFile/PrivacyInfo.xcprivacy`：声明 UserDefaults（CA92.1）、文件时间戳（C617.1）、磁盘空间（E174.1）；不跟踪、不收集数据 |
 | 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
 | 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-62） |
 
