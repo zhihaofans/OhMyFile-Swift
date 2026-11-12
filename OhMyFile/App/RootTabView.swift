@@ -5,6 +5,7 @@
 //  应用主导航：文件 / 最近 / 设置。
 //
 
+import OSLog
 import SwiftUI
 
 struct RootTabView: View {
@@ -138,6 +139,8 @@ struct RootTabView: View {
                 do {
                     return (try FileLibrary().importFile(from: url), nil)
                 } catch {
+                    let nsError = error as NSError
+                    AppLog.imports.error("import failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                     return (nil, error.localizedDescription)
                 }
             }.value

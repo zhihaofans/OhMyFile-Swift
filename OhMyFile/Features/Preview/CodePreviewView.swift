@@ -5,6 +5,7 @@
 //  代码只读预览：行号 + 等宽字体 + 语法高亮 + 字号调节；不自动换行。
 //
 
+import OSLog
 import SwiftUI
 
 struct CodePreviewView: View {
@@ -137,6 +138,8 @@ struct CodePreviewView: View {
             text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
             errorMessage = nil
         } catch {
+            let nsError = error as NSError
+            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             text = nil
             errorMessage = textLoadingMessage(for: error)
         }

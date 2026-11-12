@@ -5,6 +5,7 @@
 //  纯文本编辑：保存前确认覆盖，原子写入，失败不破坏原文件。
 //
 
+import OSLog
 import SwiftUI
 
 struct TextEditorView: View {
@@ -123,6 +124,8 @@ struct TextEditorView: View {
                     showSavedNotice = false
                 }
             } catch {
+                let nsError = error as NSError
+                AppLog.save.error("save failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                 isSaving = false
                 activeAlert = .error(String(localized: "Unable to save the file."))
             }

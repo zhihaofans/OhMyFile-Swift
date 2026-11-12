@@ -6,6 +6,7 @@
 //  点「导入」才复制到收件箱并记录最近打开；关闭未导入时不留下副本。
 //
 
+import OSLog
 import SwiftUI
 
 struct ExternalFilePreviewView: View {
@@ -90,6 +91,8 @@ struct ExternalFilePreviewView: View {
                 do {
                     return (try FileLibrary().importFile(from: url), nil)
                 } catch {
+                    let nsError = error as NSError
+                    AppLog.external.error("import failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                     return (nil, error.localizedDescription)
                 }
             }.value

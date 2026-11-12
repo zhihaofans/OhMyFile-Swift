@@ -5,6 +5,7 @@
 //  JSON / XML 只读预览：树形（可折叠、着色）与文本模式（可选中复制）。
 //
 
+import OSLog
 import SwiftUI
 import UIKit
 
@@ -152,6 +153,8 @@ struct StructuredPreviewView: View {
             try await CloudFileDownloader.ensureDownloaded(at: file.url)
             text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
         } catch {
+            let nsError = error as NSError
+            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             errorMessage = textLoadingMessage(for: error)
         }
     }

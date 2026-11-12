@@ -6,6 +6,7 @@
 //  完成后用 AtomicFileWriter 原子移动到下载目录。
 //
 
+import OSLog
 import Foundation
 import Observation
 import UIKit
@@ -112,6 +113,7 @@ final class DownloadManager: NSObject {
     func cancel(id: UUID) {
         activeTasks[id]?.cancel()
         activeTasks[id] = nil
+        AppLog.download.info("download cancelled")
 
         if let index = tasks.firstIndex(where: { $0.id == id }) {
             tasks[index].status = .cancelled
@@ -206,6 +208,7 @@ final class DownloadManager: NSObject {
         tasks[index].status = .downloading
         tasks[index].errorMessage = nil
         persist()
+        AppLog.download.info("download started")
         downloadTask.resume()
     }
 
@@ -250,6 +253,7 @@ final class DownloadManager: NSObject {
         tasks[index].errorMessage = nil
         lastCompletedFileName = fileName
         completedCount += 1
+        AppLog.download.info("download completed")
 
         origins[fileName] = tasks[index].url
         originStore.save(origins)
@@ -301,6 +305,9 @@ extension DownloadManager: URLSessionDownloadDelegate {
             let destination = directory.appendingPathComponent(availableName)
             try AtomicFileWriter.replaceItem(at: destination, withTemporaryFileAt: location)
         } catch {
+            let nsError = error as NSError
+            AppLog.download.error("save downloaded file failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+
             Task { @MainActor [weak self] in
                 self?.markFailed(
                     id: id,
@@ -358,7 +365,8 @@ extension DownloadManager: URLSessionDownloadDelegate {
         guard let error else { return }
 
         // 用户主动取消不算失败，保留「已取消」状态以便重试。
-        if (error as NSError).code == NSURLErrorCancelled {
+        let nsError = error as NSError
+        if nsError.code == NSURLErrorCancelled {
             return
         }
 
@@ -366,6 +374,8 @@ extension DownloadManager: URLSessionDownloadDelegate {
               let id = UUID(uuidString: idString) else {
             return
         }
+
+        AppLog.download.error("download failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
 
         Task { @MainActor [weak self] in
             self?.markFailed(id: id, message: error.localizedDescription)

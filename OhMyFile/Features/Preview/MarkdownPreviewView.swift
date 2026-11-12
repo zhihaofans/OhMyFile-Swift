@@ -6,6 +6,7 @@
 //  右上角二级菜单切换「阅读 / 源码」和「扩展 Markdown」。
 //
 
+import OSLog
 import SwiftUI
 import UIKit
 
@@ -153,6 +154,8 @@ struct MarkdownPreviewView: View {
             try await CloudFileDownloader.ensureDownloaded(at: file.url)
             text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
         } catch {
+            let nsError = error as NSError
+            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             errorMessage = textLoadingMessage(for: error)
         }
     }

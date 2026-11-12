@@ -5,6 +5,7 @@
 //  只读文本预览，UTF-8，单文件上限 2 MB；支持内容搜索。
 //
 
+import OSLog
 import SwiftUI
 import UIKit
 
@@ -120,6 +121,8 @@ struct TextPreviewView: View {
             text = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
             errorMessage = nil
         } catch {
+            let nsError = error as NSError
+            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             text = nil
             errorMessage = textLoadingMessage(for: error)
         }

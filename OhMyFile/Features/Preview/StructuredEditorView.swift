@@ -5,6 +5,7 @@
 //  XML / CSV 源码编辑：保存前校验结构，原子写入，失败不破坏原文件。
 //
 
+import OSLog
 import SwiftUI
 
 struct StructuredEditorView: View {
@@ -173,6 +174,8 @@ struct StructuredEditorView: View {
                     showSavedNotice = false
                 }
             } catch {
+                let nsError = error as NSError
+                AppLog.save.error("save failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                 isSaving = false
                 activeAlert = .error(String(localized: "Unable to save the file."))
             }

@@ -5,6 +5,7 @@
 //  Markdown 编辑：源码编辑与渲染预览切换，保存前确认、原子写入。
 //
 
+import OSLog
 import SwiftUI
 
 struct MarkdownEditorView: View {
@@ -139,6 +140,8 @@ struct MarkdownEditorView: View {
                     showSavedNotice = false
                 }
             } catch {
+                let nsError = error as NSError
+                AppLog.save.error("save failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                 isSaving = false
                 activeAlert = .error(String(localized: "Unable to save the file."))
             }

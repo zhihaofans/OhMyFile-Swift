@@ -5,6 +5,7 @@
 //  CSV 只读表格预览；横向 / 纵向滚动，超过行数上限时提示截断。
 //
 
+import OSLog
 import SwiftUI
 
 struct CSVPreviewView: View {
@@ -253,6 +254,8 @@ struct CSVPreviewView: View {
             sourceText = text
             table = CSVParser.parse(text)
         } catch {
+            let nsError = error as NSError
+            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             errorMessage = textLoadingMessage(for: error)
         }
     }

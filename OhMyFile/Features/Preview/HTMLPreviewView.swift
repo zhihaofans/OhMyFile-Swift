@@ -6,6 +6,7 @@
 //  点击链接不跳转，改为复制链接并提示。
 //
 
+import OSLog
 import SwiftUI
 import UIKit
 import WebKit
@@ -151,6 +152,8 @@ struct HTMLPreviewView: View {
             try await CloudFileDownloader.ensureDownloaded(at: file.url)
             html = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
         } catch {
+            let nsError = error as NSError
+            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             errorMessage = textLoadingMessage(for: error)
         }
     }

@@ -20,9 +20,6 @@
 - [ ] T-64 接入 CrashKit（崩溃收集）
   - 方式：通过 SPM 添加依赖；接入前出方案确认版本、许可与上报策略。
   - 验收：可触发一次测试崩溃并在下次启动读到本地记录；上报默认关闭或需用户明确同意；日志不含文件名、文件内容或用户标识；设置页提供开关。
-- [ ] T-91 app 端统一 Logger（OSLog）
-  - 范围：主 App 关键路径（导入、预览、下载、保存、外部文件）使用 OSLog Logger 记录诊断信息。
-  - 验收：关键路径有日志；不记录文件内容与用户标识；为 T-80 导出日志提供数据。
 - [ ] T-89 隐私清单（PrivacyInfo.xcprivacy）
   - 范围：按 App Store 要求声明 UserDefaults 等 API 使用，数据收集声明为「无」。
   - 验收：工程包含 `PrivacyInfo.xcprivacy` 且构建后进入 App bundle；Xcode 隐私报告无缺失项。
