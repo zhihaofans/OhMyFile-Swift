@@ -112,7 +112,31 @@ struct RootTabView: View {
         .onChange(of: scenePhase) { _, phase in
             if phase == .background || phase == .inactive {
                 lockController.lock()
+            } else if phase == .active {
+                consumePendingImport()
             }
+        }
+        .task {
+            consumePendingImport()
+        }
+    }
+
+    private func consumePendingImport() {
+        Task {
+            // 给分享扩展写入 App Group UserDefaults 留出同步时间。
+            try? await Task.sleep(nanoseconds: 300_000_000)
+
+            guard let defaults = UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile") else { return }
+            defaults.synchronize()
+
+            let pending = defaults.integer(forKey: "pendingImportCount")
+            guard pending > 0 else { return }
+
+            defaults.set(0, forKey: "pendingImportCount")
+            defaults.synchronize()
+            selectedTab = .files
+            shareRefreshToken = UUID()
+            openInboxToken = UUID()
         }
     }
 

@@ -74,7 +74,9 @@ final class ShareViewController: UIViewController {
 
     private func finish(imported: Int, failed: Int, firstError: Error?) {
         if failed == 0 {
-            UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")?.set(imported, forKey: "pendingImportCount")
+            let defaults = UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")
+            defaults?.set(imported, forKey: "pendingImportCount")
+            defaults?.synchronize()
             showSuccess(imported: imported)
             return
         }
@@ -149,7 +151,9 @@ final class ShareViewController: UIViewController {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: String(localized: "Close"), style: .default) { [weak self] _ in
             if imported > 0 {
-                UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")?.set(imported, forKey: "pendingImportCount")
+                let defaults = UserDefaults(suiteName: "group.me.zzhhoo.OhMyFile")
+                defaults?.set(imported, forKey: "pendingImportCount")
+                defaults?.synchronize()
             }
             self?.openMainAppAndFinish()
         })

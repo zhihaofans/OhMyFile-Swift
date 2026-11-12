@@ -58,6 +58,15 @@ struct FilePreviewView: View {
         return ["md", "markdown", "mdown", "mkd"].contains(file.url.pathExtension.lowercased())
     }
 
+    private var shouldUseQuickLook: Bool {
+        // .bin 被系统识别为 MacBinary 归档，QuickLook 会显示「拷贝到」界面，不提供预览。
+        if file.url.pathExtension.lowercased() == "bin" {
+            return false
+        }
+
+        return QLPreviewController.canPreview(file.url as NSURL)
+    }
+
     private var isText: Bool {
         let type = capability.contentType
         return type.conforms(to: .text)
@@ -79,7 +88,7 @@ struct FilePreviewView: View {
                 CodePreviewView(file: file, language: codeLanguage)
             } else if isText {
                 TextPreviewView(file: file)
-            } else if QLPreviewController.canPreview(file.url as NSURL) {
+            } else if shouldUseQuickLook {
                 QuickLookPreview(url: file.url)
                     .ignoresSafeArea()
             } else {

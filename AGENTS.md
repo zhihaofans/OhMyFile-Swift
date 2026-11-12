@@ -464,7 +464,7 @@ Share Extension 必须保持轻量。
 
 1. **最低系统版本已固定**：App / Share Extension / 测试 / 项目级 Deployment Target 统一为固定 `17.0`（T-61）；升级 Xcode 不再静默改变最低版本。改 Deployment Target 先问用户。
 2. **主线程默认隔离**：app target 默认开启 `SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor`（项目级与测试 target 没有）。回调式 API（`URLSession` 回调、文件协调、`AVFoundation` 通知等）在后台线程回调时，闭包隐式继承的 MainActor 隔离会触发运行时 trap（编译通过）。新代码用 `async` API；写回调参数标 `@Sendable`，或调用点标 `nonisolated`。
-3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `FileLibrary` 读取三个目录。真机分享链路尚未验证。
+3. **Share Extension 已创建**：target 为 `OhMyFileShareExtension`，App Group 为 `group.me.zzhhoo.OhMyFile`；接收代码在 `ShareViewController`，主 App 通过 `FileLibrary` 读取三个目录。真机分享链路已验证（T-90）；iCloud 文件未下载时系统不会在分享面板列出第三方扩展，需先在「文件」App 下载。
 4. **没有 macOS target**：`SDKROOT = iphoneos`、`TARGETED_DEVICE_FAMILY = 1,2`；macOS 支撑是规划，不是现状。不要写 `#if os(macOS)` 分支却无法验证。
 5. **`.gitignore` 已覆盖构建产物**：`/build/`、`/DerivedData/`、`/.build/`、`xcuserdata/`、`.DS_Store` 已忽略，`.build/DerivedData` 只是本地构建产物，不要提交。`xcuserdata/xcschememanagement.plist` 已不再被跟踪（T-60 已用 `git rm --cached` 处理）；不要重新提交该目录，本机 Xcode 会重新生成。
 6. **命令行构建需要放宽 agent 沙盒**：`xcodebuild` 调起的 `swift-plugin-server` 无法 `sandbox-exec`（`sandbox_apply: Operation not permitted`），`@State` / `@AppStorage` 等 SwiftUI 宏会报错。这是 agent 沙盒限制，不是代码错误；需要临时放宽文件沙盒权限（或直接在 Xcode 里构建）。已验证放宽后可构建成功。
