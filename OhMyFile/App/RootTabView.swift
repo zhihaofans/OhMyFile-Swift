@@ -5,6 +5,7 @@
 //  应用主导航：文件 / 最近 / 设置。
 //
 
+import CrashKit
 import OSLog
 import SwiftUI
 
@@ -24,6 +25,9 @@ struct RootTabView: View {
     @State private var openFileAlert: OpenFileAlert?
     @State private var isImporting = false
     @State private var lockController = AppLockController()
+    @State private var crashReport: CrashReport?
+
+    @AppStorage("settings.crashReportsEnabled") private var crashReportsEnabled = true
 
     init() {
         let raw = UserDefaults.standard.string(forKey: "settings.launchPage")
@@ -76,6 +80,17 @@ struct RootTabView: View {
         .sheet(item: $openedExternalFile) { request in
             ExternalFilePreviewView(url: request.url)
         }
+        .alert(
+            crashReport?.title ?? String(localized: "Crash Report"),
+            isPresented: Binding(
+                get: { crashReport != nil },
+                set: { if !$0 { crashReport = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) { crashReport = nil }
+        } message: {
+            Text(crashReport?.details ?? "")
+        }
         .alert(item: $openFileAlert) { alert in
             switch alert {
             case .unsupported(let url):
@@ -118,7 +133,17 @@ struct RootTabView: View {
         }
         .task {
             consumePendingImport()
+            checkCrashReport()
         }
+    }
+
+    private func checkCrashReport() {
+        guard crashReportsEnabled else {
+            _ = CrashRecorder.shared.takePendingReport()
+            return
+        }
+
+        crashReport = CrashRecorder.shared.takePendingReport()
     }
 
     private func consumePendingImport() {

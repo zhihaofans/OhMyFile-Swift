@@ -5,6 +5,7 @@
 //  设置页：外观、存储空间、相对时间、语言（跳系统设置）、版本。
 //
 
+import CrashKit
 import SwiftUI
 import UIKit
 
@@ -16,6 +17,7 @@ struct SettingsView: View {
     @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
     @AppStorage("settings.treeCollapsedByDefault") private var treeCollapsedByDefault = false
     @AppStorage("settings.codeTheme") private var codeThemeRaw = CodeTheme.xcode.id
+    @AppStorage("settings.crashReportsEnabled") private var crashReportsEnabled = true
 
     private var appVersion: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "—"
@@ -96,6 +98,20 @@ struct SettingsView: View {
                     Toggle(isOn: $relativeTime) {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
+                }
+
+                Section("Diagnostics") {
+                    Toggle(isOn: $crashReportsEnabled) {
+                        SettingsLabel(title: "Crash Reports", systemImage: "ladybug.fill", color: .orange)
+                    }
+
+                    #if DEBUG
+                    Button {
+                        CrashRecorder.shared.crashForTesting()
+                    } label: {
+                        SettingsLabel(title: "Simulate Crash", systemImage: "exclamationmark.triangle.fill", color: .red)
+                    }
+                    #endif
                 }
 
                 Section("About") {

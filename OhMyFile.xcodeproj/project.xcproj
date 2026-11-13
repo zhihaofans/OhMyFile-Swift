@@ -11,6 +11,15 @@
       "zh-Hans",
     ],
   },
+  "packages": [
+    {
+      "kind": "remote",
+      "repository": "https://github.com/zhihaofans/CrashKit",
+      "version": {
+        "up-to-next-major-version": "0.1.2",
+      },
+    },
+  ],
   "files": [
     {
       "kind": "folder",
@@ -71,6 +80,13 @@
           "kind": "copy",
           "name": "Embed Foundation Extensions",
           "bundle-base-path": "plugins-directory",
+        },
+      ],
+      "package-product-members": [
+        {
+          "package": "CrashKit",
+          "product-name": "CrashKit",
+          "build-phase": { "build-phase": "frameworks" },
         },
       ],
       "build-settings": {

@@ -1,0 +1,15 @@
+{
+  "originHash" : "d2c0e2df9d8b77700c42f5196f8420ec0a158c0c11f75cef190f3af0497b11ba",
+  "pins" : [
+    {
+      "identity" : "crashkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zhihaofans/CrashKit",
+      "state" : {
+        "revision" : "58877945489209c9cb625519876055f0ff355acd",
+        "version" : "0.1.2"
+      }
+    }
+  ],
+  "version" : 3
+}
