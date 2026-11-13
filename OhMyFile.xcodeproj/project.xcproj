@@ -16,7 +16,13 @@
       "kind": "remote",
       "repository": "https://github.com/zhihaofans/CrashKit",
       "version": {
-        "up-to-next-major-version": "0.1.2",
+        "version": "0.1.2",
+      },
+    }, {
+      "kind": "remote",
+      "repository": "https://github.com/zhihaofans/SwiftUtils.git",
+      "version": {
+        "version": "0.0.33",
       },
     },
   ],
@@ -86,6 +92,10 @@
         {
           "package": "CrashKit",
           "product-name": "CrashKit",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "SwiftUtils",
+          "product-name": "SwiftUtils",
           "build-phase": { "build-phase": "frameworks" },
         },
       ],

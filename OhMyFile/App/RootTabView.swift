@@ -27,8 +27,6 @@ struct RootTabView: View {
     @State private var lockController = AppLockController()
     @State private var crashReport: CrashReport?
 
-    @AppStorage("settings.crashReportsEnabled") private var crashReportsEnabled = true
-
     init() {
         let raw = UserDefaults.standard.string(forKey: "settings.launchPage")
             ?? LaunchPage.files.rawValue
@@ -138,11 +136,6 @@ struct RootTabView: View {
     }
 
     private func checkCrashReport() {
-        guard crashReportsEnabled else {
-            _ = CrashRecorder.shared.takePendingReport()
-            return
-        }
-
         crashReport = CrashRecorder.shared.takePendingReport()
     }
 

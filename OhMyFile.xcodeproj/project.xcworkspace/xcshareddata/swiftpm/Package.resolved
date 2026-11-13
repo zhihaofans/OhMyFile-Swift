@@ -1,5 +1,5 @@
 {
-  "originHash" : "d2c0e2df9d8b77700c42f5196f8420ec0a158c0c11f75cef190f3af0497b11ba",
+  "originHash" : "2260f287be17f8de5e595d885f0afa5c936aa8c3ae6568bd970a97a01bcf57b2",
   "pins" : [
     {
       "identity" : "crashkit",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "58877945489209c9cb625519876055f0ff355acd",
         "version" : "0.1.2"
+      }
+    },
+    {
+      "identity" : "swiftutils",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/zhihaofans/SwiftUtils.git",
+      "state" : {
+        "revision" : "2f836758b670e8cb4f5eae590d092440403d5c4e",
+        "version" : "0.0.33"
       }
     }
   ],

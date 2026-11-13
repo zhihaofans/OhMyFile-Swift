@@ -585,6 +585,9 @@
         }
       }
     },
+    "Crash Report" : {
+
+    },
     "CSV rows have different column counts." : {
       "localizations" : {
         "zh-Hans" : {
@@ -746,6 +749,9 @@
           }
         }
       }
+    },
+    "Diagnostics" : {
+
     },
     "Discard" : {
       "localizations" : {

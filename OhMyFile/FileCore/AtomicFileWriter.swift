@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SwiftUtils
 
 enum AtomicFileWriter {
     enum WriteError: Error {
@@ -14,14 +15,9 @@ enum AtomicFileWriter {
     }
 
     nonisolated static func write(_ data: Data, to destinationURL: URL) throws {
-        let directory = destinationURL.deletingLastPathComponent()
-        let tempURL = directory.appendingPathComponent(".atomic-\(UUID().uuidString).tmp")
-
         do {
-            try data.write(to: tempURL, options: .atomic)
-            try replaceItem(at: destinationURL, withTemporaryFileAt: tempURL)
+            try FileUtil.write(data, to: destinationURL)
         } catch {
-            try? FileManager.default.removeItem(at: tempURL)
             throw WriteError.writeFailed
         }
     }

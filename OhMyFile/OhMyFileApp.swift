@@ -6,6 +6,7 @@
 //
 
 import CrashKit
+import SwiftUtils
 import SwiftUI
 
 @main
@@ -14,6 +15,17 @@ struct OhMyFileApp: App {
 
     init() {
         CrashRecorder.shared.install()
+
+        #if DEBUG
+        let logLevel: LogLevel = .debug
+        #else
+        let logLevel: LogLevel = .info
+        #endif
+
+        SU.configureLogging(
+            level: logLevel,
+            backend: OSLogBackend(subsystem: AppLog.subsystem, category: "swiftutils")
+        )
     }
 
     var body: some Scene {
