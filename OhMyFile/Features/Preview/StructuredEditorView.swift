@@ -166,6 +166,7 @@ struct StructuredEditorView: View {
                 }.value
 
                 originalText = draft
+                AppLog.save.info("save succeeded: \(file.name, privacy: .public)")
                 isSaving = false
                 onSaved()
                 showSavedNotice = true
@@ -175,7 +176,7 @@ struct StructuredEditorView: View {
                 }
             } catch {
                 let nsError = error as NSError
-                AppLog.save.error("save failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+                AppLog.save.error("save failed: \(file.name, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                 isSaving = false
                 activeAlert = .error(String(localized: "Unable to save the file."))
             }

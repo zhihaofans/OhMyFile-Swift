@@ -153,7 +153,7 @@ struct HTMLPreviewView: View {
             html = try await Task.detached { try TextFileLoader.load(url: file.url) }.value
         } catch {
             let nsError = error as NSError
-            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+            AppLog.preview.error("load failed: \(file.name, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             errorMessage = textLoadingMessage(for: error)
         }
     }

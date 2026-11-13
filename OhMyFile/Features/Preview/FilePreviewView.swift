@@ -5,6 +5,7 @@
 //  统一预览入口：文本只读、其余 QuickLook、不支持的类型给出提示。
 //
 
+import OSLog
 import QuickLook
 import SwiftUI
 import UniformTypeIdentifiers
@@ -105,6 +106,9 @@ struct FilePreviewView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 ShareFileButton(fileURL: file.url)
             }
+        }
+        .onAppear {
+            AppLog.preview.info("preview opened: \(file.name, privacy: .public)")
         }
         .task {
             guard recordsRecent else { return }

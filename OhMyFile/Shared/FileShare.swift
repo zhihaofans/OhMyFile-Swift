@@ -6,6 +6,7 @@
 //
 
 import Darwin
+import OSLog
 import SwiftUI
 
 struct ShareItem: Identifiable {
@@ -84,6 +85,7 @@ struct ShareFileButton: View {
         .sheet(item: $shareItem) { item in
             ActivityShareSheet(items: [item.url]) {
                 ShareFile.cleanup(item.url)
+                AppLog.general.info("file shared: \(item.url.lastPathComponent, privacy: .public)")
             }
             .presentationDetents([.medium, .large])
         }

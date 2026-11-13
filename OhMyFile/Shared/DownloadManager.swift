@@ -113,9 +113,10 @@ final class DownloadManager: NSObject {
     func cancel(id: UUID) {
         activeTasks[id]?.cancel()
         activeTasks[id] = nil
-        AppLog.download.info("download cancelled")
 
         if let index = tasks.firstIndex(where: { $0.id == id }) {
+            let fileName = tasks[index].url.lastPathComponent
+            AppLog.download.info("download cancelled: \(fileName, privacy: .public)")
             tasks[index].status = .cancelled
             tasks[index].errorMessage = nil
         }
@@ -208,7 +209,8 @@ final class DownloadManager: NSObject {
         tasks[index].status = .downloading
         tasks[index].errorMessage = nil
         persist()
-        AppLog.download.info("download started")
+        let startedName = tasks[index].url.lastPathComponent
+        AppLog.download.info("download started: \(startedName, privacy: .public)")
         downloadTask.resume()
     }
 
@@ -253,7 +255,7 @@ final class DownloadManager: NSObject {
         tasks[index].errorMessage = nil
         lastCompletedFileName = fileName
         completedCount += 1
-        AppLog.download.info("download completed")
+        AppLog.download.info("download completed: \(fileName, privacy: .public)")
 
         origins[fileName] = tasks[index].url
         originStore.save(origins)
@@ -306,7 +308,7 @@ extension DownloadManager: URLSessionDownloadDelegate {
             try AtomicFileWriter.replaceItem(at: destination, withTemporaryFileAt: location)
         } catch {
             let nsError = error as NSError
-            AppLog.download.error("save downloaded file failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+            AppLog.download.error("save downloaded file failed: \(fileName, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
 
             Task { @MainActor [weak self] in
                 self?.markFailed(
@@ -375,7 +377,8 @@ extension DownloadManager: URLSessionDownloadDelegate {
             return
         }
 
-        AppLog.download.error("download failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+        let failedName = task.originalRequest?.url?.lastPathComponent ?? "unknown"
+        AppLog.download.error("download failed: \(failedName, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
 
         Task { @MainActor [weak self] in
             self?.markFailed(id: id, message: error.localizedDescription)

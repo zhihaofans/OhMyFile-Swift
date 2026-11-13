@@ -152,6 +152,7 @@ struct RootTabView: View {
 
             defaults.set(0, forKey: "pendingImportCount")
             defaults.synchronize()
+            AppLog.imports.info("share import count: \(pending, privacy: .public)")
             selectedTab = .files
             shareRefreshToken = UUID()
             openInboxToken = UUID()
@@ -182,7 +183,7 @@ struct RootTabView: View {
                     return (try FileLibrary().importFile(from: url), nil)
                 } catch {
                     let nsError = error as NSError
-                    AppLog.imports.error("import failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+                    AppLog.imports.error("import failed: \(url.lastPathComponent, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                     return (nil, error.localizedDescription)
                 }
             }.value
@@ -190,6 +191,7 @@ struct RootTabView: View {
             isImporting = false
 
             if outcome.0 != nil {
+                AppLog.imports.info("external import succeeded: \(url.lastPathComponent, privacy: .public)")
                 selectedTab = .files
                 shareRefreshToken = UUID()
                 openInboxToken = UUID()

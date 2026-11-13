@@ -92,7 +92,7 @@ struct ExternalFilePreviewView: View {
                     return (try FileLibrary().importFile(from: url), nil)
                 } catch {
                     let nsError = error as NSError
-                    AppLog.external.error("import failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+                    AppLog.external.error("import failed: \(url.lastPathComponent, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
                     return (nil, error.localizedDescription)
                 }
             }.value
@@ -100,6 +100,7 @@ struct ExternalFilePreviewView: View {
             isImporting = false
 
             if let importedURL = outcome.0 {
+                AppLog.external.info("external import succeeded: \(url.lastPathComponent, privacy: .public)")
                 importedFile = FileItem(url: importedURL)
             } else {
                 errorMessage = outcome.1 ?? ""

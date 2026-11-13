@@ -6,6 +6,7 @@
 //
 
 import CrashKit
+import OSLog
 import SwiftUtils
 import SwiftUI
 
@@ -26,6 +27,8 @@ struct OhMyFileApp: App {
             level: logLevel,
             backend: OSLogBackend(subsystem: AppLog.subsystem, category: "swiftutils")
         )
+
+        AppLog.general.info("app launched")
     }
 
     var body: some Scene {

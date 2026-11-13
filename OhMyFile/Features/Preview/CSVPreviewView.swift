@@ -255,7 +255,7 @@ struct CSVPreviewView: View {
             table = CSVParser.parse(text)
         } catch {
             let nsError = error as NSError
-            AppLog.preview.error("load failed domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
+            AppLog.preview.error("load failed: \(file.name, privacy: .public) domain=\(nsError.domain, privacy: .public) code=\(nsError.code, privacy: .public)")
             errorMessage = textLoadingMessage(for: error)
         }
     }

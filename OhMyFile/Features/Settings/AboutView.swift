@@ -6,10 +6,14 @@
 //
 
 import SwiftUI
+import SwiftUtils
 
 struct AboutView: View {
     @Environment(\.openURL) private var openURL
     @State private var showShareSheet = false
+    @State private var isExportingLogs = false
+    @State private var logErrorMessage: String?
+    @State private var logShareItem: ShareItem?
 
     private let repositoryURL = URL(string: "https://github.com/zhihaofans/OhMyFile-Swift")!
     private let issuesURL = URL(string: "https://github.com/zhihaofans/OhMyFile-Swift/issues")!
@@ -56,6 +60,20 @@ struct AboutView: View {
                     Label("Send Feedback", systemImage: "envelope")
                 }
 
+                Button {
+                    exportLogs()
+                } label: {
+                    if isExportingLogs {
+                        HStack {
+                            ProgressView()
+                            Text("Export Logs")
+                        }
+                    } else {
+                        Label("Export Logs", systemImage: "doc.text.magnifyingglass")
+                    }
+                }
+                .disabled(isExportingLogs)
+
                 if !appStoreID.isEmpty,
                    let reviewURL = URL(string: "https://apps.apple.com/app/id\(appStoreID)?action=write-review") {
                     Link(destination: reviewURL) {
@@ -80,6 +98,54 @@ struct AboutView: View {
         }
         .navigationTitle("About")
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $logShareItem) { item in
+            ActivityShareSheet(items: [item.url]) {
+                try? FileManager.default.removeItem(at: item.url)
+            }
+            .presentationDetents([.medium, .large])
+        }
+        .alert(
+            "Export Logs",
+            isPresented: Binding(
+                get: { logErrorMessage != nil },
+                set: { if !$0 { logErrorMessage = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(logErrorMessage ?? "")
+        }
+    }
+
+    private func exportLogs() {
+        isExportingLogs = true
+
+        Task {
+            do {
+                let text = try await LogExporter.export(
+                    subsystem: AppLog.subsystem,
+                    last: 3600
+                )
+                isExportingLogs = false
+
+                guard !text.isEmpty else {
+                    logErrorMessage = String(localized: "No logs found in the last hour.")
+                    return
+                }
+
+                let formatter = DateFormatter()
+                formatter.dateFormat = "yyyyMMdd-HHmmss"
+                let fileName = "ohmyfile-log-\(formatter.string(from: Date())).txt"
+                let url = FileManager.default.temporaryDirectory
+                    .appendingPathComponent(fileName)
+
+                try text.write(to: url, atomically: true, encoding: .utf8)
+                logShareItem = ShareItem(url: url)
+            } catch {
+                isExportingLogs = false
+                logErrorMessage = error.localizedDescription
+            }
+        }
     }
 }
 
