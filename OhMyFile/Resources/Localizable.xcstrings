@@ -22,6 +22,16 @@
         }
       }
     },
+    "%@ · This will also move %ld files inside the folder to Trash.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · 会连同文件夹内的 %ld 个文件一起移入回收站。"
+          }
+        }
+      }
+    },
     "%ld days ago": {
       "localizations": {
         "zh-Hans": {
@@ -584,6 +594,16 @@
       }
     },
     "Crash Report": {},
+    "Create": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "创建"
+          }
+        }
+      }
+    },
     "Current Passcode": {
       "localizations": {
         "zh-Hans": {
@@ -672,6 +692,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除所选？"
+          }
+        }
+      }
+    },
+    "Deleted Date": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除时间"
           }
         }
       }
@@ -787,6 +817,16 @@
         }
       }
     },
+    "Download Date": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下载时间"
+          }
+        }
+      }
+    },
     "Download was interrupted.": {
       "localizations": {
         "zh-Hans": {
@@ -894,6 +934,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "请输入 6 位数字密码。"
+          }
+        }
+      }
+    },
+    "Enter a folder name.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入文件夹名称。"
           }
         }
       }
@@ -1058,6 +1108,16 @@
         }
       }
     },
+    "Files moved into this folder will appear here.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移入该文件夹的文件会显示在这里。"
+          }
+        }
+      }
+    },
     "Files shared to OhMyFile will appear here.": {
       "localizations": {
         "zh-Hans": {
@@ -1084,6 +1144,56 @@
           "stringUnit": {
             "state": "translated",
             "value": "筛选"
+          }
+        }
+      }
+    },
+    "Folder": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹"
+          }
+        }
+      }
+    },
+    "Folder is Empty": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹为空"
+          }
+        }
+      }
+    },
+    "Folder name": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹名称"
+          }
+        }
+      }
+    },
+    "Folders": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹"
+          }
+        }
+      }
+    },
+    "Folders First": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件夹优先"
           }
         }
       }
@@ -1165,6 +1275,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "导入完成"
+          }
+        }
+      }
+    },
+    "Import Date": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入时间"
           }
         }
       }
@@ -1392,6 +1512,16 @@
         }
       }
     },
+    "Modified": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改时间"
+          }
+        }
+      }
+    },
     "Move All to Trash": {
       "extractionState": "stale",
       "localizations": {
@@ -1592,6 +1722,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "最近一小时暂无日志。"
+          }
+        }
+      }
+    },
+    "No other folders to move to.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "没有其他文件夹可移动。"
           }
         }
       }
@@ -1897,6 +2037,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "重试"
+          }
+        }
+      }
+    },
+    "Root Folder": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根目录"
           }
         }
       }

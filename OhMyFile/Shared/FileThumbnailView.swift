@@ -18,7 +18,11 @@ struct FileThumbnailView: View {
 
     var body: some View {
         Group {
-            if let image {
+            if file.isDirectory {
+                Image(systemName: "folder.fill")
+                    .font(.system(size: size * 0.5))
+                    .foregroundStyle(.blue)
+            } else if let image {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()

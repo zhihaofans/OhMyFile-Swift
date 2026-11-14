@@ -14,6 +14,7 @@ struct SettingsView: View {
     @Environment(\.openURL) private var openURL
     @AppStorage("settings.relativeTime") private var relativeTime = true
     @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
+    @AppStorage("settings.folderPriority") private var folderPriority = false
     @AppStorage("settings.treeCollapsedByDefault") private var treeCollapsedByDefault = false
     @AppStorage("settings.codeTheme") private var codeThemeRaw = CodeTheme.xcode.id
 
@@ -82,6 +83,10 @@ struct SettingsView: View {
                 }
 
                 Section("Files") {
+                    Toggle(isOn: $folderPriority) {
+                        SettingsLabel(title: "Folders First", systemImage: "folder.fill", color: .blue)
+                    }
+
                     Picker(selection: $launchPageRaw) {
                         Text("Files").tag(LaunchPage.files.rawValue)
                         Text("Recent").tag(LaunchPage.recent.rawValue)

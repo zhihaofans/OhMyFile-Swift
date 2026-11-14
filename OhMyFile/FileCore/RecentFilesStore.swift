@@ -50,7 +50,7 @@ struct RecentFilesStore: Sendable {
             guard entry.path != url.path else { return false }
 
             // 外部文件没有常驻安全作用域，fileExists 可能不可靠，保留记录。
-            if FileLibrary.directory(for: entry.url) == nil {
+            if FileLibrary.rootDirectory(for: entry.url) == nil {
                 return true
             }
 
@@ -58,7 +58,7 @@ struct RecentFilesStore: Sendable {
         }
 
         let bookmark: Data?
-        if FileLibrary.directory(for: url) == nil {
+        if FileLibrary.rootDirectory(for: url) == nil {
             bookmark = try? url.bookmarkData(
                 options: [],
                 includingResourceValuesForKeys: nil,
@@ -87,7 +87,7 @@ struct RecentFilesStore: Sendable {
     nonisolated func pruneMissing() -> [RecentEntry] {
         let items = entries().filter { entry in
             // 外部文件保留，打开时再校验（无安全作用域时 fileExists 可能为 false）。
-            if FileLibrary.directory(for: entry.url) == nil {
+            if FileLibrary.rootDirectory(for: entry.url) == nil {
                 return true
             }
 

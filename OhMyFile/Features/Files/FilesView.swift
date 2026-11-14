@@ -513,12 +513,14 @@ extension LibraryDirectory {
 
 private struct FileListView: View {
     let directory: LibraryDirectory
+    var folderURL: URL? = nil
     let onChanged: () -> Void
 
-    @AppStorage("files.inboxSortField") private var sortFieldRaw = InboxSortField.date.rawValue
+    @AppStorage("files.inboxSortField") private var sortFieldRaw = InboxSortField.added.rawValue
     @AppStorage("files.inboxSortAscending") private var sortAscending = false
     @AppStorage("files.viewMode") private var viewModeRaw = ViewMode.list.rawValue
     @AppStorage("files.categoryFilter") private var categoryFilterRaw = FileCategory.all.rawValue
+    @AppStorage("settings.folderPriority") private var folderPriority = false
 
     @State private var files: [FileItem] = []
     @State private var pendingDeletion: Deletion?
@@ -539,8 +541,16 @@ private struct FileListView: View {
     @State private var isResolvingURL = false
     @State private var pendingDownloadURL = ""
     @State private var resolvedFileName = ""
+    @State private var showNewFolderAlert = false
+    @State private var newFolderName = ""
+    @State private var movingFile: FileItem?
+    @State private var moveTargets: [FileItem] = []
 
     private let library = FileLibrary()
+
+    private var currentURL: URL? {
+        folderURL ?? library.directoryURL(for: directory)
+    }
 
     private var viewMode: ViewMode {
         ViewMode(rawValue: viewModeRaw) ?? .list
@@ -550,36 +560,69 @@ private struct FileListView: View {
         FileCategory(rawValue: categoryFilterRaw) ?? .all
     }
 
+    private func addedDate(for file: FileItem) -> Date {
+        let fallback = file.modifiedAt ?? .distantPast
+
+        if directory == .trash {
+            return file.deletedAt ?? fallback
+        }
+        return file.importedAt ?? fallback
+    }
+
+    private var addedSortTitle: String {
+        switch directory {
+        case .inbox:
+            return String(localized: "Import Date")
+        case .downloads:
+            return String(localized: "Download Date")
+        case .trash:
+            return String(localized: "Deleted Date")
+        }
+    }
+
     private var filteredFiles: [FileItem] {
         guard categoryFilter != .all else { return sortedFiles }
         return sortedFiles.filter {
-            FileCategoryResolver.category(for: $0.url) == categoryFilter
+            $0.isDirectory || FileCategoryResolver.category(for: $0.url) == categoryFilter
         }
     }
 
     private var sortedFiles: [FileItem] {
         let files = files
         let ascending = sortAscending
+        let sorted: [FileItem]
 
         switch InboxSortField(rawValue: sortFieldRaw) ?? .date {
         case .name:
-            return files.sorted {
+            sorted = files.sorted {
                 let result = $0.name.localizedStandardCompare($1.name)
                 return ascending ? result == .orderedAscending : result == .orderedDescending
             }
         case .date:
-            return files.sorted {
+            sorted = files.sorted {
                 let lhs = $0.modifiedAt ?? .distantPast
                 let rhs = $1.modifiedAt ?? .distantPast
                 return ascending ? lhs < rhs : lhs > rhs
             }
         case .size:
-            return files.sorted {
+            sorted = files.sorted {
                 let lhs = $0.size ?? 0
                 let rhs = $1.size ?? 0
                 return ascending ? lhs < rhs : lhs > rhs
             }
+        case .added:
+            sorted = files.sorted {
+                let lhs = addedDate(for: $0)
+                let rhs = addedDate(for: $1)
+                return ascending ? lhs < rhs : lhs > rhs
+            }
         }
+
+        guard folderPriority else { return sorted }
+
+        let folders = sorted.filter(\.isDirectory)
+        let regularFiles = sorted.filter { !$0.isDirectory }
+        return folders + regularFiles
     }
 
     var body: some View {
@@ -715,6 +758,57 @@ private struct FileListView: View {
             ShareSheet(items: [link.url])
                 .presentationDetents([.medium, .large])
         }
+        .sheet(item: $movingFile) { file in
+            let parentURL = file.url.deletingLastPathComponent().standardizedFileURL
+            let rootURL = library.directoryURL(for: directory)?.standardizedFileURL
+            let isInRoot = rootURL?.path == parentURL.path
+            let targets = library.folders(in: directory).filter {
+                $0.url.standardizedFileURL.path != parentURL.path
+            }
+
+            NavigationStack {
+                List {
+                    if !isInRoot {
+                        Section {
+                            Button {
+                                moveToRoot(file)
+                            } label: {
+                                Label("Root Folder", systemImage: "folder")
+                            }
+                        }
+                    }
+
+                    if !targets.isEmpty {
+                        Section("Folders") {
+                            ForEach(targets) { folder in
+                                Button {
+                                    moveToFolder(file, target: folder)
+                                } label: {
+                                    Label(folder.name, systemImage: "folder")
+                                }
+                            }
+                        }
+                    }
+
+                    if isInRoot, targets.isEmpty {
+                        Section {
+                            Text("No other folders to move to.")
+                                .foregroundStyle(.secondary)
+                        }
+                    }
+                }
+                .navigationTitle("Move To")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            movingFile = nil
+                        }
+                    }
+                }
+            }
+            .presentationDetents([.medium, .large])
+        }
         .overlay(alignment: .top) {
             if let downloadNotice {
                 Text(String(format: String(localized: "Download Complete: %@"), downloadNotice))
@@ -730,7 +824,7 @@ private struct FileListView: View {
                     }
             }
         }
-        .navigationTitle(titleKey)
+        .navigationTitle(folderURL.map { LocalizedStringKey($0.lastPathComponent) } ?? titleKey)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             if directory == .downloads {
@@ -765,6 +859,18 @@ private struct FileListView: View {
 
             ToolbarItem(placement: .topBarTrailing) {
                 Menu {
+                    if directory != .trash {
+                        Button {
+                            newFolderName = ""
+                            showNewFolderAlert = true
+                        } label: {
+                            Label("New Folder", systemImage: "folder.badge.plus")
+                        }
+                        .disabled(isSelecting)
+
+                        Divider()
+                    }
+
                     Button {
                         viewModeRaw = (viewMode == .grid ? ViewMode.list : ViewMode.grid).rawValue
                     } label: {
@@ -793,7 +899,8 @@ private struct FileListView: View {
 
                     Picker("Sort By", selection: $sortFieldRaw) {
                         Text("Name").tag(InboxSortField.name.rawValue)
-                        Text("Date").tag(InboxSortField.date.rawValue)
+                        Text(addedSortTitle).tag(InboxSortField.added.rawValue)
+                        Text("Modified").tag(InboxSortField.date.rawValue)
                         Text("Size").tag(InboxSortField.size.rawValue)
                     }
                     Picker("Order", selection: $sortAscending) {
@@ -823,6 +930,18 @@ private struct FileListView: View {
             }
         } message: {
             Text(confirmationMessage)
+        }
+        .alert(
+            "New Folder",
+            isPresented: $showNewFolderAlert
+        ) {
+            TextField("Folder name", text: $newFolderName)
+            Button("Create") {
+                createFolder()
+            }
+            Button("Cancel", role: .cancel) {}
+        } message: {
+            Text("Enter a folder name.")
         }
         .alert(
             "Rename",
@@ -877,6 +996,20 @@ private struct FileListView: View {
                 if isSelecting {
                     FileListRow(file: file, now: now)
                         .tag(file.url)
+                } else if file.isDirectory {
+                    NavigationLink {
+                        FileListView(directory: directory, folderURL: file.url) {
+                            onChanged()
+                        }
+                    } label: {
+                        FileListRow(file: file, now: now)
+                    }
+                    .swipeActions(edge: .trailing) {
+                        trailingActions(for: file)
+                    }
+                    .contextMenu {
+                        contextMenuActions(for: file)
+                    }
                 } else {
                     NavigationLink {
                         FilePreviewView(file: file)
@@ -903,14 +1036,28 @@ private struct FileListView: View {
                 spacing: 12
             ) {
                 ForEach(filteredFiles) { file in
-                    NavigationLink {
-                        FilePreviewView(file: file)
-                    } label: {
-                        FileGridCell(file: file, now: now)
-                    }
-                    .buttonStyle(.plain)
-                    .contextMenu {
-                        contextMenuActions(for: file)
+                    if file.isDirectory {
+                        NavigationLink {
+                            FileListView(directory: directory, folderURL: file.url) {
+                                onChanged()
+                            }
+                        } label: {
+                            FileGridCell(file: file, now: now)
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            contextMenuActions(for: file)
+                        }
+                    } else {
+                        NavigationLink {
+                            FilePreviewView(file: file)
+                        } label: {
+                            FileGridCell(file: file, now: now)
+                        }
+                        .buttonStyle(.plain)
+                        .contextMenu {
+                            contextMenuActions(for: file)
+                        }
                     }
                 }
             }
@@ -955,6 +1102,20 @@ private struct FileListView: View {
             } label: {
                 Label("Delete Permanently", systemImage: "trash")
             }
+        } else if file.isDirectory {
+            Button {
+                beginRename(file)
+            } label: {
+                Label("Rename", systemImage: "pencil")
+            }
+
+            Divider()
+
+            Button(role: .destructive) {
+                pendingDeletion = .moveToTrash(file)
+            } label: {
+                Label("Move to Trash", systemImage: "trash")
+            }
         } else {
             Button {
                 beginRename(file)
@@ -966,6 +1127,12 @@ private struct FileListView: View {
                 copy(file)
             } label: {
                 Label("Copy", systemImage: "doc.on.doc")
+            }
+
+            Button {
+                beginMove(file)
+            } label: {
+                Label("Move To", systemImage: "folder")
             }
 
             if let origin = downloadManager.originURL(for: file.url) {
@@ -1014,6 +1181,10 @@ private struct FileListView: View {
     }
 
     private var emptyTitleKey: LocalizedStringKey {
+        if folderURL != nil {
+            return "Folder is Empty"
+        }
+
         switch directory {
         case .inbox:
             return "Inbox is Empty"
@@ -1025,6 +1196,10 @@ private struct FileListView: View {
     }
 
     private var emptySymbol: String {
+        if folderURL != nil {
+            return "folder"
+        }
+
         switch directory {
         case .inbox:
             return "tray"
@@ -1036,6 +1211,10 @@ private struct FileListView: View {
     }
 
     private var emptyDescriptionKey: LocalizedStringKey {
+        if folderURL != nil {
+            return "Files moved into this folder will appear here."
+        }
+
         switch directory {
         case .inbox:
             return "Files shared to OhMyFile will appear here."
@@ -1081,6 +1260,16 @@ private struct FileListView: View {
     private var confirmationMessage: String {
         switch pendingDeletion {
         case .moveToTrash(let file):
+            if file.isDirectory {
+                let count = library.fileCount(in: file.url)
+                if count > 0 {
+                    return String(
+                        format: String(localized: "%@ · This will also move %ld files inside the folder to Trash."),
+                        file.name,
+                        count
+                    )
+                }
+            }
             return file.name
         case .deletePermanently(let file):
             return "\(file.name) · \(String(localized: "This cannot be undone."))"
@@ -1129,6 +1318,63 @@ private struct FileListView: View {
             onChanged()
         } catch {
             renameTarget = nil
+            errorMessage = message(for: error)
+        }
+    }
+
+    private func createFolder() {
+        guard let currentURL else { return }
+
+        do {
+            _ = try library.createDirectory(named: newFolderName, in: currentURL)
+            showNewFolderAlert = false
+            Task { await reload() }
+            onChanged()
+        } catch {
+            showNewFolderAlert = false
+            errorMessage = message(for: error)
+        }
+    }
+
+    private func beginMove(_ file: FileItem) {
+        moveTargets = library.folders(in: directory)
+        movingFile = file
+    }
+
+    private func moveToRoot(_ file: FileItem) {
+        guard let rootURL = library.directoryURL(for: directory) else { return }
+
+        guard file.url.deletingLastPathComponent().standardizedFileURL.path
+            != rootURL.standardizedFileURL.path else {
+            movingFile = nil
+            return
+        }
+
+        do {
+            _ = try library.move(file, to: rootURL)
+            movingFile = nil
+            Task { await reload() }
+            onChanged()
+        } catch {
+            movingFile = nil
+            errorMessage = message(for: error)
+        }
+    }
+
+    private func moveToFolder(_ file: FileItem, target: FileItem) {
+        guard file.url.deletingLastPathComponent().standardizedFileURL.path
+            != target.url.standardizedFileURL.path else {
+            movingFile = nil
+            return
+        }
+
+        do {
+            _ = try library.move(file, to: target.url)
+            movingFile = nil
+            Task { await reload() }
+            onChanged()
+        } catch {
+            movingFile = nil
             errorMessage = message(for: error)
         }
     }
@@ -1304,8 +1550,11 @@ private struct FileListView: View {
     }
 
     private func reload() async {
-        let loaded = await Task.detached { [library, directory] in
-            library.files(in: directory)
+        let loaded = await Task.detached { [library, directory, folderURL] in
+            if let folderURL {
+                return library.contents(at: folderURL)
+            }
+            return library.files(in: directory)
         }.value
         files = loaded
     }
@@ -1400,9 +1649,13 @@ struct DirectoryRow: View {
 
 /// 固定英文单位（B / KB / MB / GB），避免跟随系统语言显示「字节」。
 private func fileDetailText(for file: FileItem, relativeTime: Bool, now: Date) -> String {
+    if file.isDirectory {
+        return String(localized: "Folder")
+    }
+
     var parts: [String] = []
 
-    if FileLibrary.directory(for: file.url) == .trash,
+    if FileLibrary.rootDirectory(for: file.url) == .trash,
        let source = FileLibrary.trashSource(for: file.url) {
         parts.append(source.localizedTitle)
     }
@@ -1426,6 +1679,7 @@ private enum InboxSortField: String {
     case name
     case date
     case size
+    case added
 }
 
 private enum ViewMode: String {

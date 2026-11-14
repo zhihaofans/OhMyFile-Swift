@@ -12,15 +12,23 @@ struct FileItem: Identifiable, Hashable, Sendable {
     let url: URL
     let size: Int64?
     let modifiedAt: Date?
+    let isDirectory: Bool
+    let importedAt: Date?
+    let deletedAt: Date?
 
     var id: URL { url }
     nonisolated var name: String { url.lastPathComponent }
 
     nonisolated init(url: URL) {
         self.url = url
-        let values = try? url.resourceValues(forKeys: [.fileSizeKey, .contentModificationDateKey])
+        let values = try? url.resourceValues(
+            forKeys: [.fileSizeKey, .contentModificationDateKey, .isDirectoryKey]
+        )
         self.size = values?.fileSize.map(Int64.init)
         self.modifiedAt = values?.contentModificationDate
+        self.isDirectory = values?.isDirectory ?? false
+        self.importedAt = FileTimestamps.importedAt(for: url)
+        self.deletedAt = FileTimestamps.deletedAt(for: url)
     }
 }
 
@@ -65,16 +73,90 @@ struct FileLibrary: Sendable {
         }
 
         guard let url = directoryURL(for: directory) else { return [] }
+        return contents(at: url)
+    }
 
+    /// 列出目录内直接内容（文件与子目录，不递归）。
+    nonisolated func contents(at url: URL) -> [FileItem] {
         let urls = (try? FileManager.default.contentsOfDirectory(
             at: url,
-            includingPropertiesForKeys: [.fileSizeKey, .contentModificationDateKey],
+            includingPropertiesForKeys: [.fileSizeKey, .contentModificationDateKey, .isDirectoryKey],
             options: .skipsHiddenFiles
         )) ?? []
 
         return urls
             .map(FileItem.init(url:))
             .sorted { ($0.modifiedAt ?? .distantPast) > ($1.modifiedAt ?? .distantPast) }
+    }
+
+    /// 递归列出目录下所有子文件夹（用于「移动到」目标选择）。
+    nonisolated func folders(in directory: LibraryDirectory) -> [FileItem] {
+        guard directory != .trash, let root = directoryURL(for: directory) else { return [] }
+
+        var result: [FileItem] = []
+        var stack = [root]
+
+        while let current = stack.popLast() {
+            let children = (try? FileManager.default.contentsOfDirectory(
+                at: current,
+                includingPropertiesForKeys: [.isDirectoryKey],
+                options: .skipsHiddenFiles
+            )) ?? []
+
+            for child in children {
+                let item = FileItem(url: child)
+                if item.isDirectory {
+                    result.append(item)
+                    stack.append(child)
+                }
+            }
+        }
+
+        return result.sorted {
+            $0.name.localizedStandardCompare($1.name) == .orderedAscending
+        }
+    }
+
+    nonisolated func createDirectory(named name: String, in parent: URL) throws -> URL {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmed.isEmpty,
+              !trimmed.contains("/"),
+              trimmed != ".",
+              trimmed != ".." else {
+            throw FileLibraryError.invalidName
+        }
+
+        try ensureDirectory(parent)
+        let destination = uniqueURL(in: parent, fileName: trimmed)
+        try FileManager.default.createDirectory(at: destination, withIntermediateDirectories: true)
+        return destination
+    }
+
+    nonisolated func fileCount(in folderURL: URL) -> Int {
+        guard let enumerator = FileManager.default.enumerator(
+            at: folderURL,
+            includingPropertiesForKeys: [.isRegularFileKey],
+            options: [.skipsHiddenFiles]
+        ) else {
+            return 0
+        }
+
+        var count = 0
+        for case let fileURL as URL in enumerator {
+            let values = try? fileURL.resourceValues(forKeys: [.isRegularFileKey])
+            if values?.isRegularFile == true {
+                count += 1
+            }
+        }
+        return count
+    }
+
+    nonisolated func move(_ file: FileItem, to folderURL: URL) throws -> URL {
+        try ensureDirectory(folderURL)
+        let destination = uniqueURL(in: folderURL, fileName: file.url.lastPathComponent)
+        try FileManager.default.moveItem(at: file.url, to: destination)
+        return destination
     }
 
     nonisolated private func trashFiles() -> [FileItem] {
@@ -114,6 +196,7 @@ struct FileLibrary: Sendable {
         try ensureDirectory(target)
         let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
         try FileManager.default.moveItem(at: file.url, to: destination)
+        FileTimestamps.setDeleted(at: Date(), for: destination)
     }
 
     nonisolated static func trashSource(for url: URL) -> LibraryDirectory? {
@@ -133,6 +216,7 @@ struct FileLibrary: Sendable {
         try ensureDirectory(target)
         let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
         try FileManager.default.moveItem(at: file.url, to: destination)
+        FileTimestamps.clearDeleted(for: destination)
         return destination
     }
 
@@ -153,6 +237,7 @@ struct FileLibrary: Sendable {
         try ensureDirectory(inbox)
         let destination = uniqueURL(in: inbox, fileName: fileName)
         try data.write(to: destination, options: .atomic)
+        FileTimestamps.setImported(at: Date(), for: destination)
         return destination
     }
 
@@ -168,7 +253,26 @@ struct FileLibrary: Sendable {
         try ensureDirectory(inbox)
         let destination = uniqueURL(in: inbox, fileName: fileName)
         try FileManager.default.copyItem(at: sourceURL, to: destination)
+        FileTimestamps.setImported(at: Date(), for: destination)
         return destination
+    }
+
+    /// 文件所属的顶层目录（含子目录；回收站返回 .trash）。
+    nonisolated static func rootDirectory(for url: URL) -> LibraryDirectory? {
+        let library = FileLibrary()
+        let standardized = url.standardizedFileURL
+
+        for directory in LibraryDirectory.allCases {
+            guard let root = library.directoryURL(for: directory)?.standardizedFileURL else {
+                continue
+            }
+
+            if standardized.path == root.path || standardized.path.hasPrefix(root.path + "/") {
+                return directory
+            }
+        }
+
+        return nil
     }
 
     nonisolated static func directory(for url: URL) -> LibraryDirectory? {

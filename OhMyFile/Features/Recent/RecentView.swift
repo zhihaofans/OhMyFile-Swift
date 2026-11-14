@@ -123,7 +123,7 @@ struct RecentView: View {
             }
         }
 
-        let isExternal = FileLibrary.directory(for: resolvedURL) == nil
+        let isExternal = FileLibrary.rootDirectory(for: resolvedURL) == nil
         var accessed = false
 
         if isExternal {
@@ -170,7 +170,7 @@ private struct RecentRow: View {
     @AppStorage("settings.relativeTime") private var relativeTime = true
 
     private var isExternal: Bool {
-        FileLibrary.directory(for: entry.url) == nil
+        FileLibrary.rootDirectory(for: entry.url) == nil
     }
 
     var body: some View {
@@ -202,7 +202,7 @@ private struct RecentRow: View {
     private var subtitle: String {
         var parts: [String] = []
 
-        if let directory = FileLibrary.directory(for: entry.url) {
+        if let directory = FileLibrary.rootDirectory(for: entry.url) {
             parts.append(directory.localizedTitle)
         } else {
             parts.append(String(localized: "External"))

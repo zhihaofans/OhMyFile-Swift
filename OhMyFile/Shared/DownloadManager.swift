@@ -261,10 +261,9 @@ final class DownloadManager: NSObject {
         originStore.save(origins)
 
         if let downloads = FileLibrary().directoryURL(for: .downloads) {
-            OriginURLStore.set(
-                tasks[index].url,
-                for: downloads.appendingPathComponent(fileName)
-            )
+            let downloadedURL = downloads.appendingPathComponent(fileName)
+            OriginURLStore.set(tasks[index].url, for: downloadedURL)
+            FileTimestamps.setImported(at: Date(), for: downloadedURL)
         }
 
         persist()

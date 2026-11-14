@@ -145,4 +145,43 @@ struct FileLibraryOperationTests {
 
         #expect(FileLibrary.directory(for: outside) == nil)
     }
+
+    @Test func createsAndBrowsesSubfolder() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let inboxURL = try #require(library.directoryURL(for: .inbox))
+        let folder = try library.createDirectory(named: "Docs", in: inboxURL)
+
+        #expect(folder.lastPathComponent == "Docs")
+        #expect(library.contents(at: inboxURL).contains { $0.isDirectory && $0.name == "Docs" })
+        #expect(library.folders(in: .inbox).map(\.name).contains("Docs"))
+
+        _ = try library.importData(Data("x".utf8), fileName: "note.txt")
+        let file = try #require(library.files(in: .inbox).first { !$0.isDirectory })
+        _ = try library.move(file, to: folder)
+
+        let moved = library.contents(at: folder)
+        #expect(moved.contains { !$0.isDirectory && $0.name == "note.txt" })
+        #expect(!library.contents(at: inboxURL).contains { $0.name == "note.txt" })
+    }
+
+    @Test func trashesAndRestoresSubfolder() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let inboxURL = try #require(library.directoryURL(for: .inbox))
+        let folderURL = try library.createDirectory(named: "Docs", in: inboxURL)
+        let folder = FileItem(url: folderURL)
+
+        try library.moveToTrash(folder, from: .inbox)
+
+        let trashed = try #require(library.files(in: .trash).first { $0.name == "Docs" })
+        #expect(trashed.isDirectory)
+
+        _ = try library.restore(trashed)
+
+        #expect(library.contents(at: inboxURL).contains { $0.isDirectory && $0.name == "Docs" })
+        #expect(!library.contents(at: inboxURL).contains { $0.name == "note.txt" })
+    }
 }
