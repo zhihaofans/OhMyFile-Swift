@@ -88,14 +88,27 @@ struct SettingsView: View {
                         SettingsLabel(title: "Folders First", systemImage: "folder.fill", color: .blue)
                     }
 
-                    Picker(selection: $trashAutoClearDays) {
-                        Text("Off").tag(0)
-                        Text("1 Day").tag(1)
-                        Text("7 Days").tag(7)
-                        Text("14 Days").tag(14)
-                        Text("30 Days").tag(30)
-                    } label: {
-                        SettingsLabel(title: "Auto Clear Trash", systemImage: "trash.slash.fill", color: .red)
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            SettingsLabel(title: "Auto Clear Trash", systemImage: "trash.slash.fill", color: .red)
+
+                            Spacer()
+
+                            Picker("", selection: $trashAutoClearDays) {
+                                Text("Off").tag(0)
+                                Text("1 Day").tag(1)
+                                Text("7 Days").tag(7)
+                                Text("14 Days").tag(14)
+                                Text("30 Days").tag(30)
+                            }
+                            .labelsHidden()
+                            .pickerStyle(.menu)
+                        }
+
+                        Text("Expired items are permanently deleted.")
+                            .font(.footnote)
+                            .foregroundStyle(.secondary)
+                            .padding(.leading, 40)
                     }
 
                     Picker(selection: $launchPageRaw) {
@@ -113,9 +126,6 @@ struct SettingsView: View {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
 
-                    Text("Expired items are permanently deleted.")
-                        .font(.footnote)
-                        .foregroundStyle(.secondary)
                 }
 
                 Section("About") {

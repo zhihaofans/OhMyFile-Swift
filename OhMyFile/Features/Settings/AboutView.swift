@@ -152,18 +152,61 @@ struct AboutView: View {
 private struct AcknowledgementsView: View {
     let repositoryURL: URL
 
+    private struct Library: Identifiable {
+        let id = UUID()
+        let name: String
+        let purpose: LocalizedStringKey
+        let url: URL
+    }
+
+    private var libraries: [Library] {
+        [
+            Library(
+                name: "SwiftUtils",
+                purpose: "Unified utilities: logging, file operations, formatting.",
+                url: URL(string: "https://github.com/zhihaofans/SwiftUtils")!
+            ),
+            Library(
+                name: "CrashKit",
+                purpose: "Crash capture with local storage.",
+                url: URL(string: "https://github.com/zhihaofans/CrashKit")!
+            )
+        ]
+    }
+
     var body: some View {
         List {
+            Section("Libraries") {
+                ForEach(libraries) { library in
+                    HStack(alignment: .center, spacing: 12) {
+                        VStack(alignment: .leading, spacing: 2) {
+                            Text(library.name)
+
+                            Text(library.purpose)
+                                .font(.caption)
+                                .foregroundStyle(.secondary)
+                        }
+
+                        Spacer()
+
+                        Link("License", destination: library.url)
+                            .buttonStyle(.borderedProminent)
+                            .buttonBorderShape(.capsule)
+                            .controlSize(.small)
+                    }
+                }
+            }
+
             Section {
                 Text("Thanks to Apple and the open-source community.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
-            }
 
-            Section {
                 Text("Built with SwiftUI, QuickLook, PDFKit, VisionKit, UniformTypeIdentifiers, PhotosUI and SF Symbols.")
                     .font(.footnote)
                     .foregroundStyle(.secondary)
+            } footer: {
+                Text("System frameworks are provided by Apple.")
             }
 
             Section {

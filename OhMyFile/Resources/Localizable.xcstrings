@@ -654,6 +654,16 @@
       }
     },
     "Crash Report": {},
+    "Crash capture with local storage.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "崩溃捕获与本地记录。"
+          }
+        }
+      }
+    },
     "Create": {
       "localizations": {
         "zh-Hans": {
@@ -1527,6 +1537,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "启动页面"
+          }
+        }
+      }
+    },
+    "Libraries": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "库"
+          }
+        }
+      }
+    },
+    "License": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "许可证"
           }
         }
       }
@@ -2485,6 +2515,16 @@
         }
       }
     },
+    "System frameworks are provided by Apple.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系统框架由 Apple 提供。"
+          }
+        }
+      }
+    },
     "Take Photo": {
       "localizations": {
         "zh-Hans": {
@@ -2772,6 +2812,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法保存照片。"
+          }
+        }
+      }
+    },
+    "Unified utilities: logging, file operations, formatting.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "统一工具集：日志、文件操作、格式化。"
           }
         }
       }
