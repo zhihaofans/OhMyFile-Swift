@@ -620,6 +620,7 @@ private struct FileListView: View {
     @State private var showNewFolderAlert = false
     @State private var showNewFileSheet = false
     @State private var newFileToEdit: FileItem?
+    @State private var infoTarget: FileItem?
     @State private var newFolderName = ""
     @State private var movingFile: FileItem?
     @State private var moveTargets: [FileItem] = []
@@ -1099,6 +1100,9 @@ private struct FileListView: View {
                 }
             }
         }
+        .sheet(item: $infoTarget) { file in
+            FileInfoView(file: file)
+        }
         .sheet(item: $newFileToEdit) { file in
             NavigationStack {
                 TextEditorView(file: file, text: "") {
@@ -1219,6 +1223,12 @@ private struct FileListView: View {
     private func trailingActions(for file: FileItem) -> some View {
         if directory == .trash {
             Button {
+                infoTarget = file
+            } label: {
+                Label("File Info", systemImage: "info.circle")
+            }
+
+            Button {
                 restore(file)
             } label: {
                 Label("Restore", systemImage: "arrow.uturn.backward")
@@ -1254,6 +1264,12 @@ private struct FileListView: View {
             }
         } else if file.isDirectory {
             Button {
+                infoTarget = file
+            } label: {
+                Label("File Info", systemImage: "info.circle")
+            }
+
+            Button {
                 beginRename(file)
             } label: {
                 Label("Rename", systemImage: "pencil")
@@ -1267,6 +1283,12 @@ private struct FileListView: View {
                 Label("Move to Trash", systemImage: "trash")
             }
         } else {
+            Button {
+                infoTarget = file
+            } label: {
+                Label("File Info", systemImage: "info.circle")
+            }
+
             Button {
                 beginRename(file)
             } label: {
@@ -1462,7 +1484,9 @@ private struct FileListView: View {
         guard let target = renameTarget else { return }
 
         do {
-            _ = try library.rename(target, to: renameText)
+            let destination = try library.rename(target, to: renameText)
+            RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
+                .updatePathPrefix(from: target.url, to: destination)
             renameTarget = nil
             Task { await reload() }
             onChanged()

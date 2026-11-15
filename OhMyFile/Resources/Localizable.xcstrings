@@ -653,6 +653,16 @@
         }
       }
     },
+    "Copy Info": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制信息"
+          }
+        }
+      }
+    },
     "Crash Report": {},
     "Crash capture with local storage.": {
       "localizations": {
@@ -762,6 +772,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除所选？"
+          }
+        }
+      }
+    },
+    "Deleted": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "删除时间"
           }
         }
       }
@@ -1138,6 +1158,16 @@
         }
       }
     },
+    "File Info": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件信息"
+          }
+        }
+      }
+    },
     "File Name": {
       "localizations": {
         "zh-Hans": {
@@ -1415,6 +1445,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "从相片导入"
+          }
+        }
+      }
+    },
+    "Imported": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "导入时间"
           }
         }
       }
@@ -2018,6 +2058,16 @@
         }
       }
     },
+    "Path": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "路径"
+          }
+        }
+      }
+    },
     "Pending": {
       "extractionState": "stale",
       "localizations": {
@@ -2449,7 +2499,7 @@
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "源码"
+            "value": "来源"
           }
         }
       }
@@ -2732,6 +2782,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "关闭应用锁"
+          }
+        }
+      }
+    },
+    "Type": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "类型"
           }
         }
       }

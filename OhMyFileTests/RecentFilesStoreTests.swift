@@ -114,4 +114,28 @@ struct RecentFilesStoreTests {
 
         #expect(store.entries().map(\.path) == [moved.path])
     }
+
+    @Test func updatesRecentPathsUnderRenamedFolder() throws {
+        let (store, root) = try makeStore()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let folder = root.appendingPathComponent("Docs", isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+
+        let a = try makeFile(root: folder, name: "a.txt")
+        let b = try makeFile(root: folder, name: "b.txt")
+        store.record(a, at: Date())
+        store.record(b, at: Date())
+
+        let renamed = root.appendingPathComponent("Archive", isDirectory: true)
+        try FileManager.default.moveItem(at: folder, to: renamed)
+
+        store.updatePathPrefix(from: folder, to: renamed)
+
+        let paths = Set(store.entries().map(\.path))
+        #expect(paths == [
+            renamed.appendingPathComponent("a.txt").path,
+            renamed.appendingPathComponent("b.txt").path
+        ])
+    }
 }

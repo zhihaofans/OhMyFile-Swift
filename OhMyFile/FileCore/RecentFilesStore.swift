@@ -91,6 +91,42 @@ struct RecentFilesStore: Sendable {
         save(items)
     }
 
+    nonisolated func updatePathPrefix(from oldURL: URL, to newURL: URL) {
+        guard storageURL != nil else { return }
+
+        let oldPath = oldURL.path
+        let newPath = newURL.path
+        guard oldPath != newPath else { return }
+
+        var items = entries()
+        var changed = false
+
+        for index in items.indices {
+            let entry = items[index]
+            let path = entry.path
+
+            if path == oldPath {
+                items[index] = RecentEntry(
+                    path: newPath,
+                    openedAt: entry.openedAt,
+                    bookmark: entry.bookmark
+                )
+                changed = true
+            } else if path.hasPrefix(oldPath + "/") {
+                items[index] = RecentEntry(
+                    path: newPath + path.dropFirst(oldPath.count),
+                    openedAt: entry.openedAt,
+                    bookmark: entry.bookmark
+                )
+                changed = true
+            }
+        }
+
+        if changed {
+            save(items)
+        }
+    }
+
     nonisolated func remove(_ url: URL) {
         save(entries().filter { $0.path != url.path })
     }

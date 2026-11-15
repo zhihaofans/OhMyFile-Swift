@@ -17,6 +17,7 @@ struct RecentView: View {
     @State private var selectedEntry: RecentEntry?
     @State private var externalEntry: RecentEntry?
     @State private var openError: String?
+    @State private var infoTarget: FileItem?
 
     private let store = RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
 
@@ -49,6 +50,13 @@ struct RecentView: View {
                             RecentRow(entry: entry, now: now)
                         }
                         .buttonStyle(.plain)
+                        .contextMenu {
+                            Button {
+                                infoTarget = FileItem(url: entry.url)
+                            } label: {
+                                Label("File Info", systemImage: "info.circle")
+                            }
+                        }
                     }
                     .listStyle(.insetGrouped)
                 }
@@ -59,6 +67,9 @@ struct RecentView: View {
             }
             .sheet(item: $externalEntry) { entry in
                 ExternalFilePreviewView(url: entry.url)
+            }
+            .sheet(item: $infoTarget) { file in
+                FileInfoView(file: file)
             }
             .alert(
                 "Error",
