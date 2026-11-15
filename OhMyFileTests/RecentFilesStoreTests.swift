@@ -97,4 +97,21 @@ struct RecentFilesStoreTests {
         let reloaded = RecentFilesStore(storageURL: root.appendingPathComponent("recent.json"))
         #expect(reloaded.entries().map(\.name) == ["a.txt"])
     }
+
+    @Test func updatesRecentPathAfterMove() throws {
+        let (store, root) = try makeStore()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let a = try makeFile(root: root, name: "a.txt")
+        store.record(a, at: Date())
+
+        let folder = root.appendingPathComponent("Docs", isDirectory: true)
+        try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
+        let moved = folder.appendingPathComponent("a.txt")
+        try FileManager.default.moveItem(at: a, to: moved)
+
+        store.updatePath(from: a, to: moved)
+
+        #expect(store.entries().map(\.path) == [moved.path])
+    }
 }

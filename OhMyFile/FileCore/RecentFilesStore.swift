@@ -76,6 +76,21 @@ struct RecentFilesStore: Sendable {
         save(items)
     }
 
+    nonisolated func updatePath(from oldURL: URL, to newURL: URL) {
+        guard storageURL != nil else { return }
+
+        var items = entries()
+        guard let index = items.firstIndex(where: { $0.path == oldURL.path }) else { return }
+
+        let entry = items[index]
+        items[index] = RecentEntry(
+            path: newURL.path,
+            openedAt: entry.openedAt,
+            bookmark: entry.bookmark
+        )
+        save(items)
+    }
+
     nonisolated func remove(_ url: URL) {
         save(entries().filter { $0.path != url.path })
     }

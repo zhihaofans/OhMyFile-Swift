@@ -203,7 +203,13 @@ private struct RecentRow: View {
         var parts: [String] = []
 
         if let directory = FileLibrary.rootDirectory(for: entry.url) {
-            parts.append(directory.localizedTitle)
+            var source = directory.localizedTitle
+            if directory != .trash,
+               let sub = FileLibrary.relativeDirectoryPath(for: entry.url, in: directory),
+               !sub.isEmpty {
+                source += "/" + sub
+            }
+            parts.append(source)
         } else {
             parts.append(String(localized: "External"))
         }

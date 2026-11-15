@@ -184,4 +184,26 @@ struct FileLibraryOperationTests {
         #expect(library.contents(at: inboxURL).contains { $0.isDirectory && $0.name == "Docs" })
         #expect(!library.contents(at: inboxURL).contains { $0.name == "note.txt" })
     }
+
+    @Test func restoresSubfolderPath() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let inboxURL = try #require(library.directoryURL(for: .inbox))
+        let docs = try library.createDirectory(named: "Docs", in: inboxURL)
+        _ = try library.importData(Data("x".utf8), fileName: "note.txt")
+
+        let file = try #require(library.files(in: .inbox).first { !$0.isDirectory })
+        _ = try library.move(file, to: docs)
+
+        let moved = try #require(library.contents(at: docs).first { $0.name == "note.txt" })
+        #expect(library.allFiles(in: .inbox).map(\.name).contains("note.txt"))
+        #expect(library.relativeDirectoryPath(for: moved.url, in: .inbox) == "Docs")
+
+        try library.moveToTrash(moved, from: .inbox)
+        let trashed = try #require(library.files(in: .trash).first { $0.name == "note.txt" })
+        _ = try library.restore(trashed)
+
+        #expect(library.contents(at: docs).contains { $0.name == "note.txt" })
+    }
 }

@@ -117,6 +117,54 @@ struct FileLibrary: Sendable {
         }
     }
 
+    /// 递归列出目录下所有文件（不含文件夹）。
+    nonisolated func allFiles(in directory: LibraryDirectory) -> [FileItem] {
+        guard directory != .trash, let root = directoryURL(for: directory) else { return [] }
+
+        var result: [FileItem] = []
+        var stack = [root]
+
+        while let current = stack.popLast() {
+            for item in contents(at: current) {
+                if item.isDirectory {
+                    stack.append(item.url)
+                } else {
+                    result.append(item)
+                }
+            }
+        }
+
+        return result
+    }
+
+    /// 文件相对顶层目录的子目录路径（根目录文件返回空串）。
+    nonisolated func relativeDirectoryPath(
+        for url: URL,
+        in directory: LibraryDirectory
+    ) -> String? {
+        guard let root = directoryURL(for: directory)?.standardizedFileURL else {
+            return nil
+        }
+
+        let parent = url.standardizedFileURL.deletingLastPathComponent()
+        guard parent.path == root.path || parent.path.hasPrefix(root.path + "/") else {
+            return nil
+        }
+
+        if parent.path == root.path {
+            return ""
+        }
+
+        return String(parent.path.dropFirst(root.path.count + 1))
+    }
+
+    nonisolated static func relativeDirectoryPath(
+        for url: URL,
+        in directory: LibraryDirectory
+    ) -> String? {
+        FileLibrary().relativeDirectoryPath(for: url, in: directory)
+    }
+
     nonisolated func createDirectory(named name: String, in parent: URL) throws -> URL {
         let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -189,14 +237,30 @@ struct FileLibrary: Sendable {
         return files.sorted { ($0.modifiedAt ?? .distantPast) > ($1.modifiedAt ?? .distantPast) }
     }
 
-    nonisolated func moveToTrash(_ file: FileItem, from directory: LibraryDirectory) throws {
-        guard directory != .trash, let trash = directoryURL(for: .trash) else { return }
+    @discardableResult
+    nonisolated func moveToTrash(_ file: FileItem, from directory: LibraryDirectory) throws -> URL? {
+        guard directory != .trash, let trash = directoryURL(for: .trash) else { return nil }
 
         let target = trash.appendingPathComponent(directory.folderName, isDirectory: true)
         try ensureDirectory(target)
+
+        let relativePath: String
+        if let root = directoryURL(for: directory)?.standardizedFileURL {
+            let filePath = file.url.standardizedFileURL.path
+            if filePath.hasPrefix(root.path + "/") {
+                relativePath = String(filePath.dropFirst(root.path.count + 1))
+            } else {
+                relativePath = file.url.lastPathComponent
+            }
+        } else {
+            relativePath = file.url.lastPathComponent
+        }
+
         let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)
         try FileManager.default.moveItem(at: file.url, to: destination)
         FileTimestamps.setDeleted(at: Date(), for: destination)
+        FileTimestamps.setOriginalPath(relativePath, for: destination)
+        return destination
     }
 
     nonisolated static func trashSource(for url: URL) -> LibraryDirectory? {
@@ -212,6 +276,18 @@ struct FileLibrary: Sendable {
         } ?? .inbox
 
         guard let target = directoryURL(for: targetDirectory) else { return nil }
+
+        if let originalPath = FileTimestamps.originalPath(for: file.url), !originalPath.isEmpty {
+            let desired = target.appendingPathComponent(originalPath)
+            let parent = desired.deletingLastPathComponent()
+            try ensureDirectory(parent)
+
+            let destination = uniqueURL(in: parent, fileName: desired.lastPathComponent)
+            try FileManager.default.moveItem(at: file.url, to: destination)
+            FileTimestamps.clearDeleted(for: destination)
+            FileTimestamps.clearOriginalPath(for: destination)
+            return destination
+        }
 
         try ensureDirectory(target)
         let destination = uniqueURL(in: target, fileName: file.url.lastPathComponent)

@@ -270,8 +270,12 @@ struct FilesView: View {
         guard !Task.isCancelled else { return }
 
         let results = await Task.detached { [library, query] in
-            LibraryDirectory.allCases.flatMap { directory in
-                library.files(in: directory)
+            LibraryDirectory.allCases.flatMap { directory -> [SearchResult] in
+                let files = directory == .trash
+                    ? library.files(in: directory)
+                    : library.allFiles(in: directory)
+
+                return files
                     .filter { $0.name.localizedStandardContains(query) }
                     .map { SearchResult(file: $0, directory: directory) }
             }
@@ -457,12 +461,23 @@ private struct SearchResultRow: View {
             VStack(alignment: .leading, spacing: 2) {
                 Text(result.file.name)
 
-                Text("\(result.directory.localizedTitle) · \(fileDetailText(for: result.file, relativeTime: relativeTime, now: now))")
+                Text("\(sourceTitle) · \(fileDetailText(for: result.file, relativeTime: relativeTime, now: now))")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
         }
         .padding(.vertical, 2)
+    }
+
+    private var sourceTitle: String {
+        var source = result.directory.localizedTitle
+
+        if let sub = FileLibrary.relativeDirectoryPath(for: result.file.url, in: result.directory),
+           !sub.isEmpty {
+            source += "/" + sub
+        }
+
+        return source
     }
 }
 
@@ -545,6 +560,7 @@ private struct FileListView: View {
     @State private var newFolderName = ""
     @State private var movingFile: FileItem?
     @State private var moveTargets: [FileItem] = []
+    @State private var batchMoveRequest: BatchMoveRequest?
 
     private let library = FileLibrary()
 
@@ -656,6 +672,15 @@ private struct FileListView: View {
                             Label("Restore", systemImage: "arrow.uturn.backward")
                         }
                         .disabled(selectedPaths.isEmpty)
+                    }
+
+                    if directory != .trash {
+                        Button {
+                            batchMoveRequest = BatchMoveRequest(files: selectedFiles)
+                        } label: {
+                            Label("Move To", systemImage: "folder")
+                        }
+                        .disabled(selectedFiles.isEmpty)
                     }
 
                     Button(role: .destructive) {
@@ -803,6 +828,39 @@ private struct FileListView: View {
                     ToolbarItem(placement: .cancellationAction) {
                         Button("Cancel") {
                             movingFile = nil
+                        }
+                    }
+                }
+            }
+            .presentationDetents([.medium, .large])
+        }
+        .sheet(item: $batchMoveRequest) { request in
+            NavigationStack {
+                List {
+                    Section {
+                        Button {
+                            moveBatch(request.files, to: library.directoryURL(for: directory))
+                        } label: {
+                            Label("Root Folder", systemImage: "folder")
+                        }
+                    }
+
+                    Section("Folders") {
+                        ForEach(library.folders(in: directory)) { folder in
+                            Button {
+                                moveBatch(request.files, to: folder.url)
+                            } label: {
+                                Label(folder.name, systemImage: "folder")
+                            }
+                        }
+                    }
+                }
+                .navigationTitle("Move To")
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .cancellationAction) {
+                        Button("Cancel") {
+                            batchMoveRequest = nil
                         }
                     }
                 }
@@ -1043,6 +1101,9 @@ private struct FileListView: View {
                             }
                         } label: {
                             FileGridCell(file: file, now: now)
+                                .dropDestination(for: URL.self) { urls, _ in
+                                    dropFiles(urls, into: file)
+                                }
                         }
                         .buttonStyle(.plain)
                         .contextMenu {
@@ -1053,6 +1114,7 @@ private struct FileListView: View {
                             FilePreviewView(file: file)
                         } label: {
                             FileGridCell(file: file, now: now)
+                                .draggable(file.url)
                         }
                         .buttonStyle(.plain)
                         .contextMenu {
@@ -1322,6 +1384,76 @@ private struct FileListView: View {
         }
     }
 
+    private var selectedFiles: [FileItem] {
+        files.filter { selectedPaths.contains($0.url) && !$0.isDirectory }
+    }
+
+    private func dropFiles(_ urls: [URL], into folder: FileItem) -> Bool {
+        var moved = false
+
+        for url in urls {
+            let item = FileItem(url: url)
+            guard !item.isDirectory else { continue }
+
+            guard item.url.deletingLastPathComponent().standardizedFileURL.path
+                != folder.url.standardizedFileURL.path else {
+                continue
+            }
+
+            do {
+                let destination = try library.move(item, to: folder.url)
+                updateRecentPath(from: item.url, to: destination)
+                moved = true
+            } catch {
+                errorMessage = message(for: error)
+            }
+        }
+
+        if moved {
+            Task { await reload() }
+            onChanged()
+        }
+        return moved
+    }
+
+    private func moveBatch(_ files: [FileItem], to targetURL: URL?) {
+        guard let targetURL else {
+            batchMoveRequest = nil
+            return
+        }
+
+        var moved = false
+
+        for file in files {
+            guard file.url.deletingLastPathComponent().standardizedFileURL.path
+                != targetURL.standardizedFileURL.path else {
+                continue
+            }
+
+            do {
+                let destination = try library.move(file, to: targetURL)
+                updateRecentPath(from: file.url, to: destination)
+                moved = true
+            } catch {
+                errorMessage = message(for: error)
+            }
+        }
+
+        batchMoveRequest = nil
+        selectedPaths.removeAll()
+        isSelecting = false
+
+        if moved {
+            Task { await reload() }
+            onChanged()
+        }
+    }
+
+    private func updateRecentPath(from oldURL: URL, to newURL: URL) {
+        RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
+            .updatePath(from: oldURL, to: newURL)
+    }
+
     private func createFolder() {
         guard let currentURL else { return }
 
@@ -1351,7 +1483,8 @@ private struct FileListView: View {
         }
 
         do {
-            _ = try library.move(file, to: rootURL)
+            let destination = try library.move(file, to: rootURL)
+            updateRecentPath(from: file.url, to: destination)
             movingFile = nil
             Task { await reload() }
             onChanged()
@@ -1369,7 +1502,8 @@ private struct FileListView: View {
         }
 
         do {
-            _ = try library.move(file, to: target.url)
+            let destination = try library.move(file, to: target.url)
+            updateRecentPath(from: file.url, to: destination)
             movingFile = nil
             Task { await reload() }
             onChanged()
@@ -1405,9 +1539,12 @@ private struct FileListView: View {
         do {
             switch deletion {
             case .moveToTrash(let file):
-                try library.moveToTrash(file, from: directory)
+                if let destination = try library.moveToTrash(file, from: directory) {
+                    updateRecentPath(from: file.url, to: destination)
+                }
             case .deletePermanently(let file):
                 try library.deletePermanently(file)
+                RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL).remove(file.url)
             case .moveAllToTrash:
                 try library.moveAllToTrash(from: directory)
             case .emptyTrash:
@@ -1418,8 +1555,9 @@ private struct FileListView: View {
 
                     if directory == .trash {
                         try library.deletePermanently(file)
-                    } else {
-                        try library.moveToTrash(file, from: directory)
+                        RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL).remove(file.url)
+                    } else if let destination = try library.moveToTrash(file, from: directory) {
+                        updateRecentPath(from: file.url, to: destination)
                     }
                 }
                 selectedPaths.removeAll()
@@ -1439,6 +1577,7 @@ private struct FileListView: View {
             for path in selectedPaths {
                 guard let file = files.first(where: { $0.url == path }) else { continue }
                 if let restoredURL = try library.restore(file) {
+                    updateRecentPath(from: file.url, to: restoredURL)
                     downloadManager.migrateOrigin(
                         from: file.name,
                         to: restoredURL.lastPathComponent
@@ -1457,6 +1596,7 @@ private struct FileListView: View {
     private func restore(_ file: FileItem) {
         do {
             if let restoredURL = try library.restore(file) {
+                updateRecentPath(from: file.url, to: restoredURL)
                 downloadManager.migrateOrigin(
                     from: file.name,
                     to: restoredURL.lastPathComponent
@@ -1834,4 +1974,9 @@ struct MountedFolder: Identifiable {
     let id = UUID()
     let name: String
     let url: URL
+}
+
+private struct BatchMoveRequest: Identifiable {
+    let id = UUID()
+    let files: [FileItem]
 }
