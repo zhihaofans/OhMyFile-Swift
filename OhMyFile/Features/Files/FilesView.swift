@@ -34,6 +34,7 @@ struct FilesView: View {
     @State private var showPhotosPicker = false
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
     @State private var isImportingMedia = false
+    @State private var isImportingFromFiles = false
     @State private var importErrorMessage: String?
 
     @Environment(\.openURL) private var openURL
@@ -158,7 +159,9 @@ struct FilesView: View {
                         Button("Paste from Clipboard", systemImage: "doc.on.clipboard") {
                             showClipboardSheet = true
                         }
-                        Button("Import from Files", systemImage: "folder") {}
+                        Button("Import from Files", systemImage: "folder") {
+                            isImportingFromFiles = true
+                        }
                         Button("Import from Photos", systemImage: "photo") {
                             showPhotosPicker = true
                         }
@@ -181,6 +184,18 @@ struct FilesView: View {
                     importedCount = 1
                     showImportAlert = true
                     Task { await loadCounts() }
+                }
+            }
+            .fileImporter(
+                isPresented: $isImportingFromFiles,
+                allowedContentTypes: [.item],
+                allowsMultipleSelection: true
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    importFiles(urls)
+                case .failure(let error):
+                    importErrorMessage = error.localizedDescription
                 }
             }
             .photosPicker(
@@ -345,6 +360,52 @@ struct FilesView: View {
             } catch {
                 importErrorMessage = error.localizedDescription
             }
+        }
+    }
+
+    private func importFiles(_ urls: [URL]) {
+        guard !urls.isEmpty else { return }
+
+        isImportingMedia = true
+
+        Task {
+            let outcome = await Task.detached { () -> (imported: Int, error: String?) in
+                var imported = 0
+                var firstError: String?
+
+                for url in urls {
+                    let accessing = url.startAccessingSecurityScopedResource()
+                    defer {
+                        if accessing {
+                            url.stopAccessingSecurityScopedResource()
+                        }
+                    }
+
+                    do {
+                        _ = try FileLibrary().importFile(from: url)
+                        imported += 1
+                    } catch {
+                        if firstError == nil {
+                            firstError = error.localizedDescription
+                        }
+                    }
+                }
+
+                return (imported, firstError)
+            }.value
+
+            isImportingMedia = false
+
+            if outcome.imported > 0 {
+                importedCount = outcome.imported
+                showImportAlert = true
+            }
+
+            if let error = outcome.error {
+                importErrorMessage = error
+            }
+
+            await loadCounts()
         }
     }
 
