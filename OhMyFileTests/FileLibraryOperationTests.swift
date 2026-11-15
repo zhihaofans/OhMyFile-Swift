@@ -244,4 +244,26 @@ struct FileLibraryOperationTests {
         )
         #expect(duplicate.lastPathComponent == "Untitled-1.html")
     }
+
+    @Test func clearsOnlyExpiredTrash() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        _ = try library.importData(Data("a".utf8), fileName: "old.txt")
+        _ = try library.importData(Data("b".utf8), fileName: "new.txt")
+
+        let old = try #require(library.files(in: .inbox).first { $0.name == "old.txt" })
+        let new = try #require(library.files(in: .inbox).first { $0.name == "new.txt" })
+
+        try library.moveToTrash(old, from: .inbox)
+        try library.moveToTrash(new, from: .inbox)
+
+        let trashedOld = try #require(library.files(in: .trash).first { $0.name == "old.txt" })
+        FileTimestamps.setDeleted(at: Date().addingTimeInterval(-40 * 86_400), for: trashedOld.url)
+
+        let removed = try library.clearExpiredTrash(olderThan: 30)
+
+        #expect(removed == 1)
+        #expect(library.files(in: .trash).map(\.name) == ["new.txt"])
+    }
 }

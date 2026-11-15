@@ -132,6 +132,23 @@ struct RootTabView: View {
         .task {
             consumePendingImport()
             checkCrashReport()
+            clearExpiredTrashIfNeeded()
+        }
+    }
+
+    private func clearExpiredTrashIfNeeded() {
+        let days = UserDefaults.standard.integer(forKey: "settings.trashAutoClearDays")
+        guard days > 0 else { return }
+
+        Task {
+            let removed = await Task.detached {
+                (try? FileLibrary().clearExpiredTrash(olderThan: days)) ?? 0
+            }.value
+
+            if removed > 0 {
+                AppLog.general.info("trash auto cleared: \(removed, privacy: .public)")
+                shareRefreshToken = UUID()
+            }
         }
     }
 

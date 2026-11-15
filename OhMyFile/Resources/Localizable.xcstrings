@@ -104,6 +104,46 @@
       }
     },
     "%lld.": {},
+    "1 Day": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 天"
+          }
+        }
+      }
+    },
+    "14 Days": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 天"
+          }
+        }
+      }
+    },
+    "30 Days": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 天"
+          }
+        }
+      }
+    },
+    "7 Days": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 天"
+          }
+        }
+      }
+    },
     ":": {},
     "<%@%@>": {
       "localizations": {
@@ -273,6 +313,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "已授权"
+          }
+        }
+      }
+    },
+    "Auto Clear Trash": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "回收站自动清空"
           }
         }
       }
@@ -984,6 +1034,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "错误"
+          }
+        }
+      }
+    },
+    "Expired items are permanently deleted.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "过期项目会被永久删除。"
           }
         }
       }
@@ -1832,6 +1892,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "好"
+          }
+        }
+      }
+    },
+    "Off": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "关闭"
           }
         }
       }

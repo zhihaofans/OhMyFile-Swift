@@ -1780,6 +1780,15 @@ private struct FileListView: View {
     }
 
     private func reload() async {
+        if directory == .trash {
+            let days = UserDefaults.standard.integer(forKey: "settings.trashAutoClearDays")
+            if days > 0 {
+                _ = try? await Task.detached {
+                    try FileLibrary().clearExpiredTrash(olderThan: days)
+                }.value
+            }
+        }
+
         let loaded = await Task.detached { [library, directory, folderURL] in
             if let folderURL {
                 return library.contents(at: folderURL)

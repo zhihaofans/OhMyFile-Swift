@@ -15,6 +15,7 @@ struct SettingsView: View {
     @AppStorage("settings.relativeTime") private var relativeTime = true
     @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
     @AppStorage("settings.folderPriority") private var folderPriority = false
+    @AppStorage("settings.trashAutoClearDays") private var trashAutoClearDays = 0
     @AppStorage("settings.treeCollapsedByDefault") private var treeCollapsedByDefault = false
     @AppStorage("settings.codeTheme") private var codeThemeRaw = CodeTheme.xcode.id
 
@@ -87,6 +88,16 @@ struct SettingsView: View {
                         SettingsLabel(title: "Folders First", systemImage: "folder.fill", color: .blue)
                     }
 
+                    Picker(selection: $trashAutoClearDays) {
+                        Text("Off").tag(0)
+                        Text("1 Day").tag(1)
+                        Text("7 Days").tag(7)
+                        Text("14 Days").tag(14)
+                        Text("30 Days").tag(30)
+                    } label: {
+                        SettingsLabel(title: "Auto Clear Trash", systemImage: "trash.slash.fill", color: .red)
+                    }
+
                     Picker(selection: $launchPageRaw) {
                         Text("Files").tag(LaunchPage.files.rawValue)
                         Text("Recent").tag(LaunchPage.recent.rawValue)
@@ -101,6 +112,10 @@ struct SettingsView: View {
                     Toggle(isOn: $relativeTime) {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
+
+                    Text("Expired items are permanently deleted.")
+                        .font(.footnote)
+                        .foregroundStyle(.secondary)
                 }
 
                 Section("About") {

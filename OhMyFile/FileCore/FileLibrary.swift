@@ -472,6 +472,29 @@ struct FileLibrary: Sendable {
         }
     }
 
+    /// 永久删除回收站中超过指定天数的项目；返回删除数量。
+    @discardableResult
+    nonisolated func clearExpiredTrash(olderThan days: Int, now: Date = Date()) throws -> Int {
+        guard days > 0 else { return 0 }
+
+        let cutoff = now.addingTimeInterval(-Double(days) * 86_400)
+        var removed = 0
+
+        for item in files(in: .trash) {
+            let deletedDate = item.deletedAt ?? item.modifiedAt ?? .distantPast
+            guard deletedDate < cutoff else { continue }
+
+            do {
+                try deletePermanently(item)
+                removed += 1
+            } catch {
+                // 单个项目失败不中断整体清理。
+            }
+        }
+
+        return removed
+    }
+
     nonisolated func emptyTrash() throws {
         guard let trash = directoryURL(for: .trash) else { return }
 
