@@ -297,6 +297,16 @@
         }
       }
     },
+    "Blank": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空白"
+          }
+        }
+      }
+    },
     "Built with SwiftUI, QuickLook, PDFKit, VisionKit, UniformTypeIdentifiers, PhotosUI and SF Symbols.": {
       "localizations": {
         "zh-Hans": {
@@ -908,6 +918,16 @@
         }
       }
     },
+    "Encoding": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "编码"
+          }
+        }
+      }
+    },
     "Enter Passcode": {
       "localizations": {
         "zh-Hans": {
@@ -984,6 +1004,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "扩展 Markdown"
+          }
+        }
+      }
+    },
+    "Extension": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "扩展名"
           }
         }
       }
@@ -1451,6 +1481,16 @@
         }
       }
     },
+    "Line Endings": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "换行符"
+          }
+        }
+      }
+    },
     "Link Copied": {
       "localizations": {
         "zh-Hans": {
@@ -1477,6 +1517,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "加载中…"
+          }
+        }
+      }
+    },
+    "Location": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
           }
         }
       }
@@ -1610,6 +1660,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "窄"
+          }
+        }
+      }
+    },
+    "New File": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新建文件"
           }
         }
       }
@@ -2051,6 +2111,26 @@
         }
       }
     },
+    "Sample": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "示例"
+          }
+        }
+      }
+    },
+    "Sample text": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "示例文本"
+          }
+        }
+      }
+    },
     "Save": {
       "localizations": {
         "zh-Hans": {
@@ -2356,6 +2436,16 @@
         }
       }
     },
+    "Template": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模板"
+          }
+        }
+      }
+    },
     "Temporary": {
       "localizations": {
         "zh-Hans": {
@@ -2412,6 +2502,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件已不存在，已删除最近记录。"
+          }
+        }
+      }
+    },
+    "The selected encoding is not supported.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所选编码不受支持。"
           }
         }
       }

@@ -32,6 +32,23 @@ struct FileItem: Identifiable, Hashable, Sendable {
     }
 }
 
+nonisolated enum TextLineEnding: String, CaseIterable, Sendable {
+    case lf
+    case crlf
+    case cr
+
+    var value: String {
+        switch self {
+        case .lf:
+            return "\n"
+        case .crlf:
+            return "\r\n"
+        case .cr:
+            return "\r"
+        }
+    }
+}
+
 enum LibraryDirectory: String, CaseIterable, Sendable {
     case inbox
     case downloads
@@ -163,6 +180,45 @@ struct FileLibrary: Sendable {
         in directory: LibraryDirectory
     ) -> String? {
         FileLibrary().relativeDirectoryPath(for: url, in: directory)
+    }
+
+    nonisolated func createTextFile(
+        named name: String,
+        extension ext: String,
+        in parent: URL,
+        encoding: String.Encoding,
+        lineEnding: TextLineEnding,
+        template: String
+    ) throws -> URL {
+        let trimmed = name.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        guard !trimmed.isEmpty,
+              !trimmed.contains("/"),
+              trimmed != ".",
+              trimmed != ".." else {
+            throw FileLibraryError.invalidName
+        }
+
+        let inputExtension = (trimmed as NSString).pathExtension
+        let finalName: String
+
+        if inputExtension.isEmpty {
+            finalName = ext.isEmpty ? trimmed : "\(trimmed).\(ext)"
+        } else {
+            finalName = trimmed
+        }
+
+        try ensureDirectory(parent)
+        let destination = uniqueURL(in: parent, fileName: finalName)
+
+        let content = template.replacingOccurrences(of: "\n", with: lineEnding.value)
+        guard let data = content.data(using: encoding) else {
+            throw FileLibraryError.invalidEncoding
+        }
+
+        try data.write(to: destination, options: .atomic)
+        FileTimestamps.setImported(at: Date(), for: destination)
+        return destination
     }
 
     nonisolated func createDirectory(named name: String, in parent: URL) throws -> URL {
@@ -529,7 +585,8 @@ struct FileLibrary: Sendable {
     }
 }
 
-enum FileLibraryError: Error {
+enum FileLibraryError: Error, Equatable {
     case invalidName
     case storageUnavailable
+    case invalidEncoding
 }

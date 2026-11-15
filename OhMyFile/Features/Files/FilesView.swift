@@ -557,6 +557,8 @@ private struct FileListView: View {
     @State private var pendingDownloadURL = ""
     @State private var resolvedFileName = ""
     @State private var showNewFolderAlert = false
+    @State private var showNewFileSheet = false
+    @State private var newFileToEdit: FileItem?
     @State private var newFolderName = ""
     @State private var movingFile: FileItem?
     @State private var moveTargets: [FileItem] = []
@@ -919,6 +921,13 @@ private struct FileListView: View {
                 Menu {
                     if directory != .trash {
                         Button {
+                            showNewFileSheet = true
+                        } label: {
+                            Label("New File", systemImage: "doc.badge.plus")
+                        }
+                        .disabled(isSelecting)
+
+                        Button {
                             newFolderName = ""
                             showNewFolderAlert = true
                         } label: {
@@ -1017,6 +1026,24 @@ private struct FileListView: View {
             }
         } message: {
             Text("Enter a new name.")
+        }
+        .sheet(isPresented: $showNewFileSheet) {
+            NewFileView(directory: directory, folderURL: folderURL) { url in
+                Task { await reload() }
+                onChanged()
+
+                Task {
+                    try? await Task.sleep(nanoseconds: 400_000_000)
+                    newFileToEdit = FileItem(url: url)
+                }
+            }
+        }
+        .sheet(item: $newFileToEdit) { file in
+            NavigationStack {
+                TextEditorView(file: file, text: "") {
+                    Task { await reload() }
+                }
+            }
         }
         .overlay(alignment: .top) {
             if let errorMessage {
@@ -1616,6 +1643,8 @@ private struct FileListView: View {
                 return String(localized: "The file name is not valid.")
             case .storageUnavailable:
                 return String(localized: "Storage is unavailable.")
+            case .invalidEncoding:
+                return String(localized: "The selected encoding is not supported.")
             }
         }
         return error.localizedDescription

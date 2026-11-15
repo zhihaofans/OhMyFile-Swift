@@ -14,6 +14,12 @@ struct FilePreviewView: View {
     let file: FileItem
     var recordsRecent = true
 
+    @State private var isEditing = false
+    @State private var editText = ""
+    @State private var isPreparingEdit = false
+    @State private var editError: String?
+    @State private var previewRefreshToken = UUID()
+
     private var capability: FileCapability {
         FileCapabilityResolver.capability(for: file.url)
     }
@@ -59,6 +65,24 @@ struct FilePreviewView: View {
         return ["md", "markdown", "mdown", "mkd"].contains(file.url.pathExtension.lowercased())
     }
 
+    private func prepareEdit() {
+        isPreparingEdit = true
+
+        Task {
+            do {
+                try await CloudFileDownloader.ensureDownloaded(at: file.url)
+                editText = try await Task.detached {
+                    try TextFileLoader.load(url: file.url)
+                }.value
+                isPreparingEdit = false
+                isEditing = true
+            } catch {
+                isPreparingEdit = false
+                editError = textLoadingMessage(for: error)
+            }
+        }
+    }
+
     private var shouldUseQuickLook: Bool {
         // .bin 被系统识别为 MacBinary 归档，QuickLook 会显示「拷贝到」界面，不提供预览。
         if file.url.pathExtension.lowercased() == "bin" {
@@ -73,6 +97,11 @@ struct FilePreviewView: View {
         return type.conforms(to: .text)
             || type.conforms(to: .json)
             || type.conforms(to: .xml)
+    }
+
+    private var canEditText: Bool {
+        // txt / Markdown / JSON / XML / CSV 已有各自的编辑入口；这里补齐 HTML 与代码文件。
+        isHTML || CodeLanguage.detect(for: file.url) != nil
     }
 
     var body: some View {
@@ -100,12 +129,47 @@ struct FilePreviewView: View {
                 )
             }
         }
+        .id(previewRefreshToken)
         .navigationTitle(file.name)
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+            if canEditText {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button {
+                        prepareEdit()
+                    } label: {
+                        if isPreparingEdit {
+                            ProgressView()
+                        } else {
+                            Image(systemName: "pencil")
+                        }
+                    }
+                    .disabled(isPreparingEdit)
+                    .accessibilityLabel("Edit")
+                }
+            }
+
             ToolbarItem(placement: .topBarTrailing) {
                 ShareFileButton(fileURL: file.url)
             }
+        }
+        .sheet(isPresented: $isEditing) {
+            NavigationStack {
+                TextEditorView(file: file, text: editText) {
+                    previewRefreshToken = UUID()
+                }
+            }
+        }
+        .alert(
+            "Error",
+            isPresented: Binding(
+                get: { editError != nil },
+                set: { if !$0 { editError = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(editError ?? "")
         }
         .onAppear {
             AppLog.preview.info("preview opened: \(file.name, privacy: .public)")

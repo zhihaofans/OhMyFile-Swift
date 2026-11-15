@@ -206,4 +206,42 @@ struct FileLibraryOperationTests {
 
         #expect(library.contents(at: docs).contains { $0.name == "note.txt" })
     }
+
+    @Test func createsTextFileWithExtensionRules() throws {
+        let (library, root) = try makeLibrary()
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let inboxURL = try #require(library.directoryURL(for: .inbox))
+
+        let plain = try library.createTextFile(
+            named: "Untitled",
+            extension: "html",
+            in: inboxURL,
+            encoding: .utf8,
+            lineEnding: .lf,
+            template: ""
+        )
+        #expect(plain.lastPathComponent == "Untitled.html")
+
+        let explicit = try library.createTextFile(
+            named: "note.txt",
+            extension: "html",
+            in: inboxURL,
+            encoding: .utf8,
+            lineEnding: .crlf,
+            template: "a\nb"
+        )
+        #expect(explicit.lastPathComponent == "note.txt")
+        #expect(try String(contentsOf: explicit, encoding: .utf8) == "a\r\nb")
+
+        let duplicate = try library.createTextFile(
+            named: "Untitled",
+            extension: "html",
+            in: inboxURL,
+            encoding: .utf8,
+            lineEnding: .lf,
+            template: ""
+        )
+        #expect(duplicate.lastPathComponent == "Untitled-1.html")
+    }
 }
