@@ -29,6 +29,15 @@ struct ZipArchiveReaderTests {
         #expect(tree.folders.first?.files.map(\.name) == ["note.txt"])
     }
 
+    @Test func recognizesBrowsableExtensions() {
+        #expect(ZipArchiveReader.isZipFile(url: URL(fileURLWithPath: "/tmp/a.zip")))
+        #expect(ZipArchiveReader.isZipFile(url: URL(fileURLWithPath: "/tmp/a.mcaddon")))
+        #expect(ZipArchiveReader.isZipFile(url: URL(fileURLWithPath: "/tmp/a.MCADDON")))
+        #expect(ZipArchiveReader.isZipFile(url: URL(fileURLWithPath: "/tmp/a.mcpack")))
+        #expect(ZipArchiveReader.isZipFile(url: URL(fileURLWithPath: "/tmp/a.mcworld")))
+        #expect(!ZipArchiveReader.isZipFile(url: URL(fileURLWithPath: "/tmp/a.rar")))
+    }
+
     @Test func rejectsNonZipData() throws {
         let url = FileManager.default.temporaryDirectory
             .appendingPathComponent("zip-test-\(UUID().uuidString).zip")

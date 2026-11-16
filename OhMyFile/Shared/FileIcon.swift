@@ -14,6 +14,11 @@ func fileIcon(for url: URL) -> (symbol: String, color: Color) {
         return codeIcon(for: language)
     }
 
+    // zip / .mcaddon / .mcpack / .mcworld 统一显示压缩包图标。
+    if ZipArchiveReader.browsableExtensions.contains(url.pathExtension.lowercased()) {
+        return ("doc.zipper", .blue)
+    }
+
     let contentType = FileCapabilityResolver.contentType(for: url)
 
     if contentType.conforms(to: .image) {

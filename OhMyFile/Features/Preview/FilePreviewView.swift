@@ -93,7 +93,7 @@ struct FilePreviewView: View {
     }
 
     private var isZip: Bool {
-        capability.contentType.conforms(to: .zip) || file.url.pathExtension.lowercased() == "zip"
+        capability.contentType.conforms(to: .zip) || ZipArchiveReader.isZipFile(url: file.url)
     }
 
     private var isText: Bool {

@@ -110,6 +110,13 @@ struct ZipFolder: Identifiable, Hashable, Sendable {
 }
 
 enum ZipArchiveReader {
+    /// 可当 zip 浏览的扩展名（Minecraft 基岩版 .mcaddon 本质是 zip）。
+    nonisolated static let browsableExtensions: Set<String> = ["zip", "mcaddon", "mcpack", "mcworld"]
+
+    nonisolated static func isZipFile(url: URL) -> Bool {
+        browsableExtensions.contains(url.pathExtension.lowercased())
+    }
+
     nonisolated static func read(url: URL) throws -> ZipArchive {
         let data = try Data(contentsOf: url, options: .mappedIfSafe)
 
