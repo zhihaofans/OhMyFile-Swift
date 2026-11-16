@@ -40,6 +40,8 @@ struct FilesView: View {
     @State private var showNewFolderAlert = false
     @State private var newFolderName = ""
     @State private var isMountingFolder = false
+    @State private var renamingMountedFolder: MountedFolder?
+    @State private var mountedRenameText = ""
     @State private var importErrorMessage: String?
 
     @Environment(\.openURL) private var openURL
@@ -116,9 +118,24 @@ struct FilesView: View {
                                     NavigationLink {
                                         ExternalFolderView(folder: folder, url: url)
                                     } label: {
-                                        Label(folder.name, systemImage: "folder")
+                                        VStack(alignment: .leading, spacing: 2) {
+                                            Label(folder.displayName, systemImage: "folder")
+
+                                            if folder.displayName != folder.name {
+                                                Text(folder.name)
+                                                    .font(.caption)
+                                                    .foregroundStyle(.secondary)
+                                            }
+                                        }
                                     }
                                     .contextMenu {
+                                        Button {
+                                            renamingMountedFolder = folder
+                                            mountedRenameText = folder.displayName
+                                        } label: {
+                                            Label("Rename Note", systemImage: "pencil")
+                                        }
+
                                         Button(role: .destructive) {
                                             MountedFoldersStore().remove(folder)
                                             refreshMountedFolders()
@@ -131,7 +148,7 @@ struct FilesView: View {
                                         isMountingFolder = true
                                     } label: {
                                         HStack {
-                                            Label(folder.name, systemImage: "folder.badge.questionmark")
+                                            Label(folder.displayName, systemImage: "folder.badge.questionmark")
 
                                             Spacer()
 
@@ -224,6 +241,27 @@ struct FilesView: View {
                         Image(systemName: "plus")
                     }
                 }
+            }
+            .alert(
+                "Rename Note",
+                isPresented: Binding(
+                    get: { renamingMountedFolder != nil },
+                    set: { if !$0 { renamingMountedFolder = nil } }
+                )
+            ) {
+                TextField("Name", text: $mountedRenameText)
+                Button("Save") {
+                    if let folder = renamingMountedFolder {
+                        MountedFoldersStore().rename(folder, to: mountedRenameText)
+                        refreshMountedFolders()
+                    }
+                    renamingMountedFolder = nil
+                }
+                Button("Cancel", role: .cancel) {
+                    renamingMountedFolder = nil
+                }
+            } message: {
+                Text("Enter a note for this folder.")
             }
             .alert(
                 "New Folder",

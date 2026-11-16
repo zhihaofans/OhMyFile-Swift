@@ -1068,6 +1068,16 @@
         }
       }
     },
+    "Enter a note for this folder.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "为这个文件夹输入备注。"
+          }
+        }
+      }
+    },
     "Error": {
       "localizations": {
         "zh-Hans": {
@@ -2257,6 +2267,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "重命名"
+          }
+        }
+      }
+    },
+    "Rename Note": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重命名备注"
           }
         }
       }

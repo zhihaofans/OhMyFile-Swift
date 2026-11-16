@@ -10,11 +10,18 @@ import Foundation
 struct MountedFolder: Identifiable, Hashable, Sendable {
     let id: UUID
     let name: String
+    let displayName: String
     let bookmark: Data
 
-    nonisolated init(id: UUID = UUID(), name: String, bookmark: Data) {
+    nonisolated init(
+        id: UUID = UUID(),
+        name: String,
+        displayName: String? = nil,
+        bookmark: Data
+    ) {
         self.id = id
         self.name = name
+        self.displayName = displayName ?? name
         self.bookmark = bookmark
     }
 }
@@ -40,8 +47,30 @@ struct MountedFoldersStore: Sendable {
         }
 
         return items.map {
-            MountedFolder(id: $0.id, name: $0.name, bookmark: $0.bookmark)
+            MountedFolder(
+                id: $0.id,
+                name: $0.name,
+                displayName: $0.displayName,
+                bookmark: $0.bookmark
+            )
         }
+    }
+
+    nonisolated func rename(_ folder: MountedFolder, to displayName: String) {
+        let trimmed = displayName.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !trimmed.isEmpty else { return }
+
+        var items = folders()
+        guard let index = items.firstIndex(where: { $0.id == folder.id }) else { return }
+
+        let existing = items[index]
+        items[index] = MountedFolder(
+            id: existing.id,
+            name: existing.name,
+            displayName: trimmed,
+            bookmark: existing.bookmark
+        )
+        try? save(items)
     }
 
     @discardableResult
@@ -95,7 +124,12 @@ struct MountedFoldersStore: Sendable {
         )
 
         let stored = items.map {
-            StoredFolder(id: $0.id, name: $0.name, bookmark: $0.bookmark)
+            StoredFolder(
+                id: $0.id,
+                name: $0.name,
+                displayName: $0.displayName,
+                bookmark: $0.bookmark
+            )
         }
         let data = try JSONEncoder().encode(stored)
         try data.write(to: storageURL, options: .atomic)
@@ -104,6 +138,7 @@ struct MountedFoldersStore: Sendable {
     private struct StoredFolder: Codable {
         let id: UUID
         let name: String
+        let displayName: String?
         let bookmark: Data
     }
 }

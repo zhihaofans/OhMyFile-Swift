@@ -49,7 +49,7 @@ struct ExternalFolderView: View {
                 .listStyle(.insetGrouped)
             }
         }
-        .navigationTitle(folder.name)
+        .navigationTitle(folder.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await load()
