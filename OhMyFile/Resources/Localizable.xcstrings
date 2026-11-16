@@ -1722,6 +1722,16 @@
         }
       }
     },
+    "Mount Folder": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "挂载文件夹"
+          }
+        }
+      }
+    },
     "Move All to Trash": {
       "extractionState": "stale",
       "localizations": {
@@ -1810,6 +1820,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "窄"
+          }
+        }
+      }
+    },
+    "Needs Re-authorization": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要重新授权"
           }
         }
       }

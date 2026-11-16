@@ -39,6 +39,7 @@ struct FilesView: View {
     @State private var externalBrowseItem: ExternalBrowseItem?
     @State private var showNewFolderAlert = false
     @State private var newFolderName = ""
+    @State private var isMountingFolder = false
     @State private var importErrorMessage: String?
 
     @Environment(\.openURL) private var openURL
@@ -99,13 +100,47 @@ struct FilesView: View {
                             Label("Open File", systemImage: "folder.badge.questionmark")
                         }
 
+                        Button {
+                            isMountingFolder = true
+                        } label: {
+                            Label("Mount Folder", systemImage: "folder.badge.plus")
+                        }
+
                         if mountedFolders.isEmpty {
                             Text("No external folders.")
                                 .font(.caption)
                                 .foregroundStyle(.secondary)
                         } else {
                             ForEach(mountedFolders) { folder in
-                                Text(folder.name)
+                                if let url = MountedFoldersStore.resolve(folder) {
+                                    NavigationLink {
+                                        ExternalFolderView(folder: folder, url: url)
+                                    } label: {
+                                        Label(folder.name, systemImage: "folder")
+                                    }
+                                    .contextMenu {
+                                        Button(role: .destructive) {
+                                            MountedFoldersStore().remove(folder)
+                                            refreshMountedFolders()
+                                        } label: {
+                                            Label("Remove", systemImage: "trash")
+                                        }
+                                    }
+                                } else {
+                                    Button {
+                                        isMountingFolder = true
+                                    } label: {
+                                        HStack {
+                                            Label(folder.name, systemImage: "folder.badge.questionmark")
+
+                                            Spacer()
+
+                                            Text("Needs Re-authorization")
+                                                .font(.caption)
+                                                .foregroundStyle(.red)
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -131,7 +166,10 @@ struct FilesView: View {
             .listStyle(.insetGrouped)
             .navigationTitle("My Files")
             .searchable(text: $searchText, prompt: "Search")
-            .task { await loadCounts() }
+            .task {
+                await loadCounts()
+                refreshMountedFolders()
+            }
             .onAppear {
                 guard !didApplyInitialDirectory else { return }
                 didApplyInitialDirectory = true
@@ -219,6 +257,20 @@ struct FilesView: View {
                 switch result {
                 case .success(let urls):
                     importFiles(urls)
+                case .failure(let error):
+                    importErrorMessage = error.localizedDescription
+                }
+            }
+            .fileImporter(
+                isPresented: $isMountingFolder,
+                allowedContentTypes: [.folder],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    if let url = urls.first {
+                        mountFolder(url)
+                    }
                 case .failure(let error):
                     importErrorMessage = error.localizedDescription
                 }
@@ -526,6 +578,19 @@ struct FilesView: View {
             downloading,
             completed
         )
+    }
+
+    private func refreshMountedFolders() {
+        mountedFolders = MountedFoldersStore().folders()
+    }
+
+    private func mountFolder(_ url: URL) {
+        do {
+            _ = try MountedFoldersStore().mount(url)
+            refreshMountedFolders()
+        } catch {
+            importErrorMessage = error.localizedDescription
+        }
     }
 
     private func createRootFolder() {
@@ -1876,7 +1941,7 @@ private struct FileListView: View {
     }
 }
 
-private struct FileListRow: View {
+struct FileListRow: View {
     let file: FileItem
     let now: Date
 
@@ -2144,12 +2209,6 @@ private struct ShareSheet: UIViewControllerRepresentable {
     }
 
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
-}
-
-struct MountedFolder: Identifiable {
-    let id = UUID()
-    let name: String
-    let url: URL
 }
 
 private struct BatchMoveRequest: Identifiable {
