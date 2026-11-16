@@ -41,6 +41,7 @@ struct FilesView: View {
     @State private var newFolderName = ""
     @State private var isMountingFolder = false
     @State private var renamingMountedFolder: MountedFolder?
+    @State private var failingMountedFolder: MountedFolder?
     @State private var mountedRenameText = ""
     @State private var importErrorMessage: String?
 
@@ -99,13 +100,27 @@ struct FilesView: View {
                         Button {
                             isBrowsingExternal = true
                         } label: {
-                            Label("Open File", systemImage: "folder.badge.questionmark")
+                            HStack(spacing: 12) {
+                                Image(systemName: "folder.badge.questionmark")
+                                    .font(.system(size: 20))
+                                    .foregroundStyle(.blue)
+                                    .frame(width: 28, height: 28)
+
+                                Text("Open File")
+                            }
                         }
 
                         Button {
                             isMountingFolder = true
                         } label: {
-                            Label("Mount Folder", systemImage: "folder.badge.plus")
+                            HStack(spacing: 12) {
+                                Image(systemName: "folder.badge.plus")
+                                    .font(.system(size: 20))
+                                    .foregroundStyle(.blue)
+                                    .frame(width: 28, height: 28)
+
+                                Text("Mount Folder")
+                            }
                         }
 
                         if mountedFolders.isEmpty {
@@ -118,13 +133,20 @@ struct FilesView: View {
                                     NavigationLink {
                                         ExternalFolderView(folder: folder, url: url)
                                     } label: {
-                                        VStack(alignment: .leading, spacing: 2) {
-                                            Label(folder.displayName, systemImage: "folder")
+                                        HStack(spacing: 12) {
+                                            Image(systemName: mountedFolderSymbol(for: url))
+                                                .font(.system(size: 20))
+                                                .foregroundStyle(.blue)
+                                                .frame(width: 28, height: 28)
 
-                                            if folder.displayName != folder.name {
-                                                Text(folder.name)
-                                                    .font(.caption)
-                                                    .foregroundStyle(.secondary)
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text(folder.displayName)
+
+                                                if folder.displayName != folder.name {
+                                                    Text(folder.name)
+                                                        .font(.footnote)
+                                                        .foregroundStyle(.secondary)
+                                                }
                                             }
                                         }
                                     }
@@ -145,17 +167,23 @@ struct FilesView: View {
                                     }
                                 } else {
                                     Button {
-                                        isMountingFolder = true
+                                        failingMountedFolder = folder
                                     } label: {
-                                        HStack {
-                                            Label(folder.displayName, systemImage: "folder.badge.questionmark")
+                                        HStack(spacing: 12) {
+                                            Image(systemName: "folder.badge.questionmark")
+                                                .font(.system(size: 20))
+                                                .foregroundStyle(.secondary)
+                                                .frame(width: 28, height: 28)
 
-                                            Spacer()
+                                            VStack(alignment: .leading, spacing: 4) {
+                                                Text(folder.displayName)
 
-                                            Text("Needs Re-authorization")
-                                                .font(.caption)
-                                                .foregroundStyle(.red)
+                                                Text("Needs Re-authorization")
+                                                    .font(.footnote)
+                                                    .foregroundStyle(.secondary)
+                                            }
                                         }
+                                        .opacity(0.6)
                                     }
                                 }
                             }
@@ -241,6 +269,30 @@ struct FilesView: View {
                         Image(systemName: "plus")
                     }
                 }
+            }
+            .alert(
+                "Could Not Open External Folder",
+                isPresented: Binding(
+                    get: { failingMountedFolder != nil },
+                    set: { if !$0 { failingMountedFolder = nil } }
+                )
+            ) {
+                Button("Re-authorize") {
+                    failingMountedFolder = nil
+                    isMountingFolder = true
+                }
+                Button("Remove", role: .destructive) {
+                    if let folder = failingMountedFolder {
+                        MountedFoldersStore().remove(folder)
+                        refreshMountedFolders()
+                    }
+                    failingMountedFolder = nil
+                }
+                Button("Cancel", role: .cancel) {
+                    failingMountedFolder = nil
+                }
+            } message: {
+                Text("This folder is no longer accessible. Re-authorize or remove it.")
             }
             .alert(
                 "Rename Note",
@@ -616,6 +668,10 @@ struct FilesView: View {
             downloading,
             completed
         )
+    }
+
+    private func mountedFolderSymbol(for url: URL) -> String {
+        url.path.contains("Mobile Documents") ? "icloud.fill" : "folder.fill"
     }
 
     private func refreshMountedFolders() {

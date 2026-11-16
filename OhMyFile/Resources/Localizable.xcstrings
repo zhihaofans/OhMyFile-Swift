@@ -673,6 +673,16 @@
         }
       }
     },
+    "Could Not Open External Folder": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开外部文件夹"
+          }
+        }
+      }
+    },
     "Crash Report": {},
     "Crash capture with local storage.": {
       "localizations": {
@@ -2199,6 +2209,16 @@
         }
       }
     },
+    "Re-authorize": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新授权"
+          }
+        }
+      }
+    },
     "Reading": {
       "localizations": {
         "zh-Hans": {
@@ -2782,6 +2802,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "该文件类型无法预览，要直接导入吗？"
+          }
+        }
+      }
+    },
+    "This folder is no longer accessible. Re-authorize or remove it.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此文件夹已无法访问，请重新授权或移除。"
           }
         }
       }
