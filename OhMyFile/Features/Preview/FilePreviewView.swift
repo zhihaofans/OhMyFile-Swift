@@ -92,6 +92,10 @@ struct FilePreviewView: View {
         return QLPreviewController.canPreview(file.url as NSURL)
     }
 
+    private var isZip: Bool {
+        capability.contentType.conforms(to: .zip) || file.url.pathExtension.lowercased() == "zip"
+    }
+
     private var isText: Bool {
         let type = capability.contentType
         return type.conforms(to: .text)
@@ -106,7 +110,9 @@ struct FilePreviewView: View {
 
     var body: some View {
         Group {
-            if let structuredKind {
+            if isZip {
+                ZipBrowserView(file: file)
+            } else if let structuredKind {
                 StructuredPreviewView(file: file, kind: structuredKind)
             } else if isHTML {
                 HTMLPreviewView(file: file)

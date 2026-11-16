@@ -488,6 +488,16 @@
         }
       }
     },
+    "Cannot Open Archive": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "无法打开压缩包"
+          }
+        }
+      }
+    },
     "Cannot Open File": {
       "localizations": {
         "zh-Hans": {
@@ -1024,6 +1034,26 @@
           "stringUnit": {
             "state": "translated",
             "value": "编码"
+          }
+        }
+      }
+    },
+    "Encrypted": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已加密"
+          }
+        }
+      }
+    },
+    "Encrypted archive: showing the file list only.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加密压缩包：仅显示文件列表。"
           }
         }
       }
@@ -2736,6 +2766,16 @@
         }
       }
     },
+    "The file is not a valid zip archive.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件不是有效的 zip 压缩包。"
+          }
+        }
+      }
+    },
     "The file name is not valid.": {
       "localizations": {
         "zh-Hans": {
@@ -3124,6 +3164,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "自动换行"
+          }
+        }
+      }
+    },
+    "ZIP64 archives are not supported yet.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不支持 ZIP64 压缩包。"
           }
         }
       }
