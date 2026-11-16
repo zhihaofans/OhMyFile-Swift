@@ -35,6 +35,10 @@ struct FilesView: View {
     @State private var selectedPhotoItems: [PhotosPickerItem] = []
     @State private var isImportingMedia = false
     @State private var isImportingFromFiles = false
+    @State private var isBrowsingExternal = false
+    @State private var externalBrowseItem: ExternalBrowseItem?
+    @State private var showNewFolderAlert = false
+    @State private var newFolderName = ""
     @State private var importErrorMessage: String?
 
     @Environment(\.openURL) private var openURL
@@ -88,7 +92,13 @@ struct FilesView: View {
                         }
                     }
 
-                    Section("External Folders") {
+                    Section("External Folders/Files") {
+                        Button {
+                            isBrowsingExternal = true
+                        } label: {
+                            Label("Open File", systemImage: "folder.badge.questionmark")
+                        }
+
                         if mountedFolders.isEmpty {
                             Text("No external folders.")
                                 .font(.caption)
@@ -168,11 +178,26 @@ struct FilesView: View {
                         Button("Camera / Scan", systemImage: "camera") {
                             showCameraChoice = true
                         }
-                        Button("New Folder", systemImage: "folder.badge.plus") {}
+                        Button("New Folder", systemImage: "folder.badge.plus") {
+                            newFolderName = ""
+                            showNewFolderAlert = true
+                        }
                     } label: {
                         Image(systemName: "plus")
                     }
                 }
+            }
+            .alert(
+                "New Folder",
+                isPresented: $showNewFolderAlert
+            ) {
+                TextField("Folder name", text: $newFolderName)
+                Button("Create") {
+                    createRootFolder()
+                }
+                Button("Cancel", role: .cancel) {}
+            } message: {
+                Text("Enter a folder name.")
             }
             .alert("Import Complete", isPresented: $showImportAlert) {
                 Button("OK", role: .cancel) {}
@@ -197,6 +222,23 @@ struct FilesView: View {
                 case .failure(let error):
                     importErrorMessage = error.localizedDescription
                 }
+            }
+            .fileImporter(
+                isPresented: $isBrowsingExternal,
+                allowedContentTypes: [.item],
+                allowsMultipleSelection: false
+            ) { result in
+                switch result {
+                case .success(let urls):
+                    if let url = urls.first {
+                        externalBrowseItem = ExternalBrowseItem(url: url)
+                    }
+                case .failure(let error):
+                    importErrorMessage = error.localizedDescription
+                }
+            }
+            .sheet(item: $externalBrowseItem) { item in
+                ExternalFilePreviewView(url: item.url)
             }
             .photosPicker(
                 isPresented: $showPhotosPicker,
@@ -484,6 +526,17 @@ struct FilesView: View {
             downloading,
             completed
         )
+    }
+
+    private func createRootFolder() {
+        guard let inboxURL = library.directoryURL(for: .inbox) else { return }
+
+        do {
+            _ = try library.createDirectory(named: newFolderName, in: inboxURL)
+            Task { await loadCounts() }
+        } catch {
+            importErrorMessage = error.localizedDescription
+        }
     }
 
     private func loadCounts() async {
@@ -2102,4 +2155,9 @@ struct MountedFolder: Identifiable {
 private struct BatchMoveRequest: Identifiable {
     let id = UUID()
     let files: [FileItem]
+}
+
+private struct ExternalBrowseItem: Identifiable {
+    let id = UUID()
+    let url: URL
 }

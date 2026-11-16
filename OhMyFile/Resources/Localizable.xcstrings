@@ -357,6 +357,16 @@
         }
       }
     },
+    "Browse System Files": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "浏览系统文件"
+          }
+        }
+      }
+    },
     "Built with SwiftUI, QuickLook, PDFKit, VisionKit, UniformTypeIdentifiers, PhotosUI and SF Symbols.": {
       "localizations": {
         "zh-Hans": {
@@ -1124,6 +1134,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "外部文件夹"
+          }
+        }
+      }
+    },
+    "External Folders/Files": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部文件夹/文件"
           }
         }
       }
@@ -1977,6 +1997,16 @@
       }
     },
     "OhMyFile": {},
+    "Open File": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "打开文件"
+          }
+        }
+      }
+    },
     "Open Settings": {
       "localizations": {
         "zh-Hans": {
@@ -3031,6 +3061,16 @@
     "[%lld]": {},
     "[…]": {},
     "false": {},
+    "iCloud Drive, On My iPhone and third-party file providers.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud 云盘、我的 iPhone 和第三方文件提供者。"
+          }
+        }
+      }
+    },
     "null": {},
     "true": {},
     "{…}": {},
