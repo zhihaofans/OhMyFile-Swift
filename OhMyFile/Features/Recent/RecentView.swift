@@ -64,7 +64,8 @@ struct RecentView: View {
                             }
 
                             if let onShowInFolder,
-                               FileLibrary.rootDirectory(for: entry.url) != nil {
+                               FileLibrary.rootDirectory(for: entry.url) != nil
+                                || MountedFoldersStore().containingFolder(for: entry.url) != nil {
                                 Button {
                                     onShowInFolder(entry.url)
                                 } label: {

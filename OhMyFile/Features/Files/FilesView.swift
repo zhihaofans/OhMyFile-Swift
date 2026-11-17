@@ -17,7 +17,7 @@ struct FilesView: View {
     let refreshToken: UUID
     let openInboxToken: UUID
     let initialDirectory: LibraryDirectory?
-    var openRequest: FileOpenRequest? = nil
+    var openRequest: FilesOpenRequest? = nil
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
@@ -27,6 +27,7 @@ struct FilesView: View {
     @State private var showImportAlert = false
     @State private var openedDirectory: LibraryDirectory?
     @State private var deepLinkRequest: FileOpenRequest?
+    @State private var externalDeepLink: ExternalFolderLink?
     @State private var didApplyInitialDirectory = false
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
@@ -219,7 +220,7 @@ struct FilesView: View {
             }
             .onAppear {
                 if let openRequest {
-                    deepLinkRequest = openRequest
+                    applyOpenRequest(openRequest)
                 }
 
                 guard !didApplyInitialDirectory else { return }
@@ -231,7 +232,7 @@ struct FilesView: View {
             }
             .onChange(of: openRequest) { _, request in
                 if let request {
-                    deepLinkRequest = request
+                    applyOpenRequest(request)
                 }
             }
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
@@ -261,6 +262,13 @@ struct FilesView: View {
                 FileListView(directory: request.directory, folderURL: request.folderURL) {
                     Task { await loadCounts() }
                 }
+            }
+            .navigationDestination(item: $externalDeepLink) { link in
+                ExternalFolderView(
+                    folder: link.folder,
+                    url: link.folderURL,
+                    displayName: link.folderURL.lastPathComponent
+                )
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
@@ -688,6 +696,14 @@ struct FilesView: View {
 
     private func mountedFolderSymbol(for url: URL) -> String {
         url.path.contains("Mobile Documents") ? "icloud.fill" : "folder.fill"
+    }
+
+    private func applyOpenRequest(_ request: FilesOpenRequest) {
+        if let directory = request.directory {
+            deepLinkRequest = FileOpenRequest(directory: directory, folderURL: request.folderURL)
+        } else if let folder = request.mountedFolder, let url = request.mountedFolderURL {
+            externalDeepLink = ExternalFolderLink(folder: folder, folderURL: url)
+        }
     }
 
     private func refreshMountedFolders() {
@@ -2464,4 +2480,10 @@ private struct BatchMoveRequest: Identifiable {
 private struct ExternalBrowseItem: Identifiable {
     let id = UUID()
     let url: URL
+}
+
+struct ExternalFolderLink: Identifiable, Hashable {
+    let id = UUID()
+    let folder: MountedFolder
+    let folderURL: URL
 }

@@ -99,6 +99,24 @@ struct MountedFoldersStore: Sendable {
         return folder
     }
 
+    /// 找到包含该文件的已挂载文件夹（返回所在目录）。
+    nonisolated func containingFolder(for url: URL) -> (folder: MountedFolder, folderURL: URL)? {
+        let filePath = url.standardizedFileURL.path
+
+        for folder in folders() {
+            guard let root = MountedFoldersStore.resolve(folder) else { continue }
+            let rootPath = root.standardizedFileURL.path
+
+            guard filePath == rootPath || filePath.hasPrefix(rootPath + "/") else {
+                continue
+            }
+
+            return (folder, url.deletingLastPathComponent())
+        }
+
+        return nil
+    }
+
     nonisolated func remove(_ folder: MountedFolder) {
         var items = folders()
         items.removeAll { $0.id == folder.id }

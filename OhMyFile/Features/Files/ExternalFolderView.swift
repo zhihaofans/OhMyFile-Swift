@@ -10,6 +10,7 @@ import SwiftUI
 struct ExternalFolderView: View {
     let folder: MountedFolder
     let url: URL
+    var displayName: String? = nil
 
     @State private var files: [FileItem] = []
     @State private var isPreparing = true
@@ -32,7 +33,7 @@ struct ExternalFolderView: View {
                     ForEach(files) { file in
                         if file.isDirectory {
                             NavigationLink {
-                                ExternalFolderView(folder: folder, url: file.url)
+                                ExternalFolderView(folder: folder, url: file.url, displayName: file.name)
                             } label: {
                                 FileListRow(file: file, now: Date())
                             }
@@ -49,7 +50,7 @@ struct ExternalFolderView: View {
                 .listStyle(.insetGrouped)
             }
         }
-        .navigationTitle(folder.displayName)
+        .navigationTitle(displayName ?? folder.displayName)
         .navigationBarTitleDisplayMode(.inline)
         .task {
             await load()

@@ -21,7 +21,7 @@ struct RootTabView: View {
     @State private var launchDirectory: LibraryDirectory?
     @State private var shareRefreshToken = UUID()
     @State private var openInboxToken = UUID()
-    @State private var fileOpenRequest: FileOpenRequest?
+    @State private var filesOpenRequest: FilesOpenRequest?
     @State private var openedExternalFile: ExternalFileRequest?
     @State private var openFileAlert: OpenFileAlert?
     @State private var isImporting = false
@@ -130,7 +130,7 @@ struct RootTabView: View {
             refreshToken: shareRefreshToken,
             openInboxToken: openInboxToken,
             initialDirectory: launchDirectory,
-            openRequest: fileOpenRequest
+            openRequest: filesOpenRequest
         )
         .tabItem { Label("Files", systemImage: "folder.fill") }
         .tag(MainTab.files)
@@ -151,20 +151,27 @@ struct RootTabView: View {
     }
 
     private func showInFolder(_ url: URL) {
-        guard let directory = FileLibrary.rootDirectory(for: url) else { return }
+        if let directory = FileLibrary.rootDirectory(for: url) {
+            let library = FileLibrary()
+            let folderURL: URL? = {
+                guard directory != .trash,
+                      let sub = library.relativeDirectoryPath(for: url, in: directory),
+                      !sub.isEmpty,
+                      let root = library.directoryURL(for: directory) else {
+                    return nil
+                }
+                return root.appendingPathComponent(sub, isDirectory: true)
+            }()
 
-        let library = FileLibrary()
-        let folderURL: URL? = {
-            guard directory != .trash,
-                  let sub = library.relativeDirectoryPath(for: url, in: directory),
-                  !sub.isEmpty,
-                  let root = library.directoryURL(for: directory) else {
-                return nil
-            }
-            return root.appendingPathComponent(sub, isDirectory: true)
-        }()
+            filesOpenRequest = .internalFolder(
+                FileOpenRequest(directory: directory, folderURL: folderURL)
+            )
+        } else if let location = MountedFoldersStore().containingFolder(for: url) {
+            filesOpenRequest = .externalFolder(location.folder, location.folderURL)
+        } else {
+            return
+        }
 
-        fileOpenRequest = FileOpenRequest(directory: directory, folderURL: folderURL)
         selectedTab = .files
     }
 
@@ -313,4 +320,30 @@ struct FileOpenRequest: Identifiable, Hashable {
     let id = UUID()
     let directory: LibraryDirectory
     let folderURL: URL?
+}
+
+struct FilesOpenRequest: Identifiable, Hashable {
+    let id = UUID()
+    let directory: LibraryDirectory?
+    let folderURL: URL?
+    let mountedFolder: MountedFolder?
+    let mountedFolderURL: URL?
+
+    static func internalFolder(_ request: FileOpenRequest) -> FilesOpenRequest {
+        FilesOpenRequest(
+            directory: request.directory,
+            folderURL: request.folderURL,
+            mountedFolder: nil,
+            mountedFolderURL: nil
+        )
+    }
+
+    static func externalFolder(_ folder: MountedFolder, _ folderURL: URL) -> FilesOpenRequest {
+        FilesOpenRequest(
+            directory: nil,
+            folderURL: nil,
+            mountedFolder: folder,
+            mountedFolderURL: folderURL
+        )
+    }
 }
