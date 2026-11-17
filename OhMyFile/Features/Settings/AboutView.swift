@@ -124,12 +124,12 @@ struct AboutView: View {
             do {
                 let text = try await LogExporter.export(
                     subsystem: AppLog.subsystem,
-                    last: 3600
+                    last: 24 * 3600
                 )
                 isExportingLogs = false
 
                 guard !text.isEmpty else {
-                    logErrorMessage = String(localized: "No logs found in the last hour.")
+                    logErrorMessage = String(localized: "No logs found in the last 24 hours.")
                     return
                 }
 

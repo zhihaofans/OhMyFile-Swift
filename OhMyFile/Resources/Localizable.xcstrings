@@ -2076,6 +2076,16 @@
         }
       }
     },
+    "No logs found in the last 24 hours.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近 24 小时暂无日志。"
+          }
+        }
+      }
+    },
     "No logs found in the last hour.": {
       "localizations": {
         "zh-Hans": {

@@ -117,6 +117,8 @@ struct RootTabView: View {
             } else if phase == .active {
                 consumePendingImport()
             }
+
+            AppLog.general.info("scene phase: \(scenePhaseLabel(phase), privacy: .public)")
         }
         .task {
             consumePendingImport()
@@ -173,6 +175,19 @@ struct RootTabView: View {
         }
 
         selectedTab = .files
+    }
+
+    private func scenePhaseLabel(_ phase: ScenePhase) -> String {
+        switch phase {
+        case .active:
+            return "active"
+        case .inactive:
+            return "inactive"
+        case .background:
+            return "background"
+        @unknown default:
+            return "unknown"
+        }
     }
 
     private func clearExpiredTrashIfNeeded() {

@@ -59,4 +59,22 @@ struct MountedFoldersStoreTests {
             .appendingPathComponent("outside-\(UUID().uuidString).txt")
         #expect(store.containingFolder(for: outside) == nil)
     }
+
+    @Test func mountingSameFolderTwiceKeepsSingleEntry() throws {
+        let root = FileManager.default.temporaryDirectory
+            .appendingPathComponent("mounted-\(UUID().uuidString)", isDirectory: true)
+        try FileManager.default.createDirectory(at: root, withIntermediateDirectories: true)
+        defer { try? FileManager.default.removeItem(at: root) }
+
+        let storage = root.appendingPathComponent("store.json")
+        let store = MountedFoldersStore(storageURL: storage)
+
+        let first = try store.mount(root)
+        store.rename(first, to: "备注名")
+        _ = try store.mount(root)
+
+        let items = store.folders()
+        #expect(items.count == 1)
+        #expect(items.first?.displayName == "备注名")
+    }
 }

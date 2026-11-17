@@ -88,14 +88,29 @@ struct MountedFoldersStore: Sendable {
             relativeTo: nil
         )
 
-        let folder = MountedFolder(id: UUID(), name: url.lastPathComponent, bookmark: bookmark)
+        let targetPath = url.standardizedFileURL.path
         var items = folders()
 
-        if !items.contains(where: { $0.name == folder.name && $0.bookmark == folder.bookmark }) {
-            items.append(folder)
+        // 同一路径已挂载：更新书签并保留备注，避免重复条目。
+        if let index = items.firstIndex(where: { folder in
+            guard let folderURL = MountedFoldersStore.resolve(folder) else { return false }
+            return folderURL.standardizedFileURL.path == targetPath
+        }) {
+            let existing = items[index]
+            let refreshed = MountedFolder(
+                id: existing.id,
+                name: existing.name,
+                displayName: existing.displayName,
+                bookmark: bookmark
+            )
+            items[index] = refreshed
             try save(items)
+            return refreshed
         }
 
+        let folder = MountedFolder(id: UUID(), name: url.lastPathComponent, bookmark: bookmark)
+        items.append(folder)
+        try save(items)
         return folder
     }
 

@@ -86,6 +86,8 @@ struct ExternalFolderView: View {
             url.stopAccessingSecurityScopedResource()
         }
 
+        guard !Task.isCancelled else { return }
+
         files = loaded.sorted {
             ($0.modifiedAt ?? .distantPast) > ($1.modifiedAt ?? .distantPast)
         }

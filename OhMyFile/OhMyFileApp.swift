@@ -28,7 +28,11 @@ struct OhMyFileApp: App {
             backend: OSLogBackend(subsystem: AppLog.subsystem, category: "swiftutils")
         )
 
-        AppLog.general.info("app launched")
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "?"
+        AppLog.general.info(
+            "app launched version=\(version, privacy: .public) build=\(build, privacy: .public)"
+        )
     }
 
     var body: some Scene {

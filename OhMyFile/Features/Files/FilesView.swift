@@ -7,6 +7,7 @@
 //
 
 import Combine
+import OSLog
 import AVFoundation
 import PhotosUI
 import SwiftUI
@@ -27,7 +28,7 @@ struct FilesView: View {
     @State private var showImportAlert = false
     @State private var openedDirectory: LibraryDirectory?
     @State private var deepLinkRequest: FileOpenRequest?
-    @State private var externalDeepLink: ExternalFolderLink?
+    @State private var openedExternalFolder: ExternalFolderLink?
     @State private var didApplyInitialDirectory = false
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
@@ -133,8 +134,11 @@ struct FilesView: View {
                         } else {
                             ForEach(mountedFolders) { folder in
                                 if let url = MountedFoldersStore.resolve(folder) {
-                                    NavigationLink {
-                                        ExternalFolderView(folder: folder, url: url)
+                                    Button {
+                                        openedExternalFolder = ExternalFolderLink(
+                                            folder: folder,
+                                            folderURL: url
+                                        )
                                     } label: {
                                         HStack(spacing: 12) {
                                             Image(systemName: mountedFolderSymbol(for: url))
@@ -151,7 +155,14 @@ struct FilesView: View {
                                                         .foregroundStyle(.secondary)
                                                 }
                                             }
+
+                                            Spacer()
+
+                                            Image(systemName: "chevron.right")
+                                                .font(.caption.weight(.semibold))
+                                                .foregroundStyle(.tertiary)
                                         }
+                                        .foregroundStyle(.primary)
                                     }
                                     .contextMenu {
                                         Button {
@@ -263,7 +274,7 @@ struct FilesView: View {
                     Task { await loadCounts() }
                 }
             }
-            .navigationDestination(item: $externalDeepLink) { link in
+            .navigationDestination(item: $openedExternalFolder) { link in
                 ExternalFolderView(
                     folder: link.folder,
                     url: link.folderURL,
@@ -607,6 +618,7 @@ struct FilesView: View {
             if outcome.imported > 0 {
                 importedCount = outcome.imported
                 showImportAlert = true
+                AppLog.general.info("files imported: \(outcome.imported, privacy: .public)")
             }
 
             if let error = outcome.error {
@@ -702,7 +714,7 @@ struct FilesView: View {
         if let directory = request.directory {
             deepLinkRequest = FileOpenRequest(directory: directory, folderURL: request.folderURL)
         } else if let folder = request.mountedFolder, let url = request.mountedFolderURL {
-            externalDeepLink = ExternalFolderLink(folder: folder, folderURL: url)
+            openedExternalFolder = ExternalFolderLink(folder: folder, folderURL: url)
         }
     }
 
@@ -712,10 +724,18 @@ struct FilesView: View {
 
     private func mountFolder(_ url: URL) {
         do {
+            let before = MountedFoldersStore().folders().count
             _ = try MountedFoldersStore().mount(url)
-            refreshMountedFolders()
+            let folders = MountedFoldersStore().folders()
+            mountedFolders = folders
+            AppLog.general.info(
+                "external folder mounted: \(url.lastPathComponent, privacy: .public) new=\(folders.count > before, privacy: .public) total=\(folders.count, privacy: .public)"
+            )
         } catch {
             importErrorMessage = error.localizedDescription
+            AppLog.general.error(
+                "external folder mount failed: \(url.lastPathComponent, privacy: .public) error=\(error.localizedDescription, privacy: .public)"
+            )
         }
     }
 
@@ -1784,6 +1804,9 @@ private struct FileListView: View {
 
         do {
             let destination = try library.rename(target, to: renameText)
+            AppLog.general.info(
+                "file renamed: \(target.name, privacy: .public) -> \(destination.lastPathComponent, privacy: .public)"
+            )
             RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
                 .updatePathPrefix(from: target.url, to: destination)
             renameTarget = nil
@@ -1818,6 +1841,9 @@ private struct FileListView: View {
                 }.value
 
                 isExtracting = false
+                AppLog.general.info(
+                    "archive extracted: \(file.name, privacy: .public) files=\(result.fileCount, privacy: .public) to=\(result.destinationURL.lastPathComponent, privacy: .public)"
+                )
                 extractNotice = String(
                     format: String(localized: "Extracted %ld files to %@"),
                     result.fileCount,
@@ -1851,6 +1877,9 @@ private struct FileListView: View {
                 }.value
 
                 isPacking = false
+                AppLog.general.info(
+                    "archive created: \(destination.lastPathComponent, privacy: .public) items=\(count, privacy: .public)"
+                )
                 packNotice = String(
                     format: String(localized: "Created %@"),
                     destination.lastPathComponent
@@ -2031,10 +2060,12 @@ private struct FileListView: View {
             switch deletion {
             case .moveToTrash(let file):
                 if let destination = try library.moveToTrash(file, from: directory) {
+                    AppLog.general.info("file trashed: \(file.name, privacy: .public)")
                     updateRecentPath(from: file.url, to: destination)
                 }
             case .deletePermanently(let file):
                 try library.deletePermanently(file)
+                AppLog.general.info("file deleted permanently: \(file.name, privacy: .public)")
                 RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL).remove(file.url)
             case .moveAllToTrash:
                 try library.moveAllToTrash(from: directory)
@@ -2068,6 +2099,7 @@ private struct FileListView: View {
             for path in selectedPaths {
                 guard let file = files.first(where: { $0.url == path }) else { continue }
                 if let restoredURL = try library.restore(file) {
+                    AppLog.general.info("file restored: \(file.name, privacy: .public)")
                     updateRecentPath(from: file.url, to: restoredURL)
                     downloadManager.migrateOrigin(
                         from: file.name,
