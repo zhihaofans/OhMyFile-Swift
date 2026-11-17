@@ -24,6 +24,12 @@
       "version": {
         "version": "0.0.33",
       },
+    }, {
+      "kind": "remote",
+      "repository": "https://github.com/weichsel/ZIPFoundation.git",
+      "version": {
+        "version": "0.9.20",
+      },
     },
   ],
   "files": [
@@ -96,6 +102,10 @@
         }, {
           "package": "SwiftUtils",
           "product-name": "SwiftUtils",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "ZIPFoundation",
+          "product-name": "ZIPFoundation",
           "build-phase": { "build-phase": "frameworks" },
         },
       ],

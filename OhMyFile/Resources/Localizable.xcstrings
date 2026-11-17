@@ -277,6 +277,16 @@
         }
       }
     },
+    "Archive": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "压缩包"
+          }
+        }
+      }
+    },
     "Archives": {
       "localizations": {
         "zh-Hans": {
@@ -653,6 +663,26 @@
         }
       }
     },
+    "Compress": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "压缩"
+          }
+        }
+      }
+    },
+    "Compressing…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在压缩…"
+          }
+        }
+      }
+    },
     "Confirm Passcode": {
       "localizations": {
         "zh-Hans": {
@@ -710,6 +740,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "创建"
+          }
+        }
+      }
+    },
+    "Created %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已创建 %@"
           }
         }
       }
@@ -1058,6 +1098,16 @@
         }
       }
     },
+    "Encrypted archives are not supported.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不支持加密压缩包。"
+          }
+        }
+      }
+    },
     "Enter Passcode": {
       "localizations": {
         "zh-Hans": {
@@ -1194,6 +1244,36 @@
           "stringUnit": {
             "state": "translated",
             "value": "外部文件夹/文件"
+          }
+        }
+      }
+    },
+    "Extract": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解压"
+          }
+        }
+      }
+    },
+    "Extracted %ld files to %@": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已解压 %ld 个文件到 %@"
+          }
+        }
+      }
+    },
+    "Extracting…": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在解压…"
           }
         }
       }
@@ -2766,6 +2846,16 @@
         }
       }
     },
+    "The archive contains invalid paths.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "压缩包包含无效路径。"
+          }
+        }
+      }
+    },
     "The file is not a valid zip archive.": {
       "localizations": {
         "zh-Hans": {
@@ -2812,6 +2902,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "主题"
+          }
+        }
+      }
+    },
+    "This archive format is not supported yet.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暂不支持此压缩格式。"
           }
         }
       }

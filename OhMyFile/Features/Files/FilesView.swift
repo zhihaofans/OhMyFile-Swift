@@ -833,6 +833,11 @@ private struct FileListView: View {
     @State private var showNewFileSheet = false
     @State private var newFileToEdit: FileItem?
     @State private var infoTarget: FileItem?
+    @State private var isExtracting = false
+    @State private var isPacking = false
+    @State private var extractNotice: String?
+    @State private var packNotice: String?
+    @State private var unsupportedArchiveAlert = false
     @State private var newFolderName = ""
     @State private var movingFile: FileItem?
     @State private var moveTargets: [FileItem] = []
@@ -957,6 +962,13 @@ private struct FileListView: View {
                             Label("Move To", systemImage: "folder")
                         }
                         .disabled(selectedFiles.isEmpty)
+
+                        Button {
+                            packSelected()
+                        } label: {
+                            Label("Compress", systemImage: "archivebox")
+                        }
+                        .disabled(selectedItems.isEmpty)
                     }
 
                     Button(role: .destructive) {
@@ -1322,6 +1334,35 @@ private struct FileListView: View {
                 }
             }
         }
+        .overlay {
+            if isExtracting || isPacking {
+                ProgressView(isExtracting ? "Extracting…" : "Compressing…")
+                    .padding(24)
+                    .background(.regularMaterial, in: RoundedRectangle(cornerRadius: 14))
+            }
+        }
+        .alert(
+            "Done",
+            isPresented: Binding(
+                get: { extractNotice != nil || packNotice != nil },
+                set: { if !$0 { extractNotice = nil; packNotice = nil } }
+            )
+        ) {
+            Button("OK", role: .cancel) {
+                extractNotice = nil
+                packNotice = nil
+            }
+        } message: {
+            Text(extractNotice ?? packNotice ?? "")
+        }
+        .alert(
+            "Extract",
+            isPresented: $unsupportedArchiveAlert
+        ) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text("This archive format is not supported yet.")
+        }
         .overlay(alignment: .top) {
             if let errorMessage {
                 Text(errorMessage)
@@ -1499,6 +1540,20 @@ private struct FileListView: View {
                 infoTarget = file
             } label: {
                 Label("File Info", systemImage: "info.circle")
+            }
+
+            if ZipArchiveReader.isZipFile(url: file.url) {
+                Button {
+                    extract(file)
+                } label: {
+                    Label("Extract", systemImage: "arrow.down.doc")
+                }
+            } else if ["rar", "7z", "tar", "gz", "tgz"].contains(file.url.pathExtension.lowercased()) {
+                Button {
+                    unsupportedArchiveAlert = true
+                } label: {
+                    Label("Extract", systemImage: "arrow.down.doc")
+                }
             }
 
             Button {
@@ -1710,6 +1765,86 @@ private struct FileListView: View {
 
     private var selectedFiles: [FileItem] {
         files.filter { selectedPaths.contains($0.url) && !$0.isDirectory }
+    }
+
+    private var selectedItems: [FileItem] {
+        files.filter { selectedPaths.contains($0.url) }
+    }
+
+    private func extract(_ file: FileItem) {
+        guard let currentURL else { return }
+
+        isExtracting = true
+
+        Task {
+            do {
+                let result = try await Task.detached { [archiveURL = file.url, currentURL, library] in
+                    let baseName = archiveURL.deletingPathExtension().lastPathComponent
+                    let name = baseName.isEmpty ? String(localized: "Archive") : baseName
+                    let destination = library.uniqueURL(in: currentURL, fileName: name)
+                    return try ZipExtractor.extract(archiveURL: archiveURL, to: destination)
+                }.value
+
+                isExtracting = false
+                extractNotice = String(
+                    format: String(localized: "Extracted %ld files to %@"),
+                    result.fileCount,
+                    result.destinationURL.lastPathComponent
+                )
+                Task { await reload() }
+                onChanged()
+            } catch {
+                isExtracting = false
+                errorMessage = archiveErrorText(for: error)
+            }
+        }
+    }
+
+    private func packSelected() {
+        guard let currentURL else { return }
+
+        let items = selectedItems.map(\.url)
+        guard !items.isEmpty else { return }
+
+        isPacking = true
+
+        Task {
+            do {
+                let destination = try await Task.detached { [currentURL, library] in
+                    library.uniqueURL(in: currentURL, fileName: "Archive.zip")
+                }.value
+
+                let count = try await Task.detached { [items, destination] in
+                    try ZipPacker.pack(items: items, to: destination)
+                }.value
+
+                isPacking = false
+                packNotice = String(
+                    format: String(localized: "Created %@"),
+                    destination.lastPathComponent
+                )
+                _ = count
+                selectedPaths.removeAll()
+                isSelecting = false
+                Task { await reload() }
+                onChanged()
+            } catch {
+                isPacking = false
+                errorMessage = archiveErrorText(for: error)
+            }
+        }
+    }
+
+    private func archiveErrorText(for error: Error) -> String {
+        if let extractError = error as? ZipExtractorError {
+            switch extractError {
+            case .encrypted:
+                return String(localized: "Encrypted archives are not supported.")
+            case .invalidEntry:
+                return String(localized: "The archive contains invalid paths.")
+            }
+        }
+        return error.localizedDescription
     }
 
     private func dropFiles(_ urls: [URL], into folder: FileItem) -> Bool {

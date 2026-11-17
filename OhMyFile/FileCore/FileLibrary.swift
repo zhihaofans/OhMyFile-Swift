@@ -592,7 +592,7 @@ struct FileLibrary: Sendable {
         try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
     }
 
-    nonisolated private func uniqueURL(in directory: URL, fileName: String) -> URL {
+    nonisolated func uniqueURL(in directory: URL, fileName: String) -> URL {
         let base = (fileName as NSString).deletingPathExtension
         let pathExtension = (fileName as NSString).pathExtension
         var candidate = directory.appendingPathComponent(fileName)
