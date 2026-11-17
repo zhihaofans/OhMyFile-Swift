@@ -9,6 +9,8 @@ import Combine
 import SwiftUI
 
 struct RecentView: View {
+    let onShowInFolder: ((URL) -> Void)?
+
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
     @State private var entries: [RecentEntry] = []
@@ -20,6 +22,10 @@ struct RecentView: View {
     @State private var infoTarget: FileItem?
 
     private let store = RecentFilesStore(storageURL: RecentFilesStore.defaultStorageURL)
+
+    init(onShowInFolder: ((URL) -> Void)? = nil) {
+        self.onShowInFolder = onShowInFolder
+    }
 
     private var filteredEntries: [RecentEntry] {
         let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
@@ -55,6 +61,15 @@ struct RecentView: View {
                                 infoTarget = FileItem(url: entry.url)
                             } label: {
                                 Label("File Info", systemImage: "info.circle")
+                            }
+
+                            if let onShowInFolder,
+                               FileLibrary.rootDirectory(for: entry.url) != nil {
+                                Button {
+                                    onShowInFolder(entry.url)
+                                } label: {
+                                    Label("Show in Folder", systemImage: "folder")
+                                }
                             }
                         }
                     }

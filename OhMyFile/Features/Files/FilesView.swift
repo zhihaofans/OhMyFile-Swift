@@ -17,6 +17,7 @@ struct FilesView: View {
     let refreshToken: UUID
     let openInboxToken: UUID
     let initialDirectory: LibraryDirectory?
+    var openRequest: FileOpenRequest? = nil
 
     @Environment(\.scenePhase) private var scenePhase
     @State private var searchText = ""
@@ -25,6 +26,7 @@ struct FilesView: View {
     @State private var importedCount = 0
     @State private var showImportAlert = false
     @State private var openedDirectory: LibraryDirectory?
+    @State private var deepLinkRequest: FileOpenRequest?
     @State private var didApplyInitialDirectory = false
     @State private var searchResults: [SearchResult] = []
     @State private var isSearching = false
@@ -216,11 +218,20 @@ struct FilesView: View {
                 refreshMountedFolders()
             }
             .onAppear {
+                if let openRequest {
+                    deepLinkRequest = openRequest
+                }
+
                 guard !didApplyInitialDirectory else { return }
                 didApplyInitialDirectory = true
 
                 if let initialDirectory {
                     openedDirectory = initialDirectory
+                }
+            }
+            .onChange(of: openRequest) { _, request in
+                if let request {
+                    deepLinkRequest = request
                 }
             }
             .onReceive(Timer.publish(every: 60, on: .main, in: .common).autoconnect()) { now = $0 }
@@ -243,6 +254,11 @@ struct FilesView: View {
             }
             .navigationDestination(item: $openedDirectory) { directory in
                 FileListView(directory: directory) {
+                    Task { await loadCounts() }
+                }
+            }
+            .navigationDestination(item: $deepLinkRequest) { request in
+                FileListView(directory: request.directory, folderURL: request.folderURL) {
                     Task { await loadCounts() }
                 }
             }

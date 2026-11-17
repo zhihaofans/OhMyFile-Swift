@@ -2644,6 +2644,16 @@
         }
       }
     },
+    "Show in Folder": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在文件夹中显示"
+          }
+        }
+      }
+    },
     "Showing first %ld lines": {
       "localizations": {
         "zh-Hans": {

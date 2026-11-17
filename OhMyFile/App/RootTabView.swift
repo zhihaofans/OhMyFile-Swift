@@ -21,6 +21,7 @@ struct RootTabView: View {
     @State private var launchDirectory: LibraryDirectory?
     @State private var shareRefreshToken = UUID()
     @State private var openInboxToken = UUID()
+    @State private var fileOpenRequest: FileOpenRequest?
     @State private var openedExternalFile: ExternalFileRequest?
     @State private var openFileAlert: OpenFileAlert?
     @State private var isImporting = false
@@ -48,21 +49,9 @@ struct RootTabView: View {
 
     var body: some View {
         TabView(selection: $selectedTab) {
-            FilesView(
-                refreshToken: shareRefreshToken,
-                openInboxToken: openInboxToken,
-                initialDirectory: launchDirectory
-            )
-                .tabItem { Label("Files", systemImage: "folder.fill") }
-                .tag(MainTab.files)
-
-            RecentView()
-                .tabItem { Label("Recent", systemImage: "clock.fill") }
-                .tag(MainTab.recent)
-
-            SettingsView(lockController: lockController)
-                .tabItem { Label("Settings", systemImage: "gearshape.fill") }
-                .tag(MainTab.settings)
+            filesTab
+            recentTab
+            settingsTab
         }
         .preferredColorScheme(appearance.colorScheme)
         .tint(tintColor)
@@ -134,6 +123,49 @@ struct RootTabView: View {
             checkCrashReport()
             clearExpiredTrashIfNeeded()
         }
+    }
+
+    private var filesTab: some View {
+        FilesView(
+            refreshToken: shareRefreshToken,
+            openInboxToken: openInboxToken,
+            initialDirectory: launchDirectory,
+            openRequest: fileOpenRequest
+        )
+        .tabItem { Label("Files", systemImage: "folder.fill") }
+        .tag(MainTab.files)
+    }
+
+    private var recentTab: some View {
+        RecentView(onShowInFolder: { url in
+            showInFolder(url)
+        })
+        .tabItem { Label("Recent", systemImage: "clock.fill") }
+        .tag(MainTab.recent)
+    }
+
+    private var settingsTab: some View {
+        SettingsView(lockController: lockController)
+            .tabItem { Label("Settings", systemImage: "gearshape.fill") }
+            .tag(MainTab.settings)
+    }
+
+    private func showInFolder(_ url: URL) {
+        guard let directory = FileLibrary.rootDirectory(for: url) else { return }
+
+        let library = FileLibrary()
+        let folderURL: URL? = {
+            guard directory != .trash,
+                  let sub = library.relativeDirectoryPath(for: url, in: directory),
+                  !sub.isEmpty,
+                  let root = library.directoryURL(for: directory) else {
+                return nil
+            }
+            return root.appendingPathComponent(sub, isDirectory: true)
+        }()
+
+        fileOpenRequest = FileOpenRequest(directory: directory, folderURL: folderURL)
+        selectedTab = .files
     }
 
     private func clearExpiredTrashIfNeeded() {
@@ -275,4 +307,10 @@ enum MainTab: Hashable {
     case files
     case recent
     case settings
+}
+
+struct FileOpenRequest: Identifiable, Hashable {
+    let id = UUID()
+    let directory: LibraryDirectory
+    let folderURL: URL?
 }
