@@ -9,6 +9,18 @@
             "state": "new",
             "value": "%1$@ (%2$@)"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@（%@）"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@（%@）"
+          }
         }
       }
     },
@@ -18,6 +30,18 @@
           "stringUnit": {
             "state": "new",
             "value": "%1$@ · %2$@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · %@"
           }
         }
       }
@@ -29,6 +53,18 @@
             "state": "translated",
             "value": "%@ · 会连同文件夹内的 %ld 个文件一起移入回收站。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · 會一併將資料夾內的 %ld 個檔案移到垃圾桶。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ · フォルダ内の %ld 個のファイルもゴミ箱に移動します。"
+          }
         }
       }
     },
@@ -38,6 +74,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%ld 天前"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 天前"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 日前"
           }
         }
       }
@@ -49,6 +97,18 @@
             "state": "translated",
             "value": "%ld 项失败 · %ld 项在下载 · %ld 项已完成"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 項失敗 · %ld 項下載中 · %ld 項已完成"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 件失敗 · %ld 件ダウンロード中 · %ld 件完了"
+          }
         }
       }
     },
@@ -58,6 +118,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%ld 个文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 個檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 個のファイル"
           }
         }
       }
@@ -69,6 +141,18 @@
             "state": "translated",
             "value": "已选择 %ld 个文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已選擇 %ld 個檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 個のファイルを選択中"
+          }
         }
       }
     },
@@ -78,6 +162,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "%ld 小时前"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 小時前"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 時間前"
           }
         }
       }
@@ -89,10 +185,37 @@
             "state": "translated",
             "value": "%ld 分钟前"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 分鐘前"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 分前"
+          }
         }
       }
     },
-    "%lld": {},
+    "%lld": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld"
+          }
+        }
+      }
+    },
     "%lld items": {
       "localizations": {
         "zh-Hans": {
@@ -100,16 +223,55 @@
             "state": "translated",
             "value": "%lld 项"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 項"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 項目"
+          }
         }
       }
     },
-    "%lld.": {},
+    "%lld.": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld."
+          }
+        }
+      }
+    },
     "1 Day": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "1 天"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 天"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "1 日"
           }
         }
       }
@@ -121,6 +283,18 @@
             "state": "translated",
             "value": "14 天"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 天"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "14 日"
+          }
         }
       }
     },
@@ -130,6 +304,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "30 天"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 天"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "30 日"
           }
         }
       }
@@ -141,10 +327,37 @@
             "state": "translated",
             "value": "7 天"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 天"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "7 日"
+          }
         }
       }
     },
-    ":": {},
+    ":": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ":"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": ":"
+          }
+        }
+      }
+    },
     "<%@%@>": {
       "localizations": {
         "en": {
@@ -152,16 +365,55 @@
             "state": "new",
             "value": "<%1$@%2$@>"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "<%@%@>"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "<%@%@>"
+          }
         }
       }
     },
-    "</%@>": {},
+    "</%@>": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "</%@>"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "</%@>"
+          }
+        }
+      }
+    },
     "About": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "关于"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關於"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "情報"
           }
         }
       }
@@ -173,6 +425,18 @@
             "state": "translated",
             "value": "强调色"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "強調色"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アクセントカラー"
+          }
         }
       }
     },
@@ -182,6 +446,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "致谢"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "致謝"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "謝辞"
           }
         }
       }
@@ -193,6 +469,18 @@
             "state": "translated",
             "value": "已导入 %lld 个文件到收件箱"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已匯入 %lld 個檔案到收件匣"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%lld 個のファイルを受信トレイに追加しました"
+          }
         }
       }
     },
@@ -202,6 +490,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "访问地址"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "存取位址"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アドレス"
           }
         }
       }
@@ -213,6 +513,18 @@
             "state": "translated",
             "value": "全部"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて"
+          }
         }
       }
     },
@@ -222,6 +534,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "所有文件将移到回收站。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有檔案將移到垃圾桶。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてのファイルをゴミ箱に移動します。"
           }
         }
       }
@@ -233,6 +557,18 @@
             "state": "translated",
             "value": "所有文件将被永久删除。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所有檔案將被永久刪除。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてのファイルを完全に削除します。"
+          }
         }
       }
     },
@@ -242,6 +578,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "请在系统设置中允许相机访问，用于拍照或扫描文档。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請在系統設定中允許相機存取，用於拍照或掃描文件。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定でカメラへのアクセスを許可して、写真撮影や書類のスキャンを行ってください。"
           }
         }
       }
@@ -253,6 +601,18 @@
             "state": "translated",
             "value": "应用"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリ"
+          }
         }
       }
     },
@@ -262,6 +622,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "应用锁"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App 鎖定"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリロック"
           }
         }
       }
@@ -274,6 +646,18 @@
             "state": "translated",
             "value": "APP 系统设置"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App 系統設定"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリの設定"
+          }
         }
       }
     },
@@ -283,6 +667,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "外观"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外觀"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外観"
           }
         }
       }
@@ -294,6 +690,18 @@
             "state": "translated",
             "value": "压缩包"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "壓縮檔"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブ"
+          }
         }
       }
     },
@@ -303,6 +711,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "压缩包"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "壓縮檔"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブ"
           }
         }
       }
@@ -314,6 +734,18 @@
             "state": "translated",
             "value": "升序"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "升冪"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "昇順"
+          }
         }
       }
     },
@@ -323,6 +755,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "音频"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "音訊"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オーディオ"
           }
         }
       }
@@ -334,6 +778,18 @@
             "state": "translated",
             "value": "已授权"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已授權"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "許可済み"
+          }
         }
       }
     },
@@ -343,6 +799,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "回收站自动清空"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "垃圾桶自動清空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱の自動削除"
           }
         }
       }
@@ -354,6 +822,18 @@
             "state": "translated",
             "value": "可用空间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用空間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空き容量"
+          }
         }
       }
     },
@@ -364,12 +844,36 @@
             "state": "translated",
             "value": "生物识别"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生物辨識"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "生体認証"
+          }
         }
       }
     },
     "Blank": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空白"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "空白"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "空白"
@@ -384,6 +888,18 @@
             "state": "translated",
             "value": "浏览系统文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "瀏覽系統檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムファイルを参照"
+          }
         }
       }
     },
@@ -393,6 +909,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "基于 SwiftUI、QuickLook、PDFKit、VisionKit、UniformTypeIdentifiers、PhotosUI 与 SF Symbols 构建。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "以 SwiftUI、QuickLook、PDFKit、VisionKit、UniformTypeIdentifiers、PhotosUI 與 SF Symbols 建置。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "SwiftUI、QuickLook、PDFKit、VisionKit、UniformTypeIdentifiers、PhotosUI、SF Symbols で構築。"
           }
         }
       }
@@ -404,6 +932,18 @@
             "state": "translated",
             "value": "分类占用"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分類佔用"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カテゴリ別"
+          }
         }
       }
     },
@@ -413,6 +953,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "CSV 各行字段数不一致，请检查后再保存。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV 各行欄位數不一致，請檢查後再儲存。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV の行ごとに列数が一致しません。確認してから保存してください。"
           }
         }
       }
@@ -424,6 +976,18 @@
             "state": "translated",
             "value": "CSV 结构无效。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV 結構無效。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "CSV の構造が無効です。"
+          }
         }
       }
     },
@@ -433,6 +997,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "缓存"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快取"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャッシュ"
           }
         }
       }
@@ -444,6 +1020,18 @@
             "state": "translated",
             "value": "缓存已清理"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "快取已清除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャッシュを消去しました"
+          }
         }
       }
     },
@@ -453,6 +1041,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "缓存将被清理，文件不受影响。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "將清除快取，檔案不受影響。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャッシュを消去します。ファイルには影響しません。"
           }
         }
       }
@@ -465,6 +1065,18 @@
             "state": "translated",
             "value": "相机"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相機"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カメラ"
+          }
         }
       }
     },
@@ -474,6 +1086,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "拍照 / 扫描"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍照 / 掃描"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "撮影 / スキャン"
           }
         }
       }
@@ -485,6 +1109,18 @@
             "state": "translated",
             "value": "需要相机权限"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要相機權限"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "カメラへのアクセスが必要です"
+          }
         }
       }
     },
@@ -494,6 +1130,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "取消"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル"
           }
         }
       }
@@ -505,6 +1153,18 @@
             "state": "translated",
             "value": "已取消"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已取消"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャンセル済み"
+          }
         }
       }
     },
@@ -514,6 +1174,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法打开压缩包"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法開啟壓縮檔"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブを開けません"
           }
         }
       }
@@ -525,6 +1197,18 @@
             "state": "translated",
             "value": "无法打开文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法開啟檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを開けません"
+          }
         }
       }
     },
@@ -534,6 +1218,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "修改密码"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "變更密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードを変更"
           }
         }
       }
@@ -545,6 +1241,18 @@
             "state": "translated",
             "value": "清空"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "消去"
+          }
         }
       }
     },
@@ -555,6 +1263,18 @@
             "state": "translated",
             "value": "清理缓存"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除快取"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャッシュを消去"
+          }
         }
       }
     },
@@ -564,6 +1284,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "清理缓存？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除快取？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "キャッシュを消去しますか？"
           }
         }
       }
@@ -576,6 +1308,18 @@
             "state": "translated",
             "value": "清空收件箱"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空收件匣"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信トレイを空にする"
+          }
         }
       }
     },
@@ -587,6 +1331,18 @@
             "state": "translated",
             "value": "清空收件箱？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空收件匣？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信トレイを空にしますか？"
+          }
         }
       }
     },
@@ -596,6 +1352,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "清空最近记录"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除最近記錄"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近の履歴を消去"
           }
         }
       }
@@ -607,6 +1375,18 @@
             "state": "translated",
             "value": "清空最近记录？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清除最近記錄？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近の履歴を消去しますか？"
+          }
         }
       }
     },
@@ -617,6 +1397,18 @@
             "state": "translated",
             "value": "剪切板"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪貼簿"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリップボード"
+          }
         }
       }
     },
@@ -626,6 +1418,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "剪贴板为空"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪貼簿為空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリップボードは空です"
           }
         }
       }
@@ -638,6 +1442,18 @@
             "state": "translated",
             "value": "剪贴板为空。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剪貼簿為空。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリップボードは空です。"
+          }
         }
       }
     },
@@ -649,6 +1465,18 @@
             "state": "translated",
             "value": "树状预览默认折叠"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "樹狀預覽預設收合"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ツリー表示をデフォルトで折りたたむ"
+          }
         }
       }
     },
@@ -658,6 +1486,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "列宽"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "欄寬"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "列幅"
           }
         }
       }
@@ -670,6 +1510,18 @@
             "state": "translated",
             "value": "已完成"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已完成"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了"
+          }
         }
       }
     },
@@ -679,6 +1531,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "压缩"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "壓縮"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圧縮"
           }
         }
       }
@@ -690,6 +1554,18 @@
             "state": "translated",
             "value": "正在压缩…"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在壓縮…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圧縮中…"
+          }
         }
       }
     },
@@ -699,6 +1575,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "确认新密码"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "確認新密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードを確認"
           }
         }
       }
@@ -710,6 +1598,18 @@
             "state": "translated",
             "value": "请先连接 Wi-Fi 或开启热点。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請先連接 Wi-Fi 或開啟熱點。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先に Wi-Fi に接続するか、テザリングを有効にしてください。"
+          }
         }
       }
     },
@@ -719,6 +1619,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "复制"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "複製"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コピー"
           }
         }
       }
@@ -730,6 +1642,18 @@
             "state": "translated",
             "value": "复制地址"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "複製位址"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アドレスをコピー"
+          }
         }
       }
     },
@@ -739,6 +1663,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "复制信息"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "複製資訊"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "情報をコピー"
           }
         }
       }
@@ -750,16 +1686,55 @@
             "state": "translated",
             "value": "无法打开外部文件夹"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法開啟外部資料夾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部フォルダを開けません"
+          }
         }
       }
     },
-    "Crash Report": {},
+    "Crash Report": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "崩潰報告"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クラッシュレポート"
+          }
+        }
+      }
+    },
     "Crash capture with local storage.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "崩溃捕获与本地记录。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "崩潰擷取與本機記錄。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クラッシュの取得とローカル保存。"
           }
         }
       }
@@ -771,6 +1746,18 @@
             "state": "translated",
             "value": "创建"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "建立"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "作成"
+          }
         }
       }
     },
@@ -780,6 +1767,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已创建 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已建立 %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ を作成しました"
           }
         }
       }
@@ -791,6 +1790,18 @@
             "state": "translated",
             "value": "当前密码"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "目前的密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "現在のパスコード"
+          }
         }
       }
     },
@@ -800,6 +1811,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "深色"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "深色"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダーク"
           }
         }
       }
@@ -811,6 +1834,18 @@
             "state": "translated",
             "value": "时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "日時"
+          }
         }
       }
     },
@@ -820,6 +1855,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
           }
         }
       }
@@ -832,6 +1879,18 @@
             "state": "translated",
             "value": "全部删除"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部刪除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて削除"
+          }
         }
       }
     },
@@ -843,6 +1902,18 @@
             "state": "translated",
             "value": "删除文件？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除檔案？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを削除しますか？"
+          }
         }
       }
     },
@@ -852,6 +1923,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "永久删除"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久刪除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完全に削除"
           }
         }
       }
@@ -863,6 +1946,18 @@
             "state": "translated",
             "value": "永久删除？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "永久刪除？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完全に削除しますか？"
+          }
         }
       }
     },
@@ -872,6 +1967,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除所选？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除所選？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択項目を削除しますか？"
           }
         }
       }
@@ -883,6 +1990,18 @@
             "state": "translated",
             "value": "删除时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除日時"
+          }
         }
       }
     },
@@ -892,6 +2011,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "删除时间"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除日時"
           }
         }
       }
@@ -903,6 +2034,18 @@
             "state": "translated",
             "value": "删除的文件会出现在这里。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "刪除的檔案會出現在這裡。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除したファイルがここに表示されます。"
+          }
         }
       }
     },
@@ -912,6 +2055,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "未授权"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未授權"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拒否"
           }
         }
       }
@@ -923,6 +2078,18 @@
             "state": "translated",
             "value": "降序"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "降冪"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "降順"
+          }
         }
       }
     },
@@ -932,6 +2099,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "取消全选"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取消全選"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて選択解除"
           }
         }
       }
@@ -943,16 +2122,55 @@
             "state": "translated",
             "value": "设备"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "裝置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "デバイス"
+          }
         }
       }
     },
-    "Diagnostics": {},
+    "Diagnostics": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "診斷"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "診断"
+          }
+        }
+      }
+    },
     "Discard": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "放弃"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "放棄"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "破棄"
           }
         }
       }
@@ -964,6 +2182,18 @@
             "state": "translated",
             "value": "放弃修改？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "放棄修改？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "変更を破棄しますか？"
+          }
         }
       }
     },
@@ -973,6 +2203,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文档"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文件"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "書類"
           }
         }
       }
@@ -984,6 +2226,18 @@
             "state": "translated",
             "value": "完成"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完成"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "完了"
+          }
         }
       }
     },
@@ -993,6 +2247,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "下载"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード"
           }
         }
       }
@@ -1004,6 +2270,18 @@
             "state": "translated",
             "value": "下载完成：%@"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載完成：%@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード完了：%@"
+          }
         }
       }
     },
@@ -1014,6 +2292,18 @@
             "state": "translated",
             "value": "下载时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード日時"
+          }
         }
       }
     },
@@ -1023,6 +2313,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "下载已中断。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載已中斷。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードが中断されました。"
           }
         }
       }
@@ -1035,6 +2337,18 @@
             "state": "translated",
             "value": "下载中"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載中"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード中"
+          }
         }
       }
     },
@@ -1044,6 +2358,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "下载"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロード"
           }
         }
       }
@@ -1055,6 +2381,18 @@
             "state": "translated",
             "value": "下载为空"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載為空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードは空です"
+          }
         }
       }
     },
@@ -1064,6 +2402,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "编辑"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編輯"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編集"
           }
         }
       }
@@ -1075,6 +2425,18 @@
             "state": "translated",
             "value": "编辑器"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編輯器"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "エディタ"
+          }
         }
       }
     },
@@ -1084,6 +2446,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "清空回收站"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空垃圾桶"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱を空にする"
           }
         }
       }
@@ -1095,6 +2469,18 @@
             "state": "translated",
             "value": "清空回收站？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "清空垃圾桶？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱を空にしますか？"
+          }
         }
       }
     },
@@ -1104,6 +2490,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "编码"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "編碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "エンコーディング"
           }
         }
       }
@@ -1115,6 +2513,18 @@
             "state": "translated",
             "value": "已加密"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已加密"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号化済み"
+          }
         }
       }
     },
@@ -1124,6 +2534,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "加密压缩包：仅显示文件列表。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "加密壓縮檔：僅顯示檔案列表。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号化アーカイブ：ファイル一覧のみ表示しています。"
           }
         }
       }
@@ -1135,6 +2557,18 @@
             "state": "translated",
             "value": "暂不支持加密压缩包。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫不支援加密壓縮檔。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暗号化アーカイブはサポートされていません。"
+          }
         }
       }
     },
@@ -1144,6 +2578,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "输入密码"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "輸入密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードを入力"
           }
         }
       }
@@ -1155,6 +2601,18 @@
             "state": "translated",
             "value": "输入链接"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "輸入連結"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL を入力"
+          }
         }
       }
     },
@@ -1164,6 +2622,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "请输入 6 位数字密码。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "請輸入 6 位數字密碼。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "6 桁の数字パスコードを入力してください。"
           }
         }
       }
@@ -1175,6 +2645,18 @@
             "state": "translated",
             "value": "输入文件夹名称。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "輸入資料夾名稱。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ名を入力してください。"
+          }
         }
       }
     },
@@ -1184,6 +2666,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "输入新名称。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "輸入新名稱。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しい名前を入力してください。"
           }
         }
       }
@@ -1195,6 +2689,18 @@
             "state": "translated",
             "value": "为这个文件夹输入备注。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "為這個資料夾輸入備註。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフォルダのメモを入力してください。"
+          }
         }
       }
     },
@@ -1204,6 +2710,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "错误"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "錯誤"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "エラー"
           }
         }
       }
@@ -1215,6 +2733,18 @@
             "state": "translated",
             "value": "过期项目会被永久删除。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "過期項目會被永久刪除。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "期限切れの項目は完全に削除されます。"
+          }
         }
       }
     },
@@ -1224,6 +2754,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "导出日志"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯出日誌"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ログを書き出す"
           }
         }
       }
@@ -1235,6 +2777,18 @@
             "state": "translated",
             "value": "扩展 Markdown"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "擴充 Markdown"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拡張 Markdown"
+          }
         }
       }
     },
@@ -1245,12 +2799,36 @@
             "state": "translated",
             "value": "扩展名"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "副檔名"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拡張子"
+          }
         }
       }
     },
     "External": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "外部"
@@ -1265,6 +2843,18 @@
             "state": "translated",
             "value": "外部文件夹"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部資料夾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部フォルダ"
+          }
         }
       }
     },
@@ -1274,6 +2864,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "外部文件夹/文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部資料夾/檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部フォルダ/ファイル"
           }
         }
       }
@@ -1285,6 +2887,18 @@
             "state": "translated",
             "value": "解压"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解壓縮"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "展開"
+          }
         }
       }
     },
@@ -1294,6 +2908,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已解压 %ld 个文件到 %@"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已解壓 %ld 個檔案到 %@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%ld 個のファイルを %@ に展開しました"
           }
         }
       }
@@ -1305,6 +2931,18 @@
             "state": "translated",
             "value": "正在解压…"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在解壓…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "展開中…"
+          }
         }
       }
     },
@@ -1314,6 +2952,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "Face ID / Touch ID 验证失败，请输入密码。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID / Touch ID 驗證失敗，請輸入密碼。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID / Touch ID に失敗しました。パスコードを入力してください。"
           }
         }
       }
@@ -1325,6 +2975,18 @@
             "state": "translated",
             "value": "Face ID / Touch ID 由系统设置管理。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID / Touch ID 由系統設定管理。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Face ID / Touch ID はシステム設定で管理されています。"
+          }
         }
       }
     },
@@ -1334,6 +2996,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "失败"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "失敗"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "失敗"
           }
         }
       }
@@ -1345,6 +3019,18 @@
             "state": "translated",
             "value": "服务启动失败。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "服務啟動失敗。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サーバーの起動に失敗しました。"
+          }
         }
       }
     },
@@ -1354,6 +3040,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件信息"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案資訊"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイル情報"
           }
         }
       }
@@ -1365,6 +3063,18 @@
             "state": "translated",
             "value": "文件名"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案名稱"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイル名"
+          }
         }
       }
     },
@@ -1374,6 +3084,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件下载超时，请稍后再试。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案下載逾時，請稍後再試。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルのダウンロードがタイムアウトしました。もう一度お試しください。"
           }
         }
       }
@@ -1385,6 +3107,18 @@
             "state": "translated",
             "value": "文件过大，暂不支持预览。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案過大，暫不支援預覽。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルが大きすぎるためプレビューできません。"
+          }
         }
       }
     },
@@ -1394,6 +3128,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件名"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案名稱"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイル名"
           }
         }
       }
@@ -1405,6 +3151,18 @@
             "state": "translated",
             "value": "文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイル"
+          }
         }
       }
     },
@@ -1414,6 +3172,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件只在本机处理，未经你的许可不会上传任何内容。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案只在本機處理，未經你的許可不會上傳任何內容。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルはこのデバイス上でのみ処理され、許可なくアップロードされることはありません。"
           }
         }
       }
@@ -1425,6 +3195,18 @@
             "state": "translated",
             "value": "下载到 OhMyFile 的文件会出现在这里。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下載到 OhMyFile 的檔案會出現在這裡。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OhMyFile にダウンロードしたファイルがここに表示されます。"
+          }
         }
       }
     },
@@ -1434,6 +3216,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "移入该文件夹的文件会显示在这里。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移入此資料夾的檔案會顯示在這裡。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフォルダに移動したファイルがここに表示されます。"
           }
         }
       }
@@ -1445,6 +3239,18 @@
             "state": "translated",
             "value": "分享到 OhMyFile 的文件会出现在这里。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享到 OhMyFile 的檔案會出現在這裡。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OhMyFile に共有されたファイルがここに表示されます。"
+          }
         }
       }
     },
@@ -1454,6 +3260,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开过的文件会出现在这里。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟過的檔案會出現在這裡。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開いたファイルがここに表示されます。"
           }
         }
       }
@@ -1465,6 +3283,18 @@
             "state": "translated",
             "value": "筛选"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "篩選"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルタ"
+          }
         }
       }
     },
@@ -1474,6 +3304,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件夹"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ"
           }
         }
       }
@@ -1485,6 +3327,18 @@
             "state": "translated",
             "value": "文件夹为空"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾為空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダは空です"
+          }
         }
       }
     },
@@ -1494,6 +3348,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件夹名称"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾名稱"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ名"
           }
         }
       }
@@ -1505,6 +3371,18 @@
             "state": "translated",
             "value": "文件夹"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ"
+          }
         }
       }
     },
@@ -1514,6 +3392,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件夹优先"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "資料夾優先"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダを優先"
           }
         }
       }
@@ -1525,6 +3415,18 @@
             "state": "translated",
             "value": "字号"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "字級"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォントサイズ"
+          }
         }
       }
     },
@@ -1534,6 +3436,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "忘记密码无法找回，需要清除 App 数据。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "忘記密碼無法找回，需要清除 App 資料。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードを忘れた場合、復元できません。アプリのデータを消去する必要があります。"
           }
         }
       }
@@ -1545,6 +3459,18 @@
             "state": "translated",
             "value": "GitHub 仓库"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub 儲存庫"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "GitHub リポジトリ"
+          }
         }
       }
     },
@@ -1554,6 +3480,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "网格"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "網格"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "グリッド"
           }
         }
       }
@@ -1566,6 +3504,18 @@
             "state": "translated",
             "value": "高亮主题"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "高亮主題"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ハイライトテーマ"
+          }
         }
       }
     },
@@ -1575,6 +3525,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "图片"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "圖片"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "画像"
           }
         }
       }
@@ -1586,6 +3548,18 @@
             "state": "translated",
             "value": "导入"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込み"
+          }
         }
       }
     },
@@ -1595,6 +3569,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "导入完成"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入完成"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込み完了"
           }
         }
       }
@@ -1606,6 +3592,18 @@
             "state": "translated",
             "value": "导入时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取り込み日時"
+          }
         }
       }
     },
@@ -1615,6 +3613,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "从剪贴板导入"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從剪貼簿匯入"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリップボードから読み込む"
           }
         }
       }
@@ -1626,6 +3636,18 @@
             "state": "translated",
             "value": "从文件导入"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從檔案匯入"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルから読み込む"
+          }
         }
       }
     },
@@ -1635,6 +3657,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "从相片导入"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從相片匯入"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真から読み込む"
           }
         }
       }
@@ -1646,6 +3680,18 @@
             "state": "translated",
             "value": "导入时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "取り込み日時"
+          }
         }
       }
     },
@@ -1655,6 +3701,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "导入中…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "匯入中…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込み中…"
           }
         }
       }
@@ -1666,6 +3724,18 @@
             "state": "translated",
             "value": "收件箱"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收件匣"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信トレイ"
+          }
         }
       }
     },
@@ -1675,6 +3745,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "收件箱为空"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "收件匣為空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受信トレイは空です"
           }
         }
       }
@@ -1686,6 +3768,18 @@
             "state": "translated",
             "value": "密码错误。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密碼錯誤。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードが違います。"
+          }
         }
       }
     },
@@ -1695,6 +3789,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "JSON 格式错误"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON 格式錯誤"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON の形式が正しくありません"
           }
         }
       }
@@ -1706,6 +3812,18 @@
             "state": "translated",
             "value": "JSON 格式错误：%@"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON 格式錯誤：%@"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "JSON の形式が正しくありません：%@"
+          }
         }
       }
     },
@@ -1715,6 +3833,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "链接无效。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "連結無效。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "URL が無効です。"
           }
         }
       }
@@ -1726,6 +3856,18 @@
             "state": "translated",
             "value": "XML 格式错误"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XML 格式錯誤"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "XML の形式が正しくありません"
+          }
         }
       }
     },
@@ -1735,6 +3877,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "刚刚"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "剛剛"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "たった今"
           }
         }
       }
@@ -1746,6 +3900,18 @@
             "state": "translated",
             "value": "局域网传输"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "區域網路傳輸"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LAN 転送"
+          }
         }
       }
     },
@@ -1755,6 +3921,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "局域网传输端口"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "區域網路傳輸埠"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LAN 転送ポート"
           }
         }
       }
@@ -1767,12 +3945,36 @@
             "state": "translated",
             "value": "语言"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "語言"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "言語"
+          }
         }
       }
     },
     "Large": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "大"
@@ -1788,6 +3990,18 @@
             "state": "translated",
             "value": "启动页面"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "啟動頁面"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "起動ページ"
+          }
         }
       }
     },
@@ -1797,6 +4011,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "库"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "函式庫"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライブラリ"
           }
         }
       }
@@ -1808,6 +4034,18 @@
             "state": "translated",
             "value": "许可证"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "授權條款"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライセンス"
+          }
         }
       }
     },
@@ -1817,6 +4055,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "浅色"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "淺色"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ライト"
           }
         }
       }
@@ -1828,6 +4078,18 @@
             "state": "translated",
             "value": "换行符"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "換行符號"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "改行コード"
+          }
         }
       }
     },
@@ -1837,6 +4099,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "链接已复制"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "連結已複製"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクをコピーしました"
           }
         }
       }
@@ -1848,6 +4122,18 @@
             "state": "translated",
             "value": "列表"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "列表"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リスト"
+          }
         }
       }
     },
@@ -1857,6 +4143,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "加载中…"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "載入中…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "読み込み中…"
           }
         }
       }
@@ -1868,12 +4166,36 @@
             "state": "translated",
             "value": "位置"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "位置"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "場所"
+          }
         }
       }
     },
     "Medium": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "中"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "中"
@@ -1889,6 +4211,18 @@
             "state": "translated",
             "value": "麦克风"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "麥克風"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイク"
+          }
         }
       }
     },
@@ -1898,6 +4232,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "模式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模式"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "モード"
           }
         }
       }
@@ -1909,6 +4255,18 @@
             "state": "translated",
             "value": "修改时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "修改時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "更新日時"
+          }
         }
       }
     },
@@ -1918,6 +4276,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "挂载文件夹"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掛載資料夾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダをマウント"
           }
         }
       }
@@ -1930,6 +4300,18 @@
             "state": "translated",
             "value": "全部移到回收站"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部移到垃圾桶"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてゴミ箱へ移動"
+          }
         }
       }
     },
@@ -1940,6 +4322,18 @@
             "state": "translated",
             "value": "全部移到回收站？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全部移到垃圾桶？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべてゴミ箱へ移動しますか？"
+          }
         }
       }
     },
@@ -1949,6 +4343,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "将所选移到回收站？"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "將所選移到垃圾桶？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択項目をゴミ箱へ移動しますか？"
           }
         }
       }
@@ -1961,6 +4367,18 @@
             "state": "translated",
             "value": "移动到"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動到"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動先"
+          }
         }
       }
     },
@@ -1970,6 +4388,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "移到回收站"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移到垃圾桶"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱へ移動"
           }
         }
       }
@@ -1981,6 +4411,18 @@
             "state": "translated",
             "value": "移到回收站？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移到垃圾桶？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱へ移動しますか？"
+          }
         }
       }
     },
@@ -1990,6 +4432,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "我的文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "我的檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "マイファイル"
           }
         }
       }
@@ -2001,6 +4455,18 @@
             "state": "translated",
             "value": "名称"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名稱"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前"
+          }
         }
       }
     },
@@ -2010,6 +4476,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "窄"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "窄"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "狭い"
           }
         }
       }
@@ -2021,6 +4499,18 @@
             "state": "translated",
             "value": "需要重新授权"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "需要重新授權"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再認証が必要"
+          }
         }
       }
     },
@@ -2030,6 +4520,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "网络"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "網路"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ネットワーク"
           }
         }
       }
@@ -2041,6 +4543,18 @@
             "state": "translated",
             "value": "新建文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新建檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新規ファイル"
+          }
         }
       }
     },
@@ -2050,6 +4564,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "新建文件夹"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新建資料夾"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新規フォルダ"
           }
         }
       }
@@ -2061,6 +4587,18 @@
             "state": "translated",
             "value": "新密码"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "新しいパスコード"
+          }
         }
       }
     },
@@ -2070,6 +4608,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "下一步"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "下一步"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "次へ"
           }
         }
       }
@@ -2082,6 +4632,18 @@
             "state": "translated",
             "value": "还没有文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "尚無檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルはまだありません"
+          }
         }
       }
     },
@@ -2091,6 +4653,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "暂无最近文件"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫無最近檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近のファイルはありません"
           }
         }
       }
@@ -2102,6 +4676,18 @@
             "state": "translated",
             "value": "无结果"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無結果"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "結果なし"
+          }
         }
       }
     },
@@ -2111,6 +4697,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "暂无外部文件夹。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫無外部資料夾。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "外部フォルダはありません。"
           }
         }
       }
@@ -2123,6 +4721,18 @@
             "state": "translated",
             "value": "这里还没有文件。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "這裡還沒有檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ここにはまだファイルがありません。"
+          }
         }
       }
     },
@@ -2132,6 +4742,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "没有符合筛选的文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有符合篩選的檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィルタに一致するファイルはありません。"
           }
         }
       }
@@ -2143,6 +4765,18 @@
             "state": "translated",
             "value": "没有匹配的文件。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有符合搜尋的檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "検索に一致するファイルはありません。"
+          }
         }
       }
     },
@@ -2152,6 +4786,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "最近 24 小时暂无日志。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近 24 小時暫無日誌。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "直近 24 時間のログはありません。"
           }
         }
       }
@@ -2163,6 +4809,18 @@
             "state": "translated",
             "value": "最近一小时暂无日志。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近一小時暫無日誌。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "直近 1 時間のログはありません。"
+          }
         }
       }
     },
@@ -2172,6 +4830,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "没有其他文件夹可移动。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "沒有其他可移動的資料夾。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移動先のフォルダがありません。"
           }
         }
       }
@@ -2183,6 +4853,18 @@
             "state": "translated",
             "value": "不可用"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不可用"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "利用不可"
+          }
         }
       }
     },
@@ -2192,6 +4874,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "未请求"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未要求"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未リクエスト"
           }
         }
       }
@@ -2203,6 +4897,18 @@
             "state": "translated",
             "value": "不可用"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支援"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未対応"
+          }
         }
       }
     },
@@ -2212,6 +4918,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "好"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "好"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OK"
           }
         }
       }
@@ -2223,16 +4941,55 @@
             "state": "translated",
             "value": "关闭"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "オフ"
+          }
         }
       }
     },
-    "OhMyFile": {},
+    "OhMyFile": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OhMyFile"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OhMyFile"
+          }
+        }
+      }
+    },
     "Only works while this page is open. Files are shared on the local network.": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "仅在此页面打开时可用，文件会在局域网内共享。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "僅在此頁面開啟時可用，檔案會在區域網路內共享。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このページを開いている間のみ利用できます。ファイルはローカルネットワーク内で共有されます。"
           }
         }
       }
@@ -2244,6 +5001,18 @@
             "state": "translated",
             "value": "打开文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを開く"
+          }
         }
       }
     },
@@ -2253,6 +5022,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开设置"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟設定"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定を開く"
           }
         }
       }
@@ -2264,6 +5045,18 @@
             "state": "translated",
             "value": "在同一 Wi-Fi 或热点下的电脑浏览器中打开该地址。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在同一 Wi-Fi 或熱點下的電腦瀏覽器中開啟該位址。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "同じ Wi-Fi またはテザリングに接続したコンピュータのブラウザで、このアドレスを開いてください。"
+          }
         }
       }
     },
@@ -2273,6 +5066,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "顺序"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "順序"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "順序"
           }
         }
       }
@@ -2284,6 +5089,18 @@
             "state": "translated",
             "value": "原样"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "原樣"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "元のまま"
+          }
         }
       }
     },
@@ -2294,16 +5111,55 @@
             "state": "translated",
             "value": "其他"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "其他"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "その他"
+          }
         }
       }
     },
-    "PDF": {},
+    "PDF": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF"
+          }
+        }
+      }
+    },
     "Passcode": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "密码"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコード"
           }
         }
       }
@@ -2315,6 +5171,18 @@
             "state": "translated",
             "value": "两次输入的密码不一致。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "兩次輸入的密碼不一致。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードが一致しません。"
+          }
         }
       }
     },
@@ -2324,6 +5192,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "粘贴"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "貼上"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "貼り付け"
           }
         }
       }
@@ -2335,6 +5215,18 @@
             "state": "translated",
             "value": "从剪贴板导入"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從剪貼簿貼上"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリップボードから貼り付け"
+          }
         }
       }
     },
@@ -2344,6 +5236,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "路径"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "路徑"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パス"
           }
         }
       }
@@ -2356,6 +5260,18 @@
             "state": "translated",
             "value": "等待中"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "等待中"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "待機中"
+          }
         }
       }
     },
@@ -2365,6 +5281,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "权限管理"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "權限管理"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "権限"
           }
         }
       }
@@ -2376,6 +5304,18 @@
             "state": "translated",
             "value": "照片"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "照片"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真"
+          }
         }
       }
     },
@@ -2385,6 +5325,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "端口已被占用。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "連接埠已被占用。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ポートは既に使用されています。"
           }
         }
       }
@@ -2396,6 +5348,18 @@
             "state": "translated",
             "value": "预览"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "預覽"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プレビュー"
+          }
         }
       }
     },
@@ -2405,6 +5369,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "暂不支持预览"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫不支援預覽"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プレビュー非対応"
           }
         }
       }
@@ -2416,6 +5392,18 @@
             "state": "translated",
             "value": "隐私"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "隱私"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "プライバシー"
+          }
         }
       }
     },
@@ -2425,6 +5413,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "在 App Store 评分"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在 App Store 評分"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "App Store で評価"
           }
         }
       }
@@ -2436,6 +5436,18 @@
             "state": "translated",
             "value": "重新授权"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新授權"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再認証"
+          }
         }
       }
     },
@@ -2445,6 +5457,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "阅读"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "閱讀"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "閲覧"
           }
         }
       }
@@ -2456,12 +5480,36 @@
             "state": "translated",
             "value": "正在读取剪贴板…"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "正在讀取剪貼簿…"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "クリップボードを読み込み中…"
+          }
         }
       }
     },
     "Recent": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "最近"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "最近"
@@ -2477,6 +5525,18 @@
             "state": "translated",
             "value": "拍摄视频时录制声音。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍攝影片時錄製聲音。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動画撮影時に音声を録音します。"
+          }
         }
       }
     },
@@ -2488,6 +5548,18 @@
             "state": "translated",
             "value": "相对时间"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相對時間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "相対時間"
+          }
         }
       }
     },
@@ -2497,6 +5569,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "移除"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "移除"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "削除"
           }
         }
       }
@@ -2508,6 +5592,18 @@
             "state": "translated",
             "value": "重命名"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新命名"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "名前を変更"
+          }
         }
       }
     },
@@ -2517,6 +5613,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "重命名备注"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重新命名備註"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "メモの名前を変更"
           }
         }
       }
@@ -2528,6 +5636,18 @@
             "state": "translated",
             "value": "恢复"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "還原"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "復元"
+          }
         }
       }
     },
@@ -2537,6 +5657,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "受限"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "受限"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "制限あり"
           }
         }
       }
@@ -2548,6 +5680,18 @@
             "state": "translated",
             "value": "结果"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "結果"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "結果"
+          }
         }
       }
     },
@@ -2557,6 +5701,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "重试"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "重試"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "再試行"
           }
         }
       }
@@ -2568,6 +5724,18 @@
             "state": "translated",
             "value": "根目录"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "根目錄"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ルートフォルダ"
+          }
         }
       }
     },
@@ -2577,6 +5745,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "示例"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "範例"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプル"
           }
         }
       }
@@ -2588,12 +5768,36 @@
             "state": "translated",
             "value": "示例文本"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "範例文字"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サンプルテキスト"
+          }
         }
       }
     },
     "Save": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "儲存"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "保存"
@@ -2608,6 +5812,18 @@
             "state": "translated",
             "value": "保存并覆盖原文件？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "儲存並覆蓋原始檔案？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存して元のファイルを上書きしますか？"
+          }
         }
       }
     },
@@ -2617,6 +5833,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "已保存"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "已儲存"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "保存済み"
           }
         }
       }
@@ -2628,6 +5856,18 @@
             "state": "translated",
             "value": "扫描"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掃描"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャン"
+          }
         }
       }
     },
@@ -2637,6 +5877,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "扫描文档"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掃描文件"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "書類をスキャン"
           }
         }
       }
@@ -2649,6 +5901,18 @@
             "state": "translated",
             "value": "扫描文档"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "掃描文件"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "書類をスキャン"
+          }
         }
       }
     },
@@ -2658,6 +5922,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "搜索"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "搜尋"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "検索"
           }
         }
       }
@@ -2669,6 +5945,18 @@
             "state": "translated",
             "value": "搜索内容"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "搜尋內容"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "コンテンツを検索"
+          }
         }
       }
     },
@@ -2678,6 +5966,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "选择"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選擇"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択"
           }
         }
       }
@@ -2689,6 +5989,18 @@
             "state": "translated",
             "value": "全选"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "全選"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "すべて選択"
+          }
         }
       }
     },
@@ -2698,6 +6010,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "发送反馈"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "傳送意見回饋"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フィードバックを送信"
           }
         }
       }
@@ -2709,6 +6033,18 @@
             "state": "translated",
             "value": "设置密码"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定密碼"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードを設定"
+          }
         }
       }
     },
@@ -2719,16 +6055,55 @@
             "state": "translated",
             "value": "设置"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "設定"
+          }
         }
       }
     },
-    "Share": {},
+    "Share": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "共有"
+          }
+        }
+      }
+    },
     "Share App": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "分享 App"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享 App"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリを共有"
           }
         }
       }
@@ -2739,6 +6114,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "分享链接"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "分享連結"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "リンクを共有"
           }
         }
       }
@@ -2751,6 +6138,18 @@
             "state": "translated",
             "value": "从其他 App 分享文件到 OhMyFile，或点击右上角 + 导入。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "從其他 App 分享檔案到 OhMyFile，或點右上角 + 匯入。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "他のアプリから OhMyFile にファイルを共有するか、右上の + をタップして読み込んでください。"
+          }
         }
       }
     },
@@ -2760,6 +6159,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "在文件夹中显示"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在資料夾中顯示"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "フォルダ内に表示"
           }
         }
       }
@@ -2771,6 +6182,18 @@
             "state": "translated",
             "value": "显示前 %ld 行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "顯示前 %ld 行"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先頭 %ld 行を表示"
+          }
         }
       }
     },
@@ -2780,6 +6203,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "仅显示前 %ld 行"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "僅顯示前 %ld 列"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "先頭 %ld 行を表示"
           }
         }
       }
@@ -2791,12 +6226,36 @@
             "state": "translated",
             "value": "大小"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "大小"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サイズ"
+          }
         }
       }
     },
     "Small": {
       "localizations": {
         "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "小"
+          }
+        },
+        "ja": {
           "stringUnit": {
             "state": "translated",
             "value": "小"
@@ -2811,6 +6270,18 @@
             "state": "translated",
             "value": "排序方式"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "排序方式"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "並び順"
+          }
         }
       }
     },
@@ -2820,6 +6291,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "来源"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "來源"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ソース"
           }
         }
       }
@@ -2831,6 +6314,18 @@
             "state": "translated",
             "value": "开启服务"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟服務"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "サーバーを起動"
+          }
         }
       }
     },
@@ -2840,6 +6335,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "存储空间"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "儲存空間"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ストレージ"
           }
         }
       }
@@ -2851,6 +6358,18 @@
             "state": "translated",
             "value": "存储不可用。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "儲存空間不可用。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ストレージを利用できません。"
+          }
         }
       }
     },
@@ -2860,6 +6379,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "可用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "可用"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "対応"
           }
         }
       }
@@ -2872,6 +6403,18 @@
             "state": "translated",
             "value": "切换视图"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "切換檢視"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "表示を切り替え"
+          }
         }
       }
     },
@@ -2881,6 +6424,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "跟随系统"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "跟隨系統"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム"
           }
         }
       }
@@ -2892,6 +6447,18 @@
             "state": "translated",
             "value": "系统设置"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系統設定"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システム設定"
+          }
         }
       }
     },
@@ -2902,6 +6469,18 @@
             "state": "translated",
             "value": "系统框架由 Apple 提供。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "系統框架由 Apple 提供。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "システムフレームワークは Apple が提供しています。"
+          }
         }
       }
     },
@@ -2911,6 +6490,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "拍照导入"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍照匯入"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真を撮影"
           }
         }
       }
@@ -2923,6 +6514,18 @@
             "state": "translated",
             "value": "拍照导入与扫描文档。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "拍照匯入與掃描文件。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真撮影と書類のスキャン。"
+          }
         }
       }
     },
@@ -2932,6 +6535,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "模板"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "模板"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テンプレート"
           }
         }
       }
@@ -2943,6 +6558,18 @@
             "state": "translated",
             "value": "临时"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "臨時"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "一時"
+          }
         }
       }
     },
@@ -2952,6 +6579,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文本"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文字"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テキスト"
           }
         }
       }
@@ -2963,6 +6602,18 @@
             "state": "translated",
             "value": "文本编码不受支持。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "文字編碼不受支援。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テキストエンコーディングはサポートされていません。"
+          }
         }
       }
     },
@@ -2972,6 +6623,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "感谢 Apple 与开源社区。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "感謝 Apple 與開源社群。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Apple とオープンソースコミュニティに感謝します。"
           }
         }
       }
@@ -2983,6 +6646,18 @@
             "state": "translated",
             "value": "压缩包包含无效路径。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "壓縮檔包含無效路徑。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アーカイブに無効なパスが含まれています。"
+          }
         }
       }
     },
@@ -2992,6 +6667,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件不是有效的 zip 压缩包。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案不是有效的 zip 壓縮檔。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "有効な zip アーカイブではありません。"
           }
         }
       }
@@ -3003,6 +6690,18 @@
             "state": "translated",
             "value": "文件名无效。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案名稱無效。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイル名が無効です。"
+          }
         }
       }
     },
@@ -3012,6 +6711,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件已不存在，已删除最近记录。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檔案已不存在，已移除最近記錄。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルは存在しないため、最近の履歴から削除しました。"
           }
         }
       }
@@ -3023,6 +6734,18 @@
             "state": "translated",
             "value": "局域网传输使用的端口。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "區域網路傳輸使用的連接埠。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "LAN 転送に使用するポート。"
+          }
         }
       }
     },
@@ -3032,6 +6755,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "所选编码不受支持。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "所選編碼不受支援。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択したエンコーディングはサポートされていません。"
           }
         }
       }
@@ -3043,6 +6778,18 @@
             "state": "translated",
             "value": "主题"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "主題"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "テーマ"
+          }
         }
       }
     },
@@ -3052,6 +6799,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "暂不支持此压缩格式。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫不支援此壓縮格式。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このアーカイブ形式はまだサポートされていません。"
           }
         }
       }
@@ -3063,6 +6822,18 @@
             "state": "translated",
             "value": "此操作无法撤销。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此操作無法復原。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "この操作は取り消せません。"
+          }
         }
       }
     },
@@ -3072,6 +6843,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "此文件类型暂不支持预览。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此檔案類型暫不支援預覽。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このファイル形式はまだプレビューできません。"
           }
         }
       }
@@ -3083,6 +6866,18 @@
             "state": "translated",
             "value": "该文件类型无法预览，要直接导入吗？"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "該檔案類型無法預覽，要直接匯入嗎？"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このファイル形式はプレビューできません。そのまま読み込みますか？"
+          }
         }
       }
     },
@@ -3092,6 +6887,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "此文件夹已无法访问，请重新授权或移除。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "此資料夾已無法存取，請重新授權或移除。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "このフォルダにアクセスできません。再認証するか削除してください。"
           }
         }
       }
@@ -3103,6 +6910,18 @@
             "state": "translated",
             "value": "总容量"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "總容量"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "総容量"
+          }
         }
       }
     },
@@ -3112,6 +6931,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "总占用"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "總佔用"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "総使用量"
           }
         }
       }
@@ -3123,6 +6954,18 @@
             "state": "translated",
             "value": "回收站"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "垃圾桶"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱"
+          }
         }
       }
     },
@@ -3132,6 +6975,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "回收站已清空"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "垃圾桶已清空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱を空にしました"
           }
         }
       }
@@ -3143,6 +6998,18 @@
             "state": "translated",
             "value": "回收站为空"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "垃圾桶為空"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ゴミ箱は空です"
+          }
         }
       }
     },
@@ -3152,6 +7019,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "树形"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "樹狀"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ツリー"
           }
         }
       }
@@ -3163,6 +7042,18 @@
             "state": "translated",
             "value": "关闭应用锁"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "關閉 App 鎖定"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリロックをオフ"
+          }
         }
       }
     },
@@ -3172,6 +7063,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "类型"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "類型"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "種類"
           }
         }
       }
@@ -3183,6 +7086,18 @@
             "state": "translated",
             "value": "无法读取文件"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法讀取檔案"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを読み取れません"
+          }
         }
       }
     },
@@ -3192,6 +7107,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法生成扫描 PDF。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法產生掃描 PDF。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "スキャンした PDF を作成できません。"
           }
         }
       }
@@ -3203,6 +7130,18 @@
             "state": "translated",
             "value": "无法读取文件。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法讀取檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを読み取れません。"
+          }
         }
       }
     },
@@ -3212,6 +7151,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法读取所选照片。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法讀取所選照片。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択した写真を読み込めません。"
           }
         }
       }
@@ -3223,6 +7174,18 @@
             "state": "translated",
             "value": "无法保存下载的文件。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法儲存下載的檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ダウンロードしたファイルを保存できません。"
+          }
         }
       }
     },
@@ -3232,6 +7195,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法保存文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法儲存檔案。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ファイルを保存できません。"
           }
         }
       }
@@ -3243,6 +7218,18 @@
             "state": "translated",
             "value": "无法保存密码。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法儲存密碼。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "パスコードを保存できません。"
+          }
         }
       }
     },
@@ -3252,6 +7239,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "无法保存照片。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "無法儲存照片。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "写真を保存できません。"
           }
         }
       }
@@ -3263,6 +7262,18 @@
             "state": "translated",
             "value": "统一工具集：日志、文件操作、格式化。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "統一工具集：日誌、檔案操作、格式化。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "統合ユーティリティ：ログ、ファイル操作、フォーマット。"
+          }
         }
       }
     },
@@ -3272,6 +7283,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "未知"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未知"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不明"
           }
         }
       }
@@ -3283,6 +7306,18 @@
             "state": "translated",
             "value": "解锁"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ロック解除"
+          }
         }
       }
     },
@@ -3292,6 +7327,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "解锁 OhMyFile"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "解鎖 OhMyFile"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "OhMyFile のロックを解除"
           }
         }
       }
@@ -3303,6 +7350,18 @@
             "state": "translated",
             "value": "使用 %@ 解锁"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "使用 %@ 解鎖"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "%@ でロック解除"
+          }
         }
       }
     },
@@ -3313,6 +7372,18 @@
             "state": "translated",
             "value": "未保存的修改"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未儲存的修改"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未保存の変更"
+          }
         }
       }
     },
@@ -3322,6 +7393,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "不支持该格式"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "不支援此格式"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "未対応の形式"
           }
         }
       }
@@ -3334,6 +7417,18 @@
             "state": "translated",
             "value": "开启应用锁后用于解锁 OhMyFile。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "開啟 App 鎖定後用於解鎖 OhMyFile。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "アプリロックが有効なときに OhMyFile のロックを解除するために使用します。"
+          }
         }
       }
     },
@@ -3345,6 +7440,18 @@
             "state": "translated",
             "value": "版本"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "版本"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バージョン"
+          }
         }
       }
     },
@@ -3354,6 +7461,18 @@
           "stringUnit": {
             "state": "new",
             "value": "Version %1$@ (%2$@)"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "版本 %@（%@）"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "バージョン %@（%@）"
           }
         }
       }
@@ -3365,6 +7484,18 @@
             "state": "translated",
             "value": "视频"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "影片"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動画"
+          }
         }
       }
     },
@@ -3374,6 +7505,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "视频"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "影片"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "動画"
           }
         }
       }
@@ -3385,6 +7528,18 @@
             "state": "translated",
             "value": "视图"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "檢視"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "表示"
+          }
         }
       }
     },
@@ -3394,6 +7549,18 @@
           "stringUnit": {
             "state": "translated",
             "value": "宽"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "寬"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "広い"
           }
         }
       }
@@ -3405,6 +7572,18 @@
             "state": "translated",
             "value": "自动换行"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "自動換行"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "折り返し"
+          }
         }
       }
     },
@@ -3415,12 +7594,69 @@
             "state": "translated",
             "value": "暂不支持 ZIP64 压缩包。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "暫不支援 ZIP64 壓縮檔。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ZIP64 アーカイブはまだサポートされていません。"
+          }
         }
       }
     },
-    "[%lld]": {},
-    "[…]": {},
-    "false": {},
+    "[%lld]": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[%lld]"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[%lld]"
+          }
+        }
+      }
+    },
+    "[…]": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[…]"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "[…]"
+          }
+        }
+      }
+    },
+    "false": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "false"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "false"
+          }
+        }
+      }
+    },
     "iCloud Drive, On My iPhone and third-party file providers.": {
       "localizations": {
         "zh-Hans": {
@@ -3428,13 +7664,85 @@
             "state": "translated",
             "value": "iCloud 云盘、我的 iPhone 和第三方文件提供者。"
           }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud 雲盤、我的 iPhone 和第三方檔案提供者。"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "iCloud Drive、この iPhone 内、サードパーティのファイルプロバイダ。"
+          }
         }
       }
     },
-    "null": {},
-    "true": {},
-    "{…}": {},
-    "•": {}
+    "null": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "null"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "null"
+          }
+        }
+      }
+    },
+    "true": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "true"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "true"
+          }
+        }
+      }
+    },
+    "{…}": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{…}"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "{…}"
+          }
+        }
+      }
+    },
+    "•": {
+      "localizations": {
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "•"
+          }
+        }
+      }
+    }
   },
   "version": "1.0"
 }

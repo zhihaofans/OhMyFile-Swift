@@ -75,9 +75,6 @@
 
 ### 第四部分：转换与设置
 
-- [ ] T-100 繁体中文 / 日文本地化
-  - 范围：String Catalog 增加 zh-Hant 与 ja 翻译；覆盖主要界面（文件 / 最近 / 设置 / 预览 / 编辑器 / 错误提示）。
-  - 验收：系统语言切到繁体中文 / 日文后主要界面显示对应语言；无英文回退（或覆盖清单内）；长文案不截断。
 - [ ] T-66 文件格式转换
   - 范围：图片互转（HEIC / JPEG / PNG / WebP 等）；视频互转（MOV / MP4 等）；PDF → 图片、图片 → PDF；HTML → PDF；文本编码转换；docx 等 Office 文档 → PDF 先评估系统能力。
   - 方式：优先系统接口（ImageIO、AVAssetExportSession、PDFKit、WKWebView / UIGraphicsPDFRenderer、系统打印）；转换结果另存为新文件，不覆盖原文件；不支持的格式给出明确提示；大文件后台转换、可取消。

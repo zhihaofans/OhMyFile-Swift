@@ -446,7 +446,7 @@ Share Extension 必须保持轻量。
 | Info.plist | 主 App：`OhMyFile/Info.plist`（`CFBundleURLTypes` → `ohmyfile`；`CFBundleDocumentTypes` 声明 `public.item`、`CFBundleTypeRole = Viewer`、`LSHandlerRank = Default`、`LSSupportsOpeningDocumentsInPlace = true`；已从同步文件夹 resources 排除）；Share Extension：独立 `Info.plist`。两者都保留 `GENERATE_INFOPLIST_FILE = YES` 合并生成键 |
 | 第三方依赖 | 已接入 CrashKit 0.1.2、SwiftUtils 0.0.33、ZIPFoundation 0.9.20、FlyingFox 0.22.0（SPM，版本记录在 `Package.resolved`） |
 | 隐私清单 | `OhMyFile/PrivacyInfo.xcprivacy`：声明 UserDefaults（CA92.1）、文件时间戳（C617.1）、磁盘空间（E174.1）；不跟踪、不收集数据 |
-| 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
+| 本地化 | 开发语言 en；支持 en + zh-Hans + zh-Hant + ja（String Catalog） |
 | 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-62） |
 
 ### 修改规则
