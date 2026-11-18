@@ -344,6 +344,7 @@ Share Extension 必须保持轻量。
 - 使用 SwiftUI 和 SF Symbols。
 - 支持浅色 / 深色模式、Dynamic Type；考虑 VoiceOver。
 - 使用系统原生导航；合理使用 Toolbar、Menu、Sheet。
+- 设置项默认不加描述文本；确有需要时用 footer 或单独说明页，不在行内堆小字。
 - 提供空状态、加载状态和错误状态。
 - 保持界面简洁；避免不必要的动画和装饰。
 
@@ -443,7 +444,7 @@ Share Extension 必须保持轻量。
 | App 版本 | `MARKETING_VERSION = 0.0.5`，`CURRENT_PROJECT_VERSION = 5`（App / Share Extension / 测试 target 已统一） |
 | App Groups / Share Extension / Entitlements | App Group：`group.me.zzhhoo.OhMyFile`；Share Extension：`OhMyFileShareExtension`；主 App 与 Extension 各有一份 entitlements |
 | Info.plist | 主 App：`OhMyFile/Info.plist`（`CFBundleURLTypes` → `ohmyfile`；`CFBundleDocumentTypes` 声明 `public.item`、`CFBundleTypeRole = Viewer`、`LSHandlerRank = Default`、`LSSupportsOpeningDocumentsInPlace = true`；已从同步文件夹 resources 排除）；Share Extension：独立 `Info.plist`。两者都保留 `GENERATE_INFOPLIST_FILE = YES` 合并生成键 |
-| 第三方依赖 | 已接入 CrashKit 0.1.2、SwiftUtils 0.0.33、ZIPFoundation 0.9.20（SPM，版本记录在 `Package.resolved`） |
+| 第三方依赖 | 已接入 CrashKit 0.1.2、SwiftUtils 0.0.33、ZIPFoundation 0.9.20、FlyingFox 0.22.0（SPM，版本记录在 `Package.resolved`） |
 | 隐私清单 | `OhMyFile/PrivacyInfo.xcprivacy`：声明 UserDefaults（CA92.1）、文件时间戳（C617.1）、磁盘空间（E174.1）；不跟踪、不收集数据 |
 | 本地化 | 开发语言 en；支持 en + zh-Hans（String Catalog） |
 | 示例文件 | 规划：构建时把仓库根 `README.md`、`CHANGELOG.md` 复制进 App bundle 的 `SampleFiles/`；尚未接入（TODO T-62） |
@@ -472,7 +473,7 @@ Share Extension 必须保持轻量。
 8. **版本号**：App、Share Extension、测试 target 的 `MARKETING_VERSION` 已统一为 0.0.5，`CURRENT_PROJECT_VERSION` 均为 5。改版本时所有 target 保持一致，且先问用户（§2）；版本号更新时同步递增 `CURRENT_PROJECT_VERSION`。
 9. **没有 File Provider Extension target**：系统「文件」App 里出现 OhMyFile 需要新增 File Provider Extension 与对应 entitlements；新增 Target 属跨 Target 改动，先出方案并征得同意。
 10. **示例文件尚未接入构建**：README.md、CHANGELOG.md 目前只存在于仓库；接入后要保证 bundle 内 `SampleFiles/` 副本与仓库根一致，改文档后重新构建，不在源码目录留副本。
-11. **CrashKit / SwiftUtils / ZIPFoundation 已接入**：CrashKit 0.1.2、SwiftUtils 0.0.33、ZIPFoundation 0.9.20 通过 SPM 引入，`Package.resolved` 已提交；新增依赖仍需先出方案并征得同意。
+11. **CrashKit / SwiftUtils / ZIPFoundation / FlyingFox 已接入**：CrashKit 0.1.2、SwiftUtils 0.0.33、ZIPFoundation 0.9.20、FlyingFox 0.22.0 通过 SPM 引入，`Package.resolved` 已提交；新增依赖仍需先出方案并征得同意。
 12. **扩展拉起主 App 依赖兼容方案**：`extensionContext.open` 在 Share Extension 中会被系统忽略；当前沿 responder chain 调用 `UIApplication.open`（GitHub 常见兼容技巧，非稳定公开扩展 API）。系统升级后需在真机复测分享后是否仍能打开收件箱，失败就回退为「成功提示 + 主 App 启动检查」。
 
 ## 19. 开发工作流程与收尾

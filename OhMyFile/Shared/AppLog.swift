@@ -17,4 +17,5 @@ enum AppLog {
     nonisolated static let download = Logger(subsystem: subsystem, category: "download")
     nonisolated static let save = Logger(subsystem: subsystem, category: "save")
     nonisolated static let external = Logger(subsystem: subsystem, category: "external")
+    nonisolated static let lan = Logger(subsystem: subsystem, category: "lan")
 }

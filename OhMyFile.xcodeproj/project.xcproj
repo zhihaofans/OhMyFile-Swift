@@ -30,6 +30,12 @@
       "version": {
         "version": "0.9.20",
       },
+    }, {
+      "kind": "remote",
+      "repository": "https://github.com/swhitty/FlyingFox.git",
+      "version": {
+        "version": "0.22.0",
+      },
     },
   ],
   "files": [
@@ -98,6 +104,10 @@
         {
           "package": "CrashKit",
           "product-name": "CrashKit",
+          "build-phase": { "build-phase": "frameworks" },
+        }, {
+          "package": "FlyingFox",
+          "product-name": "FlyingFox",
           "build-phase": { "build-phase": "frameworks" },
         }, {
           "package": "SwiftUtils",

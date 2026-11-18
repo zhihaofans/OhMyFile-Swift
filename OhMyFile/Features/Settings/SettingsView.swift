@@ -16,6 +16,7 @@ struct SettingsView: View {
     @AppStorage("settings.launchPage") private var launchPageRaw = LaunchPage.files.rawValue
     @AppStorage("settings.folderPriority") private var folderPriority = false
     @AppStorage("settings.trashAutoClearDays") private var trashAutoClearDays = 0
+    @AppStorage("settings.lanTransferPort") private var lanTransferPort = 8080
     @AppStorage("settings.treeCollapsedByDefault") private var treeCollapsedByDefault = false
     @AppStorage("settings.codeTheme") private var codeThemeRaw = CodeTheme.xcode.id
 
@@ -126,6 +127,25 @@ struct SettingsView: View {
                         SettingsLabel(title: "Relative Time", systemImage: "clock.arrow.circlepath", color: .orange)
                     }
 
+                }
+
+                Section {
+                    LabeledContent {
+                        TextField("8080", value: $lanTransferPort, format: .number.grouping(.never))
+                            .keyboardType(.numberPad)
+                            .multilineTextAlignment(.trailing)
+                            .frame(width: 90)
+                            .onChange(of: lanTransferPort) { _, value in
+                                let clamped = min(max(value, 1), 65535)
+                                if clamped != value {
+                                    lanTransferPort = clamped
+                                }
+                            }
+                    } label: {
+                        SettingsLabel(title: "LAN Transfer Port", systemImage: "network", color: .teal)
+                    }
+                } header: {
+                    Text("Network")
                 }
 
                 Section("About") {

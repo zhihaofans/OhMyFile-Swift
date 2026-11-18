@@ -36,5 +36,7 @@
 			</array>
 		</dict>
 	</array>
+	<key>NSLocalNetworkUsageDescription</key>
+	<string>用于在同一局域网或热点下传输文件。</string>
 </dict>
 </plist>

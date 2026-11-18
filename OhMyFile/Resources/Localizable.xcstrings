@@ -196,6 +196,16 @@
         }
       }
     },
+    "Address": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "访问地址"
+          }
+        }
+      }
+    },
     "All": {
       "localizations": {
         "zh-Hans": {
@@ -693,12 +703,32 @@
         }
       }
     },
+    "Connect to Wi-Fi or enable a hotspot first.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "请先连接 Wi-Fi 或开启热点。"
+          }
+        }
+      }
+    },
     "Copy": {
       "localizations": {
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
             "value": "复制"
+          }
+        }
+      }
+    },
+    "Copy Address": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "复制地址"
           }
         }
       }
@@ -1308,6 +1338,16 @@
         }
       }
     },
+    "Failed to start the server.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "服务启动失败。"
+          }
+        }
+      }
+    },
     "File Info": {
       "localizations": {
         "zh-Hans": {
@@ -1699,6 +1739,26 @@
         }
       }
     },
+    "LAN Transfer": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "局域网传输"
+          }
+        }
+      }
+    },
+    "LAN Transfer Port": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "局域网传输端口"
+          }
+        }
+      }
+    },
     "Language": {
       "extractionState": "stale",
       "localizations": {
@@ -1964,6 +2024,16 @@
         }
       }
     },
+    "Network": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "网络"
+          }
+        }
+      }
+    },
     "New File": {
       "localizations": {
         "zh-Hans": {
@@ -2157,6 +2227,16 @@
       }
     },
     "OhMyFile": {},
+    "Only works while this page is open. Files are shared on the local network.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "仅在此页面打开时可用，文件会在局域网内共享。"
+          }
+        }
+      }
+    },
     "Open File": {
       "localizations": {
         "zh-Hans": {
@@ -2173,6 +2253,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "打开设置"
+          }
+        }
+      }
+    },
+    "Open the address in a browser on a computer connected to the same Wi-Fi or hotspot.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "在同一 Wi-Fi 或热点下的电脑浏览器中打开该地址。"
           }
         }
       }
@@ -2285,6 +2375,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "照片"
+          }
+        }
+      }
+    },
+    "Port is already in use.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "端口已被占用。"
           }
         }
       }
@@ -2724,6 +2824,16 @@
         }
       }
     },
+    "Start Server": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "开启服务"
+          }
+        }
+      }
+    },
     "Storage": {
       "localizations": {
         "zh-Hans": {
@@ -2902,6 +3012,16 @@
           "stringUnit": {
             "state": "translated",
             "value": "文件已不存在，已删除最近记录。"
+          }
+        }
+      }
+    },
+    "The port used for LAN transfer.": {
+      "localizations": {
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "局域网传输使用的端口。"
           }
         }
       }

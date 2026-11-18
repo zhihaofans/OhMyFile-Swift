@@ -44,6 +44,7 @@ struct FilesView: View {
     @State private var showNewFolderAlert = false
     @State private var newFolderName = ""
     @State private var isMountingFolder = false
+    @State private var showLanTransfer = false
     @State private var renamingMountedFolder: MountedFolder?
     @State private var failingMountedFolder: MountedFolder?
     @State private var mountedRenameText = ""
@@ -300,6 +301,10 @@ struct FilesView: View {
                             newFolderName = ""
                             showNewFolderAlert = true
                         }
+
+                        Button("LAN Transfer", systemImage: "wifi") {
+                            showLanTransfer = true
+                        }
                     } label: {
                         Image(systemName: "plus")
                     }
@@ -416,6 +421,9 @@ struct FilesView: View {
             }
             .sheet(item: $externalBrowseItem) { item in
                 ExternalFilePreviewView(url: item.url)
+            }
+            .sheet(isPresented: $showLanTransfer) {
+                LanTransferView()
             }
             .photosPicker(
                 isPresented: $showPhotosPicker,
